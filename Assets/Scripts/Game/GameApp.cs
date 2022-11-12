@@ -12,9 +12,9 @@ public class GameApp : UnitySingleton<GameApp>
     public void EnterFightingScene()
     {
         #region 获取战斗的地图
-        //GameObject mapPrefab = ResMgr.Instance.GetAssetCache<GameObject>("Maps/sgyd/SGYD.prefab");
-        //GameObject map = GameObject.Instantiate(mapPrefab);
-        //map.AddComponent<GameMgr>().InitGame();
+        GameObject mapPrefab = ResMgr.Instance.GetAssetCache<GameObject>("Maps/sgyd/SGYD.prefab");
+        GameObject map = GameObject.Instantiate(mapPrefab);
+        map.AddComponent<GameMgr>().InitGame();
         #endregion
 
         #region 显示UI
