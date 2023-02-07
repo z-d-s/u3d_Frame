@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameApp : UnitySingleton<GameApp>
+public class GameApp : MonoBaseSingleton<GameApp>
 {
     public void EnterGame()
     {

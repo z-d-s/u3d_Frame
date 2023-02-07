@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventMgr : UnitySingleton<EventMgr>
+public class EventMgr : MonoBaseSingleton<EventMgr>
 {
     public delegate void event_handler(string event_name, object udata);
 

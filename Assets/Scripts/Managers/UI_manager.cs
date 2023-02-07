@@ -48,7 +48,7 @@ public class UI_ctrl : MonoBehaviour {
     }
 }
 
-public class UI_manager : UnitySingleton<UI_manager> {
+public class UI_manager : MonoBaseSingleton<UI_manager> {
     public GameObject canvas;
 
     public override void Awake()

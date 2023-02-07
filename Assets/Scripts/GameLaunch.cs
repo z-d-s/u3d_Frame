@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameLaunch : UnitySingleton<GameLaunch>
+public class GameLaunch : MonoBaseSingleton<GameLaunch>
 {
     public override void Awake()
     {

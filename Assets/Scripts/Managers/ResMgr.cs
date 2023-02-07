@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 // using AssetBundles;
 
-public class ResMgr : UnitySingleton<ResMgr>
+public class ResMgr : MonoBaseSingleton<ResMgr>
 {
     public override void Awake()
     {
