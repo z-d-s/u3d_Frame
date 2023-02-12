@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameLaunch : MonoBaseSingleton<GameLaunch>
 {
+    public GameConfig config;
+
     public override void Awake()
     {
         base.Awake();
