@@ -9,7 +9,7 @@ public enum EnumGameMode
     Server_AB,
 }
 
-[CreateAssetMenu(fileName = "GameConfig", menuName = "zds/GameConfig", order = 1)]
+[CreateAssetMenu(fileName = "GameConfig", menuName = "Config/GameConfig", order = 1)]
 public class GameConfig : ScriptableObject
 {
     public EnumGameMode enumGameMode;
