@@ -8,5 +8,9 @@ public class TestScript : MonoBehaviour
     {
         Debug.Log("Application.streamingAssetsPath" + Application.streamingAssetsPath);
         Debug.Log("Application.dataPath:" + Application.dataPath);
+
+        AssetBundle ab = AssetBundle.LoadFromFile("");
+        AssetBundleRequest request = ab.LoadAssetAsync("");
+        AsyncOperation ao = ab.LoadAssetAsync("");
     }
 }

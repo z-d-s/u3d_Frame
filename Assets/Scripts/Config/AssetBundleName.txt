@@ -1,2 +1,3 @@
 Assets/AssetsPackage/Charactors/Monsters/Jinglingnan_6.prefab,role_jinglingnan
 Assets/AssetsPackage/Maps/sgyd/SGYD.prefab,scene_sgyd
+Assets/AssetsPackage/Effects/Prefabs,effect_asset
