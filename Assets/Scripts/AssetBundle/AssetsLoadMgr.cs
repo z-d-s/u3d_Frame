@@ -77,11 +77,17 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// </summary>
     private List<AssetObject> tempLoadeds = new List<AssetObject>();
 
+    /// <summary>
+    /// 正在下载的资源列表
+    /// </summary>
     private Dictionary<string, AssetObject> _loadingList;
     /// <summary>
-    /// 已经加载的资源
+    /// 已经加载的资源列表
     /// </summary>
     private Dictionary<string, AssetObject> _loadedList;
+    /// <summary>
+    /// 准备卸载的列表
+    /// </summary>
     private Dictionary<string, AssetObject> _unloadList;
     /// <summary>
     /// 异步加载，延迟回调
