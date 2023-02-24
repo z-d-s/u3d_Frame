@@ -1,26 +1,25 @@
 /****************************************************
-	Assets目录下有2个Resources目录
-    一个路径是Assets/Resources/
-    另一个是Assets/Editor/Resources/
-    读取两个目录可以通用Resources.Load()接口
-    打包时后者目录内资源在Editor下，不会进入包体，这是一个小技巧
+
+	Resource下的资源在Runtime情况下是无法判读有什么资源的，所以先要有个配置文件，可以记录所有资源列表
+	这样就有了ExportConfig()和ReadConfig()对列表的导出和读取
 	
 	通用的4个接口:
             -- IsFileExist
             -- LoadAsync
             -- LoadSync
             -- Unload
+
 *****************************************************/
 
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
+public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
 {
     private HashSet<string> _resourcesList;
 
-    private EditorAssetLoadMgr()
+    private ResourcesLoadMgr()
     {
         this._resourcesList = new HashSet<string>();
 #if UNITY_EDITOR
@@ -32,7 +31,7 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
 #if UNITY_EDITOR
     private void ExportConfig()
     {
-        string path = Application.dataPath + "/Editor/Resources/";
+        string path = Application.dataPath + "/Resources/";
         string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
 
         string txt = "";
@@ -115,6 +114,6 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
 
     public void Update()
     {
-
+        
     }
 }

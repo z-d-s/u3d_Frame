@@ -1,3 +1,19 @@
+/****************************************************
+
+	Asset - 资源在内存中的存在格式
+
+    外部接口：
+        -- IsAssetExist     文件是否存在
+        -- PreLoad          预加载
+        -- LoadAsync        异步加载
+        -- LoadSync         同步加载
+        -- Unload           卸载
+        -- Update           刷新
+
+*****************************************************/
+
+#define TEST_AB
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,7 +54,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         public bool _isABLoad;
 
         /// <summary>
-        /// 是否是弱引用 用于预加载和释放
+        /// 是否是弱引用 用于预加载和释放(true为使用过后会销毁，为false将不会销毁，慎用)
         /// </summary>
         public bool _isWeak = true;
         /// <summary>
@@ -90,11 +106,11 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// </summary>
     private Dictionary<string, AssetObject> _unloadList;
     /// <summary>
-    /// 异步加载，延迟回调
+    /// 异步加载队列(当资源已经加载完成，但需要异步回调时，延帧回调)
     /// </summary>
     private List<AssetObject> _loadedAsyncList;
     /// <summary>
-    /// 异步预加载，空闲时加载
+    /// 异步预加载，空闲时加载(当加载队列为空情况下，取1个创建Asset单元放入加载队列)
     /// </summary>
     private Queue<PreloadAssetObject> _preloadedAsyncList;
 
@@ -132,7 +148,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         {
             return true;
         }
-        return AssetBundleLoadMgr.I.IsABExist(_assetName);
+        return AssetBundleLoadMgr.Instance.IsABExist(_assetName);
 #endif
     }
 
@@ -173,6 +189,15 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
     /// <summary>
     /// 同步加载，一般用于小型文件，比如配置
+    /// 
+    ///     - 1 - 已经加载完成 -> 直接返回缓存结果
+    ///     
+    ///     - 2 - 正在加载
+    ///             --- LoadAsset阶段 -> request异步转同步加载
+    ///             --- LoadAB   阶段 -> ab异步转同步加载
+    ///     
+    ///     - 3 - 没加载过 -> 进行同步加载
+    ///     
     /// </summary>
     /// <param name="_assetName">资源名称</param>
     /// <returns></returns>
@@ -180,7 +205,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     {
         if(!IsAssetExist(_assetName))
         {
-            //Utils.LogError("AssetsLoadMgr Asset Not Exist " + _assetName);
+            Utils.LogError("AssetsLoadMgr Asset Not Exist " + _assetName);
             return null;
         }
 
@@ -231,7 +256,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             {
                 //提取的资源失败，从加载列表删除
                 this._loadingList.Remove(assetObj._assetName);
-                //Utils.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+                Utils.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
                 return null;
             }
 
@@ -256,7 +281,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         if(AssetBundleLoadMgr.Instance.IsABExist(_assetName))
         {
             assetObj._isABLoad = true;
-            //Utils.LogWarning("AssetsLoadMgr LoadSync doubtful asset=" + assetObj._assetName);
+            Utils.LogWarning("AssetsLoadMgr LoadSync doubtful asset=" + assetObj._assetName);
             AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(_assetName);
             assetObj._asset = ab1.LoadAsset(ab1.GetAllAssetNames()[0]);
         }
@@ -265,15 +290,11 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             assetObj._isABLoad = false;
             assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(_assetName);
         }
-        else
-        {
-            return null;
-        }
 #endif
         if(assetObj._asset == null)
         {
             //提取的资源失败，从加载列表删除
-            //Utils.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+            Utils.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
             return null;
         }
 
@@ -428,7 +449,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                     //重新添加 保证成功
                     for(int i = 0; i < assetObj._callbackList.Count; ++i)
                     {
-                        LoadAsync(assetObj._assetName, assetObj._callbackList[i]);
+                        this.LoadAsync(assetObj._assetName, assetObj._callbackList[i]);
                     }
                     return;
                 }
@@ -444,10 +465,6 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             assetObj._isABLoad = false;
             this._loadingList.Add(_assetName, assetObj);
             assetObj._request = ResourcesLoadMgr.Instance.LoadAsync(_assetName);
-        }
-        else
-        {
-            return;
         }
 #endif
     }
@@ -582,6 +599,13 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         }
     }
 
+    /// <summary>
+    /// 每帧检测加载完成的资源
+    /// 
+    /// 第一个遍历是提取
+    /// 第二个遍历是改变队列
+    /// 第三个遍历是回调
+    /// </summary>
     private void UpdateLoading()
     {
         if(this._loadingList.Count == 0)
@@ -643,7 +667,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         foreach (var assetObj in tempLoadeds)
         {
             this._loadingList.Remove(assetObj._assetName);
-            this._loadingList.Add(assetObj._assetName, assetObj);
+            this._loadedList.Add(assetObj._assetName, assetObj);
             this._loadingIntervalCount++; //统计本轮加载的数量
 
             //先锁定回调数量，保证异步成立
@@ -696,12 +720,13 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
     private void UpdatePreload()
     {
-        if(this._loadingList.Count > 0 || this._preloadedAsyncList.Count == 0)
+        //加载队列空闲才需要预加载
+        if (this._loadingList.Count > 0 || this._preloadedAsyncList.Count == 0)
         {
             return;
         }
 
-        //
+        //从队列取出一个，异步加载
         PreloadAssetObject plAssetObj = null;
         while(this._preloadedAsyncList.Count > 0 && plAssetObj == null)
         {

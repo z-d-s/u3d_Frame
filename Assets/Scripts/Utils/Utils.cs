@@ -9,6 +9,11 @@ public static class Utils
         Debug.Log(arg);
     }
 
+    public static void LogWarning(string arg)
+    {
+        Debug.LogWarning(arg);
+    }
+
     public static void LogError(string arg)
     {
         Debug.LogError(arg);

@@ -1,5 +1,24 @@
+/****************************************************
+
+	AssetBundle - 资源以压缩包文件存在 
+                - (Resources目录下的资源打成包体后也是以ab格式存在)
+
+    AssetBundle加载有三套接口：
+                -- WWW(已弃用)
+                -- UnityWebRequest 
+                        将整个文件的二进制流下载或读取到内存中
+                        然后对这段内存文件进行ab资源的读取解析操作
+                -- AssetBundle
+                        只读取存储于本地的ab文件头部部分
+                        在需要的情况下再去读取ab中的数据段部分(Asset资源)
+                        优势：1.不进行下载(不占用下载缓存区内存)
+                              2.不读取整个文件到内存(不占用原始文件二进制内存)
+                              3.读取非压缩或LZ4的ab，只用读取ab的头文件(约5kb/个)
+                              4.同步异步加载并行可用
+
+*****************************************************/
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
