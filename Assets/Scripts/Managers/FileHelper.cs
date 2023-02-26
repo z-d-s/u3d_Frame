@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class FileHelper
 {
@@ -31,11 +27,11 @@ public class FileHelper
         }
         else if(GameLaunch.Instance.config.enumGameMode == EnumGameMode.Local_AB)
         {
-            return FileHelper.BaseLocalResPath();
+            return FileHelper.BaseLocalResPath() + ABManiName + "/";
         }
         else if(GameLaunch.Instance.config.enumGameMode == EnumGameMode.Server_AB)
         {
-            return GameLaunch.Instance.config.serverUrl;
+            return GameLaunch.Instance.config.serverUrl + ABManiName + "/";
         }
 
         return string.Empty;
@@ -51,16 +47,31 @@ public class FileHelper
     }
 
     /// <summary>
-    /// 获取本地StreamingAssets文件夹中资源基础路径
+    /// 方案一：获取本地StreamingAssets文件夹中资源基础路径
     /// </summary>
     public static string BaseLocalResPath()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE    //编辑器 或 单机
-            return "file://" + Application.dataPath + "/StreamingAssets/";
+        return "file://" + Application.dataPath + "/StreamingAssets/";
 #elif UNITY_ANDROID
-            return "jar:file://" + Application.dataPath + "!/assets/";
+        return "jar:file://" + Application.dataPath + "!/assets/";
 #elif UNITY_IOS
-            return "file://" + Application.dataPath + "/Raw/";
+        return "file://" + Application.dataPath + "/Raw/";
+#endif
+    }
+
+    /// <summary>
+    /// 方案二：获取本地StreamingAssets文件夹中资源基础路径
+    /// </summary>
+    /// <returns></returns>
+    public static string BaseLocalResPath_Another()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        return "file://" + Application.streamingAssetsPath;
+#elif UNITY_ANDROID
+        return Application.streamingAssetsPath;
+#elif UNITY_IOS
+        return "file://" + Application.streamingAssetsPath;
 #endif
     }
 }

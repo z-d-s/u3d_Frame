@@ -112,8 +112,9 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     {
         //TODO::
         //string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
-        string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName;
-        if(string.IsNullOrEmpty(path))
+        //string path = FileHelper.GetResPath() + FileHelper.ABManiName;
+        string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + FileHelper.ABManiName;
+        if (string.IsNullOrEmpty(path))
         {
             return;
         }
@@ -183,7 +184,8 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         }
         //TODO::
         //return FileVersionMgr.Instance.GetFilePathByExist(this.GetFileName(_hashName));
-        return FileHelper.BaseLocalResPath() + this.GetFileName(_hashName);
+        //return FileHelper.GetResPath() + this.GetFileName(_hashName);
+        return FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + this.GetFileName(_hashName);
     }
 
     public bool IsABExist(string _assetName)

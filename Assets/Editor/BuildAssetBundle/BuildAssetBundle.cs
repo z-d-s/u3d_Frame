@@ -1,8 +1,6 @@
-using DG.Tweening.Plugins.Core.PathCore;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using static PlasticGui.WorkspaceWindow.Items.NewNameValidation;
 
 public class BuildAssetBundle : Editor
 {

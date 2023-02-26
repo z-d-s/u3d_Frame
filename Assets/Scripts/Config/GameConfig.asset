@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8665e3adbc15a36428d8c69730a9c74b, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  AssetCacheTime: 5
-  enumModule: 0
+  enumGameMode: 1
+  assetCacheTime: 5
+  serverUrl: 

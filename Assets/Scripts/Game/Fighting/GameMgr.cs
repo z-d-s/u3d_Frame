@@ -28,7 +28,7 @@ public class GameMgr : MonoBehaviour
         #endregion
 
         #region 放置角色player
-        GameObject charactorPrefab = ResMgr.Instance.GetAssetCache<GameObject>("Charactors/Monsters/Jinglingnan_6.prefab");
+        GameObject charactorPrefab = AssetsLoadMgr.Instance.LoadSync("Charactors/Monsters/Jinglingnan_6.prefab") as GameObject;
         this.player = GameObject.Instantiate(charactorPrefab);
         this.player.AddComponent<CharactorCtrl>().Init();
         this.player.AddComponent<PlayerOpt>().Init();

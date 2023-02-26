@@ -9,8 +9,14 @@
             -- LoadSync     同步加载
             -- Unload       卸载
 
+    ps注意点：
+            -- 路径不区分大小写
+            -- 不能包含文件扩展名
+
 *****************************************************/
 
+using DG.Tweening.Plugins.Core.PathCore;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -18,45 +24,24 @@ using UnityEngine;
 public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
 {
     private HashSet<string> _resourcesList;
-
-    private ResourcesLoadMgr()
+    
+    override public void Awake()
     {
+        base.Awake();
         this._resourcesList = new HashSet<string>();
-#if UNITY_EDITOR
-        this.ExportConfig();
-#endif
+
         this.ReadConfig();
     }
-
-#if UNITY_EDITOR
-    private void ExportConfig()
-    {
-        string path = Application.dataPath + "/Resources/";
-        string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-
-        string txt = "";
-        foreach (var file in files)
-        {
-            if (file.EndsWith(".meta")) continue;
-
-            string name = file.Replace(path, "");
-            name = name.Substring(0, name.LastIndexOf("."));
-            name = name.Replace("\\", "/");
-            txt += name + "\n";
-        }
-
-        path = path + "FileList.bytes";
-        if(File.Exists(path))
-        {
-            File.Delete(path);
-        }
-        File.WriteAllText(path, txt);
-    }
-#endif
 
     private void ReadConfig()
     {
         TextAsset textAsset = Resources.Load<TextAsset>("FileList");
+        if (textAsset == null)
+        {
+            Utils.LogError("请先创建Resources加载模式下资源列表 --- FileList.bytes --- 文件");
+            return;
+        }
+
         string txt = textAsset.text;
         txt = txt.Replace("\r\n", "\n");
 
@@ -76,14 +61,16 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
 
     public bool IsFileExist(string _assetName)
     {
+        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
         return this._resourcesList.Contains(_assetName);
     }
 
     public ResourceRequest LoadAsync(string _assetName)
     {
-        if(!this._resourcesList.Contains(_assetName))
+        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
+        if (!this._resourcesList.Contains(_assetName))
         {
-            //Utils.LogError("EditorAssetLoadMgr No Find File " + _assetName);
+            Utils.LogError("ResourcesLoadMgr No Find File " + _assetName);
             return null;
         }
 
@@ -92,9 +79,10 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
 
     public UnityEngine.Object LoadSync(string _assetName)
     {
-        if(!this._resourcesList.Contains(_assetName))
+        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
+        if (!this._resourcesList.Contains(_assetName))
         {
-            //Utils.LogError("EditorAssetLoadMgr No Find File " + _assetName);
+            Utils.LogError("ResourcesLoadMgr No Find File " + _assetName);
             return null;
         }
 

@@ -41,7 +41,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         /// </summary>
         public int _instanceID;
         /// <summary>
-        /// 异步请求 AssetBundeRequest或ResourceRequest
+        /// 异步请求 AssetBundeRequest或ResourceRequest或EditorResourceRequest
         /// </summary>
         public AsyncOperation _request;
         /// <summary>
@@ -148,7 +148,14 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         {
             return true;
         }
-        return AssetBundleLoadMgr.Instance.IsABExist(_assetName);
+        else if(AssetBundleLoadMgr.Instance.IsABExist(_assetName))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 #endif
     }
 
@@ -225,6 +232,10 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                 if (assetObj._request is AssetBundleRequest)
                 {
                     assetObj._asset = (assetObj._request as AssetBundleRequest).asset;//直接取，会异步变同步
+                }
+                else if(assetObj._request is EditorResourceRequest)
+                {
+                    assetObj._asset = (assetObj._request as EditorResourceRequest).asset;
                 }
                 else
                 {
@@ -617,9 +628,9 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         foreach(var assetObj in this._loadingList.Values)
         {
 #if UNITY_EDITOR && !TEST_AB
-            if(assetObj._request != null && assetObj._request.isDone)
+            if(assetObj._request != null && (assetObj._request as EditorResourceRequest).isDone)
             {
-                assetObj._asset = (assetObj._request as ResourceRequest).asset;
+                assetObj._asset = (assetObj._request as EditorResourceRequest).asset;
 
                 if(assetObj._asset == null)
                 {

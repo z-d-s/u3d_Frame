@@ -12,8 +12,14 @@ public class GameApp : MonoBaseSingleton<GameApp>
     public void EnterFightingScene()
     {
         #region 获取战斗的地图
-        GameObject mapPrefab = ResMgr.Instance.GetAssetCache<GameObject>("Maps/sgyd/SGYD.prefab");
-        GameObject map = GameObject.Instantiate(mapPrefab);
+        //AssetsLoadMgr.Instance.LoadAsync("Maps/sgyd/SGYD.prefab", (string name, UnityEngine.Object obj) =>
+        //{
+        //    GameObject map = GameObject.Instantiate(obj as GameObject);
+        //    map.AddComponent<GameMgr>().InitGame();
+        //});
+
+        GameObject obj = AssetsLoadMgr.Instance.LoadSync("Maps/sgyd/SGYD.prefab") as GameObject;
+        GameObject map = GameObject.Instantiate(obj as GameObject);
         map.AddComponent<GameMgr>().InitGame();
         #endregion
 
