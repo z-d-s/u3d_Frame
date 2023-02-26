@@ -2,9 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class FileHelper
 {
+    /// <summary>
+	/// 获取主包的目标平台
+	/// </summary>
+	public static string ABManiName
+    {
+        get
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE
+            return "Win64";
+#elif UNITY_ANDROID
+			return "Android";
+#elif UNITY_IOS
+			return "IOS";
+#endif
+        }
+    }
+
     public static string GetResPath()
     {
         if(GameLaunch.Instance.config.enumGameMode == EnumGameMode.Develop)

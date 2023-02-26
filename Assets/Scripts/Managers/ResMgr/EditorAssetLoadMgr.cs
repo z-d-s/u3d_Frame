@@ -7,10 +7,10 @@
     打包时后者目录内资源在Editor下，不会进入包体，这是一个小技巧
 	
 	通用的4个接口：
-            -- IsFileExist
-            -- LoadAsync
-            -- LoadSync
-            -- Unload
+            -- IsFileExist  文件是否存在
+            -- LoadAsync    异步加载
+            -- LoadSync     同步加载
+            -- Unload       卸载
 
 *****************************************************/
 

@@ -4,22 +4,30 @@
                 - (Resources目录下的资源打成包体后也是以ab格式存在)
 
     AssetBundle加载有三套接口：
-                -- WWW(已弃用)
-                -- UnityWebRequest 
-                        将整个文件的二进制流下载或读取到内存中
-                        然后对这段内存文件进行ab资源的读取解析操作
-                -- AssetBundle
-                        只读取存储于本地的ab文件头部部分
-                        在需要的情况下再去读取ab中的数据段部分(Asset资源)
-                        优势：1.不进行下载(不占用下载缓存区内存)
-                              2.不读取整个文件到内存(不占用原始文件二进制内存)
-                              3.读取非压缩或LZ4的ab，只用读取ab的头文件(约5kb/个)
-                              4.同步异步加载并行可用
+            -- WWW(已弃用)
+            -- UnityWebRequest 
+                    将整个文件的二进制流下载或读取到内存中
+                    然后对这段内存文件进行ab资源的读取解析操作
+            -- AssetBundle
+                    只读取存储于本地的ab文件头部部分
+                    在需要的情况下再去读取ab中的数据段部分(Asset资源)
+                    优势：1.不进行下载(不占用下载缓存区内存)
+                            2.不读取整个文件到内存(不占用原始文件二进制内存)
+                            3.读取非压缩或LZ4的ab，只用读取ab的头文件(约5kb/个)
+                            4.同步异步加载并行可用
+
+    外部接口：
+            -- LoadManifest     加载依赖关系
+            -- LoadSync         同步加载
+            -- LoadAsync        异步加载
+            -- Unload           卸载
+            -- Update           刷新
 
 *****************************************************/
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
@@ -28,15 +36,36 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
     private class AssetBundleObject
     {
+        /// <summary>
+        /// hash标识符
+        /// </summary>
         public string _hashName;
 
+        /// <summary>
+        /// 引用计数
+        /// </summary>
         public int _refCount;
+        /// <summary>
+        /// 回调函数列表
+        /// </summary>
         public List<AssetBundleLoadCallBack> _callFunList = new List<AssetBundleLoadCallBack>();
 
+        /// <summary>
+        /// 异步加载请求
+        /// </summary>
         public AssetBundleCreateRequest _request;
+        /// <summary>
+        /// 加载到的ab
+        /// </summary>
         public AssetBundle _ab;
 
+        /// <summary>
+        /// 依赖计数
+        /// </summary>
         public int _dependLoadingCount;
+        /// <summary>
+        /// 依赖项
+        /// </summary>
         public List<AssetBundleObject> _depends = new List<AssetBundleObject>();
     }
 
@@ -74,14 +103,16 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         this._dependsDataList = new Dictionary<string, string[]>();
 
         this._readyABList = new Dictionary<string, AssetBundleObject>();
-        this._loadedABList = new Dictionary<string, AssetBundleObject>();
+        this._loadingABList = new Dictionary<string, AssetBundleObject>();
         this._loadedABList = new Dictionary<string, AssetBundleObject>();
         this._unloadABList = new Dictionary<string, AssetBundleObject>();
     }
 
     public void LoadManifest()
     {
-        string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
+        //TODO::
+        //string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
+        string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName;
         if(string.IsNullOrEmpty(path))
         {
             return;
@@ -131,7 +162,8 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     private string GetFileName(string _hashName)
     {
         //开发人员可以自己实现自己的对应关系
-        return _hashName + ".ab";
+        //return _hashName + ".ab";
+        return _hashName;
     }
 
     /// <summary>
@@ -141,13 +173,17 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     /// <returns></returns>
     private string GetAssetBundlePath(string _hashName)
     {
+        //TODO::
         //开发人员可以自己实现的对应关系，笔者这里有多语言和文件版本的处理
-        string lngHashName = this.GetHashName(LocalizationMgr.Instance.GetAssetPrefix() + _hashName);
+        //string lngHashName = this.GetHashName(LocalizationMgr.Instance.GetAssetPrefix() + _hashName);
+        string lngHashName = this.GetHashName(_hashName);
         if(this._dependsDataList.ContainsKey(lngHashName))
         {
             _hashName = lngHashName;
         }
-        return FileVersionMgr.Instance.GetFilePathByExist(this.GetFileName(_hashName));
+        //TODO::
+        //return FileVersionMgr.Instance.GetFilePathByExist(this.GetFileName(_hashName));
+        return FileHelper.BaseLocalResPath() + this.GetFileName(_hashName);
     }
 
     public bool IsABExist(string _assetName)
@@ -192,7 +228,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     private AssetBundleObject LoadAssetBundleSync(string _hashName)
     {
         AssetBundleObject abObj = null;
-        if(this._loadedABList.ContainsKey(_hashName))
+        if(this._loadedABList.ContainsKey(_hashName))   //已经加载
         {
             abObj = this._loadedABList[_hashName];
             abObj._refCount++;
@@ -219,7 +255,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
             return abObj;
         }
-        else if(this._readyABList.ContainsKey(_hashName))
+        else if(this._readyABList.ContainsKey(_hashName))   //在准备加载中
         {
             abObj = this._readyABList[_hashName];
             abObj._refCount++;
@@ -252,7 +288,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
             try
             {
                 //同步下载解决
-                byte[] bytes = AssetsDownloadMgr.I.DownloadSync(this.GetFileName(abObj._hashName));
+                byte[] bytes = AssetsDownloadMgr.Instance.DownloadSync(this.GetFileName(abObj._hashName));
                 if (bytes != null && bytes.Length != 0)
                     abObj._ab = AssetBundle.LoadFromMemory(bytes);
             }
@@ -420,22 +456,20 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
     private void DoLoad(AssetBundleObject abObj)
     {
-        if (AssetsDownloadMgr.Instance.IsNeedDownload(GetFileName(abObj._hashName)))
+        if (AssetsDownloadMgr.Instance.IsNeedDownload(this.GetFileName(abObj._hashName)))
         {
             //这里是关联下载逻辑，可以实现异步下载再异步加载
-            AssetsDownloadMgr.Instance.DownloadAsync(GetFileName(abObj._hashName),
-                () =>
-                {
-                    string path = this.GetAssetBundlePath(abObj._hashName);
-                    abObj._request = AssetBundle.LoadFromFileAsync(path);
+            AssetsDownloadMgr.Instance.DownloadAsync(this.GetFileName(abObj._hashName), () =>
+            {
+                string path = this.GetAssetBundlePath(abObj._hashName);
+                abObj._request = AssetBundle.LoadFromFileAsync(path);
 
-                    if (abObj._request == null)
-                    {
-                        string errormsg = string.Format("LoadAssetbundle path error ! assetName:{0}", abObj._hashName);
-                        Utils.LogError(errormsg);
-                    }
+                if (abObj._request == null)
+                {
+                    string errormsg = string.Format("LoadAssetbundle path error ! assetName:{0}", abObj._hashName);
+                    Utils.LogError(errormsg);
                 }
-            );
+            });
         }
         else
         {
@@ -464,7 +498,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         if (abObj._ab == null)
         {
             string errormsg = string.Format("LoadAssetbundle _ab null error ! assetName:{0}", abObj._hashName);
-            string path = GetAssetBundlePath(abObj._hashName);
+            string path = this.GetAssetBundlePath(abObj._hashName);
             errormsg += "\n File " + File.Exists(path) + " Exists " + path;
 
             try
@@ -484,7 +518,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
             if (abObj._ab == null)
             {
                 //同步下载解决
-                byte[] bytes = AssetsDownloadMgr.I.DownloadSync(GetFileName(abObj._hashName));
+                byte[] bytes = AssetsDownloadMgr.Instance.DownloadSync(this.GetFileName(abObj._hashName));
                 if (bytes != null && bytes.Length != 0)
                     abObj._ab = AssetBundle.LoadFromMemory(bytes);
 
@@ -499,7 +533,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
                     if (isAsync)
                     {
                         //异步下载解决
-                        AssetsDownloadMgr.I.AddDownloadSetFlag(GetFileName(abObj._hashName));
+                        AssetsDownloadMgr.Instance.AddDownloadSetFlag(this.GetFileName(abObj._hashName));
                     }
                 }
             }

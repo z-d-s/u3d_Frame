@@ -3,11 +3,11 @@
 	Resource下的资源在Runtime情况下是无法判读有什么资源的，所以先要有个配置文件，可以记录所有资源列表
 	这样就有了ExportConfig()和ReadConfig()对列表的导出和读取
 	
-	通用的4个接口:
-            -- IsFileExist
-            -- LoadAsync
-            -- LoadSync
-            -- Unload
+	通用的4个接口：
+            -- IsFileExist  文件是否存在
+            -- LoadAsync    异步加载
+            -- LoadSync     同步加载
+            -- Unload       卸载
 
 *****************************************************/
 
