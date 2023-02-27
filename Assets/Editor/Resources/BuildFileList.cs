@@ -45,6 +45,7 @@ public class BuildFileList : Editor
             if (file.EndsWith(".meta")) continue;
 
             string name = file.Replace(path, "");
+            //Resources加载不包含扩展名
             name = name.Substring(0, name.LastIndexOf("."));
             name = name.Replace("\\", "/");
             txt += name + "\n";

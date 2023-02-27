@@ -18,11 +18,14 @@
 
 *****************************************************/
 
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using UnityEditor;
 using UnityEngine;
+
+public class EditorResourceRequest : AsyncOperation
+{
+    public Object asset = null;
+    public new bool isDone = false;
+}
 
 public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
 {
@@ -36,35 +39,9 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
         this.ReadConfig();
     }
 
-#if UNITY_EDITOR
-    private void ExportConfig()
-    {
-        string path = FileHelper.DevelopResPath();
-        string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
-
-        string txt = "";
-        foreach (var file in files)
-        {
-            if (file.EndsWith(".meta")) continue;
-
-            string name = file.Replace(path, "");
-            name = name.Substring(0, name.LastIndexOf("."));
-            name = name.Replace("\\", "/");
-            txt += name + "\n";
-        }
-
-        path = path + "FileList.bytes";
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
-        File.WriteAllText(path, txt);
-    }
-#endif
-
     private void ReadConfig()
     {
-        string path = FileHelper.DevelopResPath();
+        string path = FileHelper.EditorAssetPath();
         TextAsset textAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(path + "FileList.bytes");
         if (textAsset == null)
         {
@@ -94,6 +71,17 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
         return this._resourcesList.Contains(_assetName);
     }
 
+    public UnityEngine.Object LoadSync(string _assetName)
+    {
+        if (!this._resourcesList.Contains(_assetName))
+        {
+            Utils.LogError("EditorAssetLoadMgr No Find File " + _assetName);
+            return null;
+        }
+
+        return UnityEditor.AssetDatabase.LoadAssetAtPath(FileHelper.EditorAssetPath() + _assetName, typeof(UnityEngine.Object));
+    }
+
     public EditorResourceRequest LoadAsync(string _assetName)
     {
         if(!this._resourcesList.Contains(_assetName))
@@ -102,23 +90,10 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
             return null;
         }
 
-        //return Resources.LoadAsync(_assetName);
         EditorResourceRequest request = new EditorResourceRequest();
-        request.asset = UnityEditor.AssetDatabase.LoadAssetAtPath(FileHelper.DevelopResPath() + _assetName, typeof(UnityEngine.Object));
+        request.asset = UnityEditor.AssetDatabase.LoadAssetAtPath(FileHelper.EditorAssetPath() + _assetName, typeof(UnityEngine.Object));
         request.isDone = true;
         return request;
-    }
-
-    public UnityEngine.Object LoadSync(string _assetName)
-    {
-        if(!this._resourcesList.Contains(_assetName))
-        {
-            Utils.LogError("EditorAssetLoadMgr No Find File " + _assetName);
-            return null;
-        }
-
-        //return Resources.Load(_assetName);
-        return UnityEditor.AssetDatabase.LoadAssetAtPath(FileHelper.DevelopResPath() + _assetName, typeof(UnityEngine.Object));
     }
 
     public void Unload(UnityEngine.Object asset)
@@ -136,11 +111,4 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
     {
 
     }
-}
-
-
-public class EditorResourceRequest : AsyncOperation
-{
-    public Object asset = null;
-    public new bool isDone = false;
 }

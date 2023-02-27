@@ -7,7 +7,7 @@ public class GameLaunch : MonoBaseSingleton<GameLaunch>
         base.Awake();
 
         #region 游戏框架的初始化
-        
+        AssetBundleLoadMgr.Instance.LoadManifest();
         #endregion
 
         #region 初始化游戏模块，然后进入游戏

@@ -15,10 +15,7 @@
 
 *****************************************************/
 
-using DG.Tweening.Plugins.Core.PathCore;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 
 public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
@@ -65,18 +62,6 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
         return this._resourcesList.Contains(_assetName);
     }
 
-    public ResourceRequest LoadAsync(string _assetName)
-    {
-        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
-        if (!this._resourcesList.Contains(_assetName))
-        {
-            Utils.LogError("ResourcesLoadMgr No Find File " + _assetName);
-            return null;
-        }
-
-        return Resources.LoadAsync(_assetName);
-    }
-
     public UnityEngine.Object LoadSync(string _assetName)
     {
         _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
@@ -87,6 +72,18 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
         }
 
         return Resources.Load(_assetName);
+    }
+
+    public ResourceRequest LoadAsync(string _assetName)
+    {
+        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
+        if (!this._resourcesList.Contains(_assetName))
+        {
+            Utils.LogError("ResourcesLoadMgr No Find File " + _assetName);
+            return null;
+        }
+
+        return Resources.LoadAsync(_assetName);
     }
 
     public void Unload(UnityEngine.Object asset)

@@ -18,6 +18,7 @@
 
     外部接口：
             -- LoadManifest     加载依赖关系
+            -- IsABExist        文件是否存在
             -- LoadSync         同步加载
             -- LoadAsync        异步加载
             -- Unload           卸载
@@ -79,6 +80,9 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     /// </summary>
     private List<AssetBundleObject> tempLoadeds = new List<AssetBundleObject>();
 
+    /// <summary>
+    /// ab包列表 和 对应的依赖ab包
+    /// </summary>
     private Dictionary<string, string[]> _dependsDataList;
 
     /// <summary>
@@ -108,11 +112,15 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         this._unloadABList = new Dictionary<string, AssetBundleObject>();
     }
 
+    /// <summary>
+    /// 加载文件列表和依赖关系
+    /// 一般在游戏热更之后，游戏登录界面之前进行游戏初始化的时候调用
+    /// 加载的配置文件是Unity导出AssetBundle时生成的主Manifest文件
+    /// </summary>
     public void LoadManifest()
     {
         //TODO::
         //string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
-        //string path = FileHelper.GetResPath() + FileHelper.ABManiName;
         string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + FileHelper.ABManiName;
         if (string.IsNullOrEmpty(path))
         {

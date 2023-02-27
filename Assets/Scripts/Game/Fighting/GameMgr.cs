@@ -28,19 +28,38 @@ public class GameMgr : MonoBehaviour
         #endregion
 
         #region 放置角色player
-        GameObject charactorPrefab = AssetsLoadMgr.Instance.LoadSync("Charactors/Monsters/Jinglingnan_6.prefab") as GameObject;
-        this.player = GameObject.Instantiate(charactorPrefab);
-        this.player.AddComponent<CharactorCtrl>().Init();
-        this.player.AddComponent<PlayerOpt>().Init();
-        this.player.name = "player";
+        //GameObject charactorPrefab = AssetsLoadMgr.Instance.LoadSync("Charactors/Monsters/Jinglingnan_6.prefab") as GameObject;
+        //this.player = GameObject.Instantiate(charactorPrefab);
+        //this.player.AddComponent<CharactorCtrl>().Init();
+        //this.player.AddComponent<PlayerOpt>().Init();
+        //this.player.name = "player";
+
+        AssetsLoadMgr.Instance.LoadAsync("Charactors/Monsters/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
+        {
+            GameObject charactorPrefab = obj as GameObject;
+            this.player = GameObject.Instantiate(charactorPrefab);
+            this.player.AddComponent<CharactorCtrl>().Init();
+            this.player.AddComponent<PlayerOpt>().Init();
+            this.player.name = "player";
+        });
         #endregion
 
         #region 放置敌人
-        GameObject e = GameObject.Instantiate(charactorPrefab);
-        this.enemies.Add(e);
-        e.transform.position = this.player.transform.position + new Vector3(2, 0, 2);
-        e.AddComponent<CharactorCtrl>().Init();
-        e.name = "enemy";
+        //GameObject e = GameObject.Instantiate(charactorPrefab);
+        //this.enemies.Add(e);
+        //e.transform.position = this.player.transform.position + new Vector3(2, 0, 2);
+        //e.AddComponent<CharactorCtrl>().Init();
+        //e.name = "enemy";
+
+        AssetsLoadMgr.Instance.LoadAsync("Charactors/Monsters/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
+        {
+            GameObject charactorPrefab = obj as GameObject;
+            GameObject e = GameObject.Instantiate(charactorPrefab);
+            this.enemies.Add(e);
+            e.transform.position = this.player.transform.position + new Vector3(2, 0, 2);
+            e.AddComponent<CharactorCtrl>().Init();
+            e.name = "enemy";
+        });
         #endregion
     }
 }

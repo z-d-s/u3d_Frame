@@ -18,8 +18,8 @@ public class GameApp : MonoBaseSingleton<GameApp>
         //    map.AddComponent<GameMgr>().InitGame();
         //});
 
-        GameObject obj = AssetsLoadMgr.Instance.LoadSync("Maps/sgyd/SGYD.prefab") as GameObject;
-        GameObject map = GameObject.Instantiate(obj as GameObject);
+        AssetBundle ab = AssetBundle.LoadFromFile(FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/scene_sgyd");
+        GameObject map = GameObject.Instantiate(ab.LoadAsset<GameObject>("SGYD"));
         map.AddComponent<GameMgr>().InitGame();
         #endregion
 

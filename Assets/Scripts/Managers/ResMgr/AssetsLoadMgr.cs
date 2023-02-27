@@ -10,9 +10,13 @@
         -- Unload           卸载
         -- Update           刷新
 
+        -- AddAsset
+        -- AddAssetRef
+        -- RemoveCallBack
+
 *****************************************************/
 
-#define TEST_AB
+#define TEST_AB1
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -152,11 +156,8 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
 #endif
+        return false;
     }
 
     /// <summary>
@@ -196,16 +197,16 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
     /// <summary>
     /// 同步加载，一般用于小型文件，比如配置
+    /// </summary>
     /// 
     ///     - 1 - 已经加载完成 -> 直接返回缓存结果
     ///     
     ///     - 2 - 正在加载
-    ///             --- LoadAsset阶段 -> request异步转同步加载
     ///             --- LoadAB   阶段 -> ab异步转同步加载
+    ///             --- LoadAsset阶段 -> request异步转同步加载
     ///     
     ///     - 3 - 没加载过 -> 进行同步加载
     ///     
-    /// </summary>
     /// <param name="_assetName">资源名称</param>
     /// <returns></returns>
     public UnityEngine.Object LoadSync(string _assetName)
@@ -229,17 +230,17 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
             if (assetObj._request != null)
             {
-                if (assetObj._request is AssetBundleRequest)
-                {
-                    assetObj._asset = (assetObj._request as AssetBundleRequest).asset;//直接取，会异步变同步
-                }
-                else if(assetObj._request is EditorResourceRequest)
+                if(assetObj._request is EditorResourceRequest)
                 {
                     assetObj._asset = (assetObj._request as EditorResourceRequest).asset;
                 }
-                else
+                else if (assetObj._request is ResourceRequest)
                 {
                     assetObj._asset = (assetObj._request as ResourceRequest).asset;
+                }
+                else
+                {
+                    assetObj._asset = (assetObj._request as AssetBundleRequest).asset;//直接取，会异步变同步
                 }
                 assetObj._request = null;
             }
@@ -289,17 +290,17 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 #if UNITY_EDITOR && !TEST_AB
         assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(_assetName);
 #else
-        if(AssetBundleLoadMgr.Instance.IsABExist(_assetName))
+        if(ResourcesLoadMgr.Instance.IsFileExist(_assetName))
+        {
+            assetObj._isABLoad = false;
+            assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(_assetName);
+        }
+        else if (AssetBundleLoadMgr.Instance.IsABExist(_assetName))
         {
             assetObj._isABLoad = true;
             Utils.LogWarning("AssetsLoadMgr LoadSync doubtful asset=" + assetObj._assetName);
             AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(_assetName);
             assetObj._asset = ab1.LoadAsset(ab1.GetAllAssetNames()[0]);
-        }
-        else if(ResourcesLoadMgr.Instance.IsFileExist(_assetName))
-        {
-            assetObj._isABLoad = false;
-            assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(_assetName);
         }
 #endif
         if(assetObj._asset == null)
@@ -315,98 +316,6 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         this._loadedList.Add(_assetName, assetObj);
         assetObj._refCount = 1;
         return assetObj._asset;
-    }
-
-    /// <summary>
-    /// 用于解绑回调
-    /// </summary>
-    /// <param name="_assetName"></param>
-    /// <param name="_callFun"></param>
-    public void RemoveCallBack(string _assetName, AssetsLoadCallback _callFun)
-    {
-        if (_callFun == null) return;
-        if(string.IsNullOrEmpty(_assetName))
-        {
-            this.RemoveCallBackByCallBack(_callFun);
-        }
-
-        AssetObject assetObj = null;
-        if(this._loadedList.ContainsKey(_assetName))
-        {
-            assetObj = this._loadedList[_assetName];
-        }
-        else if(this._loadingList.ContainsKey(_assetName))
-        {
-            assetObj = this._loadingList[_assetName];
-        }
-
-        if(assetObj != null)
-        {
-            int index = assetObj._callbackList.IndexOf(_callFun);
-            if(index >= 0)
-            {
-                assetObj._callbackList.RemoveAt(index);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 资源销毁 请保证资源销毁都要调用这个接口
-    /// </summary>
-    /// <param name="_obj">要销毁的资源 UnityEngine.Object</param>
-    public void Unload(UnityEngine.Object _obj)
-    {
-        if (_obj == null) return;
-
-        int instanceID = _obj.GetInstanceID();
-
-        if(!this._goInstanceIDList.ContainsKey(instanceID))
-        {
-            //非本地创建的资源，直接销毁即可
-            if(_obj is GameObject)
-            {
-                UnityEngine.Object.Destroy(_obj);
-            }
-#if UNITY_EDITOR
-            else if(UnityEditor.EditorApplication.isPlaying)
-            {
-                Utils.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
-            }
-#else
-            else
-            {
-                Utils.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
-            }
-#endif
-            return;
-        }
-
-        AssetObject assetObj = this._goInstanceIDList[instanceID];
-        if(assetObj._instanceID == instanceID)
-        {
-            assetObj._refCount--;
-        }
-        else
-        {
-            //Error
-            string errormsg = string.Format("AssetsLoadMgr Destroy error ! assetName:{0}", assetObj._assetName);
-            Utils.LogError(errormsg);
-            return;
-        }
-
-        if(assetObj._refCount < 0)
-        {
-            //Error
-            string errormsg = string.Format("AssetsLoadMgr Destroy refCount error ! assetName:{0}", assetObj._assetName);
-            Utils.LogError(errormsg);
-            return;
-        }
-
-        if(assetObj._refCount == 0 && !this._unloadList.ContainsKey(assetObj._assetName))
-        {
-            assetObj._unloadTick = UNLOAD_DELAY_TICK_BASE + this._unloadList.Count;
-            this._unloadList.Add(assetObj._assetName, assetObj);
-        }
     }
 
     /// <summary>
@@ -445,7 +354,13 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         this._loadingList.Add(_assetName, assetObj);
         assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(_assetName);
 #else
-        if(AssetBundleLoadMgr.Instance.IsABExist(_assetName))
+        if (ResourcesLoadMgr.Instance.IsFileExist(_assetName))
+        {
+            assetObj._isABLoad = false;
+            this._loadingList.Add(_assetName, assetObj);
+            assetObj._request = ResourcesLoadMgr.Instance.LoadAsync(_assetName);
+        }
+        else if (AssetBundleLoadMgr.Instance.IsABExist(_assetName))
         {
             assetObj._isABLoad = true;
             this._loadingList.Add(_assetName, assetObj);
@@ -471,13 +386,66 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                 }
             });
         }
-        else if(ResourcesLoadMgr.Instance.IsFileExist(_assetName))
-        {
-            assetObj._isABLoad = false;
-            this._loadingList.Add(_assetName, assetObj);
-            assetObj._request = ResourcesLoadMgr.Instance.LoadAsync(_assetName);
-        }
 #endif
+    }
+
+    /// <summary>
+    /// 资源销毁 请保证资源销毁都要调用这个接口
+    /// </summary>
+    /// <param name="_obj">要销毁的资源 UnityEngine.Object</param>
+    public void Unload(UnityEngine.Object _obj)
+    {
+        if (_obj == null) return;
+
+        int instanceID = _obj.GetInstanceID();
+
+        if (!this._goInstanceIDList.ContainsKey(instanceID))
+        {
+            //非本地创建的资源，直接销毁即可
+            if (_obj is GameObject)
+            {
+                UnityEngine.Object.Destroy(_obj);
+            }
+#if UNITY_EDITOR
+            else if (UnityEditor.EditorApplication.isPlaying)
+            {
+                Utils.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
+            }
+#else
+            else
+            {
+                Utils.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
+            }
+#endif
+            return;
+        }
+
+        AssetObject assetObj = this._goInstanceIDList[instanceID];
+        if (assetObj._instanceID == instanceID)
+        {
+            assetObj._refCount--;
+        }
+        else
+        {
+            //Error
+            string errormsg = string.Format("AssetsLoadMgr Destroy error ! assetName:{0}", assetObj._assetName);
+            Utils.LogError(errormsg);
+            return;
+        }
+
+        if (assetObj._refCount < 0)
+        {
+            //Error
+            string errormsg = string.Format("AssetsLoadMgr Destroy refCount error ! assetName:{0}", assetObj._assetName);
+            Utils.LogError(errormsg);
+            return;
+        }
+
+        if (assetObj._refCount == 0 && !this._unloadList.ContainsKey(assetObj._assetName))
+        {
+            assetObj._unloadTick = UNLOAD_DELAY_TICK_BASE + this._unloadList.Count;
+            this._unloadList.Add(assetObj._assetName, assetObj);
+        }
     }
 
     /// <summary>
@@ -512,6 +480,39 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
         AssetObject assetObj = this._loadedList[_assetName];
         assetObj._refCount++;
+    }
+
+    /// <summary>
+    /// 用于解绑回调
+    /// </summary>
+    /// <param name="_assetName"></param>
+    /// <param name="_callFun"></param>
+    public void RemoveCallBack(string _assetName, AssetsLoadCallback _callFun)
+    {
+        if (_callFun == null) return;
+        if (string.IsNullOrEmpty(_assetName))
+        {
+            this.RemoveCallBackByCallBack(_callFun);
+        }
+
+        AssetObject assetObj = null;
+        if (this._loadedList.ContainsKey(_assetName))
+        {
+            assetObj = this._loadedList[_assetName];
+        }
+        else if (this._loadingList.ContainsKey(_assetName))
+        {
+            assetObj = this._loadingList[_assetName];
+        }
+
+        if (assetObj != null)
+        {
+            int index = assetObj._callbackList.IndexOf(_callFun);
+            if (index >= 0)
+            {
+                assetObj._callbackList.RemoveAt(index);
+            }
+        }
     }
 
     private void RemoveCallBackByCallBack(AssetsLoadCallback _callFun)
