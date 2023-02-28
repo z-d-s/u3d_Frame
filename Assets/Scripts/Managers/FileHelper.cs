@@ -33,9 +33,9 @@ public class FileHelper
     /// </summary>
     public static string BaseLocalResPath()
     {
-#if UNITY_EDITOR    //编辑器
+#if UNITY_EDITOR            //编辑器
         return Application.dataPath + "/StreamingAssets/";
-#elif UNITY_STANDALONE    //PC
+#elif UNITY_STANDALONE      //Mac OS X, Windows or Linux
         return "file://" + Application.dataPath + "/StreamingAssets/";
 #elif UNITY_ANDROID
         return "jar:file://" + Application.dataPath + "!/assets/";
@@ -52,7 +52,7 @@ public class FileHelper
     {
 #if UNITY_EDITOR
         return Application.streamingAssetsPath + "/";
-#elif UNITY_STANDALONE
+#elif UNITY_STANDALONE      //Mac OS X, Windows or Linux
         return "file://" + Application.streamingAssetsPath + "/";
 #elif UNITY_ANDROID
         return Application.streamingAssetsPath + "/";

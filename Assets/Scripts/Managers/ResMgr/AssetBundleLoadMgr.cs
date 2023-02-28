@@ -112,60 +112,10 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         this._unloadABList = new Dictionary<string, AssetBundleObject>();
     }
 
-    /// <summary>
-    /// 加载文件列表和依赖关系
-    /// 一般在游戏热更之后，游戏登录界面之前进行游戏初始化的时候调用
-    /// 加载的配置文件是Unity导出AssetBundle时生成的主Manifest文件
-    /// </summary>
-    public void LoadManifest()
-    {
-        //TODO::
-        //string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
-        string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + FileHelper.ABManiName;
-        if (string.IsNullOrEmpty(path))
-        {
-            return;
-        }
-
-        this._dependsDataList.Clear();
-        AssetBundle ab = AssetBundle.LoadFromFile(path);
-
-        if(ab == null)
-        {
-            string errormsg = string.Format("LoadMainfest ab NULL error !");
-            Utils.LogError(errormsg);
-            return;
-        }
-
-        AssetBundleManifest manifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
-        if(manifest == null)
-        {
-            string errormsg = string.Format("LoadMainfest NULL error !");
-            Utils.LogError(errormsg);
-            return;
-        }
-
-        foreach(string assetName in manifest.GetAllAssetBundles())
-        {
-            string hashName = assetName.Replace(".ab", "");
-            string[] dps = manifest.GetAllDependencies(assetName);
-            for(int i = 0; i < dps.Length; ++i)
-            {
-                dps[i] = dps[i].Replace(".ab", "");
-            }
-            this._dependsDataList.Add(hashName, dps);
-        }
-
-        ab.Unload(true);
-        ab = null;
-
-        Utils.Log("AssetBundleLoadMgr dependsCount=" + _dependsDataList.Count);
-    }
-
-    private string GetHashName(string _assetName)
+    private string GetHashName(string assetBundleName)
     {
         //开发人员可以自己定义hash方式，对内存有要求的话，可以hash成uint（或uint64）节省内存
-        return _assetName.ToLower();
+        return assetBundleName.ToLower();
     }
 
     private string GetFileName(string _hashName)
@@ -186,7 +136,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         //开发人员可以自己实现的对应关系，笔者这里有多语言和文件版本的处理
         //string lngHashName = this.GetHashName(LocalizationMgr.Instance.GetAssetPrefix() + _hashName);
         string lngHashName = this.GetHashName(_hashName);
-        if(this._dependsDataList.ContainsKey(lngHashName))
+        if (this._dependsDataList.ContainsKey(lngHashName))
         {
             _hashName = lngHashName;
         }
@@ -196,20 +146,70 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         return FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + this.GetFileName(_hashName);
     }
 
-    public bool IsABExist(string _assetName)
+    /// <summary>
+    /// 加载文件列表和依赖关系
+    /// 一般在游戏热更之后，游戏登录界面之前进行游戏初始化的时候调用
+    /// 加载的配置文件是Unity导出AssetBundle时生成的主Manifest文件
+    /// </summary>
+    public void LoadManifest()
     {
-        string hashName = this.GetHashName(_assetName);
+        //TODO::
+        //string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
+        string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + FileHelper.ABManiName;
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
+        this._dependsDataList.Clear();
+        AssetBundle ab = AssetBundle.LoadFromFile(path);
+
+        if(ab == null)
+        {
+            string errormsg = string.Format("LoadManifest ab NULL error !");
+            Utils.LogError(errormsg);
+            return;
+        }
+
+        AssetBundleManifest manifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+        if(manifest == null)
+        {
+            string errormsg = string.Format("LoadManifest NULL error !");
+            Utils.LogError(errormsg);
+            return;
+        }
+
+        foreach(string assetBundleName in manifest.GetAllAssetBundles())
+        {
+            string hashName = assetBundleName.Replace(".ab", "");
+            string[] dps = manifest.GetAllDependencies(assetBundleName);
+            for(int i = 0; i < dps.Length; ++i)
+            {
+                dps[i] = dps[i].Replace(".ab", "");
+            }
+            this._dependsDataList.Add(hashName, dps);
+        }
+
+        ab.Unload(true);
+        ab = null;
+
+        Utils.Log("AssetBundleLoadMgr dependsCount=" + _dependsDataList.Count);
+    }
+
+    public bool IsABExist(string assetBundleName)
+    {
+        string hashName = this.GetHashName(assetBundleName);
         return this._dependsDataList.ContainsKey(hashName);
     }
 
     /// <summary>
     /// 同步加载
     /// </summary>
-    /// <param name="_assetName"></param>
+    /// <param name="assetBundleName"></param>
     /// <returns></returns>
-    public AssetBundle LoadSync(string _assetName)
+    public AssetBundle LoadSync(string assetBundleName)
     {
-        string hashName = this.GetHashName(_assetName);
+        string hashName = this.GetHashName(assetBundleName);
         AssetBundleObject abObj = this.LoadAssetBundleSync(hashName);
         return abObj._ab;
     }
@@ -217,30 +217,30 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     /// <summary>
     /// 异步加载（已经加载直接回调），每次加载引用计数+1
     /// </summary>
-    /// <param name="_assetName"></param>
+    /// <param name="assetBundleName"></param>
     /// <param name="callFun"></param>
-    public void LoadAsync(string _assetName, AssetBundleLoadCallBack callFun)
+    public void LoadAsync(string assetBundleName, AssetBundleLoadCallBack callFun)
     {
-        string hashName = this.GetHashName(_assetName);
+        string hashName = this.GetHashName(assetBundleName);
         this.LoadAssetBundleAsync(hashName, callFun);
     }
 
     /// <summary>
     /// 卸载（异步），每次卸载引用计数-1
     /// </summary>
-    /// <param name="_assetName"></param>
-    public void Unload(string _assetName)
+    /// <param name="assetBundleName"></param>
+    public void Unload(string assetBundleName)
     {
-        string hashName = this.GetHashName(_assetName);
+        string hashName = this.GetHashName(assetBundleName);
         this.UnloadAssetBundleAsync(hashName);
     }
 
-    private AssetBundleObject LoadAssetBundleSync(string _hashName)
+    private AssetBundleObject LoadAssetBundleSync(string assetBundleName)
     {
         AssetBundleObject abObj = null;
-        if(this._loadedABList.ContainsKey(_hashName))   //已经加载
+        if(this._loadedABList.ContainsKey(assetBundleName))           //已经加载
         {
-            abObj = this._loadedABList[_hashName];
+            abObj = this._loadedABList[assetBundleName];
             abObj._refCount++;
 
             foreach(var dpObj in abObj._depends)
@@ -251,31 +251,31 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
             return abObj;
         }
-        else if(this._loadingABList.ContainsKey(_hashName)) //在加载中 异步改同步
+        else if(this._loadingABList.ContainsKey(assetBundleName))     //在加载中 异步改同步
         {
-            abObj = this._loadingABList[_hashName];
+            abObj = this._loadingABList[assetBundleName];
             abObj._refCount++;
 
             foreach(var dpObj in abObj._depends)
             {
-                this.LoadAssetBundleSync(dpObj._hashName);  //递归依赖项 加载完
+                this.LoadAssetBundleSync(dpObj._hashName);      //递归依赖项 加载完
             }
 
-            this.DoLoadedCallFun(abObj, false); //强制完成 回调
+            this.DoLoadedCallFun(abObj, false);                 //强制完成 回调
 
             return abObj;
         }
-        else if(this._readyABList.ContainsKey(_hashName))   //在准备加载中
+        else if(this._readyABList.ContainsKey(assetBundleName))       //在准备加载中
         {
-            abObj = this._readyABList[_hashName];
+            abObj = this._readyABList[assetBundleName];
             abObj._refCount++;
 
             foreach(var dpObj in abObj._depends)
             {
-                this.LoadAssetBundleSync(dpObj._hashName);  //递归依赖项 加载完
+                this.LoadAssetBundleSync(dpObj._hashName);      //递归依赖项 加载完
             }
 
-            string path1 = this.GetAssetBundlePath(_hashName);
+            string path1 = this.GetAssetBundlePath(assetBundleName);
             abObj._ab = AssetBundle.LoadFromFile(path1);
 
             this._readyABList.Remove(abObj._hashName);
@@ -287,10 +287,10 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         }
 
         abObj = new AssetBundleObject();
-        abObj._hashName = _hashName;
+        abObj._hashName = assetBundleName;
         abObj._refCount = 1;
 
-        string path = this.GetAssetBundlePath(_hashName);
+        string path = this.GetAssetBundlePath(assetBundleName);
         abObj._ab = AssetBundle.LoadFromFile(path);
 
         if(abObj._ab == null)
@@ -310,9 +310,9 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
         //加载依赖项
         string[] dependsData = null;
-        if(this._dependsDataList.ContainsKey(_hashName))
+        if(this._dependsDataList.ContainsKey(assetBundleName))
         {
-            dependsData = this._dependsDataList[_hashName];
+            dependsData = this._dependsDataList[assetBundleName];
         }
 
         if(dependsData != null && dependsData.Length > 0)
@@ -331,32 +331,32 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         return abObj;
     }
 
-    private void UnloadAssetBundleAsync(string _hashName)
+    private void UnloadAssetBundleAsync(string assetBundleName)
     {
         AssetBundleObject abObj = null;
-        if(this._loadedABList.ContainsKey(_hashName))
+        if(this._loadedABList.ContainsKey(assetBundleName))
         {
-            abObj = this._loadedABList[_hashName];
+            abObj = this._loadedABList[assetBundleName];
         }
-        else if(this._loadingABList.ContainsKey(_hashName))
+        else if(this._loadingABList.ContainsKey(assetBundleName))
         {
-            abObj = this._loadingABList[_hashName];
+            abObj = this._loadingABList[assetBundleName];
         }
-        else if(this._readyABList.ContainsKey(_hashName))
+        else if(this._readyABList.ContainsKey(assetBundleName))
         {
-            abObj = this._readyABList[_hashName];
+            abObj = this._readyABList[assetBundleName];
         }
 
         if(abObj == null)
         {
-            string errormsg = string.Format("UnLoadAssetbundle error ! assetName:{0}", _hashName);
+            string errormsg = string.Format("UnLoadAssetbundle error ! assetBundleName:{0}", assetBundleName);
             Utils.LogError(errormsg);
             return;
         }
 
         if(abObj._refCount == 0)
         {
-            string errormsg = string.Format("UnLoadAssetbundle refCount error ! assetName:{0}", _hashName);
+            string errormsg = string.Format("UnLoadAssetbundle refCount error ! assetBundleName:{0}", assetBundleName);
             Utils.LogError(errormsg);
             return;
         }
@@ -374,26 +374,26 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         }
     }
 
-    private AssetBundleObject LoadAssetBundleAsync(string _hashName, AssetBundleLoadCallBack _callFun)
+    private AssetBundleObject LoadAssetBundleAsync(string assetBundleName, AssetBundleLoadCallBack _callFun)
     {
         AssetBundleObject abObj = null;
-        if(this._loadedABList.ContainsKey(_hashName))           //已经加载
+        if(this._loadedABList.ContainsKey(assetBundleName))           //已经加载
         {
-            abObj = this._loadedABList[_hashName];
+            abObj = this._loadedABList[assetBundleName];
             this.DoDependsRef(abObj);
             _callFun(abObj._ab);
             return abObj;
         }
-        else if(this._loadingABList.ContainsKey(_hashName))     //加载中
+        else if(this._loadingABList.ContainsKey(assetBundleName))     //加载中
         {
-            abObj = this._loadingABList[_hashName];
+            abObj = this._loadingABList[assetBundleName];
             this.DoDependsRef(abObj);
             abObj._callFunList.Add(_callFun);
             return abObj;
         }
-        else if(this._readyABList.ContainsKey(_hashName))       //在准备加载中
+        else if(this._readyABList.ContainsKey(assetBundleName))       //在准备加载中
         {
-            abObj = this._readyABList[_hashName];
+            abObj = this._readyABList[assetBundleName];
             this.DoDependsRef(abObj);
             abObj._callFunList.Add(_callFun);
             return abObj;
@@ -401,28 +401,28 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
         //创建一个加载
         abObj = new AssetBundleObject();
-        abObj._hashName = _hashName;
+        abObj._hashName = assetBundleName;
         abObj._refCount = 1;
         abObj._callFunList.Add(_callFun);
 
         //加载依赖项
         string[] dependsData = null;
-        if(this._dependsDataList.ContainsKey(_hashName))
+        if(this._dependsDataList.ContainsKey(assetBundleName))
         {
-            dependsData = this._dependsDataList[_hashName];
+            dependsData = this._dependsDataList[assetBundleName];
         }
 
         if(dependsData != null && dependsData.Length > 0)
         {
             abObj._dependLoadingCount = dependsData.Length;
 
-            foreach(var dpAssetName in dependsData)
+            foreach(var dpAssetBundleName in dependsData)
             {
-                AssetBundleObject dpObj = this.LoadAssetBundleAsync(dpAssetName, (AssetBundle _ab) =>
+                AssetBundleObject dpObj = this.LoadAssetBundleAsync(dpAssetBundleName, (AssetBundle _ab) =>
                 {
                     if (abObj._dependLoadingCount <= 0)
                     {
-                        string errormsg = string.Format("LoadAssetbundle depend error ! assetName:{0}", _hashName);
+                        string errormsg = string.Format("LoadAssetBundleAsync depend error ! assetBundleName:{0}", assetBundleName);
                         Utils.LogError(errormsg);
                         return;
                     }
@@ -444,11 +444,11 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         {
             this.DoLoad(abObj);
 
-            this._loadingABList.Add(_hashName, abObj);
+            this._loadingABList.Add(assetBundleName, abObj);
         }
         else
         {
-            this._readyABList.Add(_hashName, abObj);
+            this._readyABList.Add(assetBundleName, abObj);
         }
         return abObj;
     }
@@ -476,7 +476,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
                 if (abObj._request == null)
                 {
-                    string errormsg = string.Format("LoadAssetbundle path error ! assetName:{0}", abObj._hashName);
+                    string errormsg = string.Format("LoadAssetbundle path error ! assetBundleName:{0}", abObj._hashName);
                     Utils.LogError(errormsg);
                 }
             });
@@ -488,7 +488,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
             if (abObj._request == null)
             {
-                string errormsg = string.Format("LoadAssetbundle path error ! assetName:{0}", abObj._hashName);
+                string errormsg = string.Format("LoadAssetbundle path error ! assetBundleName:{0}", abObj._hashName);
                 Utils.LogError(errormsg);
             }
         }
@@ -507,22 +507,25 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
 
         if (abObj._ab == null)
         {
-            string errormsg = string.Format("LoadAssetbundle _ab null error ! assetName:{0}", abObj._hashName);
+            string errormsg = string.Format("LoadAssetbundle _ab null error ! assetBundleName:{0}", abObj._hashName);
             string path = this.GetAssetBundlePath(abObj._hashName);
             errormsg += "\n File " + File.Exists(path) + " Exists " + path;
 
             try
-            {//尝试读取二进制解决
+            {
+                //尝试读取二进制解决
                 if (File.Exists(path))
                 {
                     byte[] bytes = File.ReadAllBytes(path);
                     if (bytes != null && bytes.Length != 0)
+                    {
                         abObj._ab = AssetBundle.LoadFromMemory(bytes);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError("LoadAssetbundle ReadAllBytes Error " + ex.Message);
+                Utils.LogError("LoadAssetbundle ReadAllBytes Error " + ex.Message);
             }
 
             if (abObj._ab == null)
@@ -538,7 +541,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
                     if (_loadedABList.ContainsKey(abObj._hashName)) _loadedABList.Remove(abObj._hashName);
                     else if (_loadingABList.ContainsKey(abObj._hashName)) _loadingABList.Remove(abObj._hashName);
 
-                    Debug.LogError(errormsg);
+                    Utils.LogError(errormsg);
 
                     if (isAsync)
                     {
@@ -586,7 +589,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         //这里用true，卸载Asset内存，实现指定卸载
         if (abObj._ab == null)
         {
-            string errormsg = string.Format("LoadAssetbundle DoUnload error ! assetName:{0}", abObj._hashName);
+            string errormsg = string.Format("LoadAssetbundle DoUnload error ! assetBundleName:{0}", abObj._hashName);
             Utils.LogError(errormsg);
             return;
         }
