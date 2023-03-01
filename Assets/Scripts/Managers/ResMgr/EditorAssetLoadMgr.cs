@@ -19,6 +19,7 @@
 *****************************************************/
 
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class EditorResourceRequest : AsyncOperation
@@ -41,8 +42,9 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
 
     private void ReadConfig()
     {
+#if UNITY_EDITOR
         string path = FileHelper.EditorAssetPath();
-        TextAsset textAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(path + "FileList.bytes");
+        TextAsset textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(path + "FileList.bytes");
         if (textAsset == null)
         {
             Utils.LogError("请先创建Editor模式下资源列表 --- FileList.bytes --- 文件");
@@ -59,11 +61,12 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
                 continue;
             }
 
-            if(!this._resourcesList.Contains(line))
+            if (!this._resourcesList.Contains(line))
             {
                 this._resourcesList.Add(line);
             }
         }
+#endif
     }
 
     public bool IsFileExist(string _assetName)
@@ -79,21 +82,29 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
             return null;
         }
 
-        return UnityEditor.AssetDatabase.LoadAssetAtPath(FileHelper.EditorAssetPath() + _assetName, typeof(UnityEngine.Object));
+#if UNITY_EDITOR
+        return AssetDatabase.LoadAssetAtPath(FileHelper.EditorAssetPath() + _assetName, typeof(UnityEngine.Object));
+#else
+        return null;
+#endif
     }
 
     public EditorResourceRequest LoadAsync(string _assetName)
     {
-        if(!this._resourcesList.Contains(_assetName))
+        if (!this._resourcesList.Contains(_assetName))
         {
             Utils.LogError("EditorAssetLoadMgr No Find File " + _assetName);
             return null;
         }
 
+#if UNITY_EDITOR
         EditorResourceRequest request = new EditorResourceRequest();
-        request.asset = UnityEditor.AssetDatabase.LoadAssetAtPath(FileHelper.EditorAssetPath() + _assetName, typeof(UnityEngine.Object));
+        request.asset = AssetDatabase.LoadAssetAtPath(FileHelper.EditorAssetPath() + _assetName, typeof(UnityEngine.Object));
         request.isDone = true;
         return request;
+#else
+        return null;
+#endif
     }
 
     public void Unload(UnityEngine.Object asset)

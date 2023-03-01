@@ -16,7 +16,7 @@
 
 *****************************************************/
 
-#define TEST_AB1
+#define TEST_AB
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +28,9 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     private class AssetObject
     {
         /// <summary>
+        /// ab包名称
+        /// </summary>
+        public string _assetBundleName;
         /// 资源名称
         /// </summary>
         public string _assetName;
@@ -73,6 +76,10 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
     private class PreloadAssetObject
     {
+        /// <summary>
+        /// ab包名称
+        /// </summary>
+        public string _assetBundleName;
         /// <summary>
         /// 资源名称
         /// </summary>
@@ -141,18 +148,19 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// <summary>
     /// 判断资源是否存在，对打入atlas的图片无法判断，图片请用AtlasLoadMgr
     /// </summary>
-    /// <param name="_assetName">资源名称</param>
+    /// <param name="assetBundleName">ab包名称</param>
+    /// <param name="assetName">资源名称</param>
     /// <returns></returns>
-    public bool IsAssetExist(string _assetName)
+    public bool IsAssetExist(string assetBundleName, string assetName)
     {
 #if UNITY_EDITOR && !TEST_AB
         return EditorAssetLoadMgr.Instance.IsFileExist(_assetName);
 #else
-        if(ResourcesLoadMgr.Instance.IsFileExist(_assetName))
+        if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
             return true;
         }
-        else if(AssetBundleLoadMgr.Instance.IsABExist(_assetName))
+        else if(AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
         {
             return true;
         }
@@ -163,34 +171,35 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// <summary>
     /// 预加载
     /// </summary>
-    /// <param name="_assetName">资源名称</param>
-    /// <param name="_isWeak">isWeak弱引用，true为使用过后会销毁，为false将不会销毁，慎用</param>
-    public void PreLoad(string _assetName, bool _isWeak = true)
+    /// <param name="assetName">资源名称</param>
+    /// <param name="isWeak">isWeak弱引用，true为使用过后会销毁，为false将不会销毁，慎用</param>
+    public void PreLoad(string assetBundleName, string assetName, bool isWeak = true)
     {
         AssetObject assetObject = null;
-        if(this._loadedList.ContainsKey(_assetName))
+        if(this._loadedList.ContainsKey(assetName))
         {
-            assetObject = this._loadedList[_assetName];
+            assetObject = this._loadedList[assetName];
         }
-        else if(this._loadingList.ContainsKey(_assetName))
+        else if(this._loadingList.ContainsKey(assetName))
         {
-            assetObject = this._loadingList[_assetName];
+            assetObject = this._loadingList[assetName];
         }
 
         //如果已经存在，改变其弱引用关系
         if(assetObject != null)
         {
-            assetObject._isWeak = _isWeak;
-            if(_isWeak && assetObject._refCount == 0 && _unloadList.ContainsKey(_assetName) == false)
+            assetObject._isWeak = isWeak;
+            if(isWeak && assetObject._refCount == 0 && _unloadList.ContainsKey(assetName) == false)
             {
-                this._unloadList.Add(_assetName, assetObject);
+                this._unloadList.Add(assetName, assetObject);
             }
             return;
         }
 
         PreloadAssetObject plAssetObj = new PreloadAssetObject();
-        plAssetObj._assetName = _assetName;
-        plAssetObj._isWeak = _isWeak;
+        plAssetObj._assetBundleName = assetBundleName;
+        plAssetObj._assetName = assetName;
+        plAssetObj._isWeak = isWeak;
 
         this._preloadedAsyncList.Enqueue(plAssetObj);
     }
@@ -207,26 +216,26 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     ///     
     ///     - 3 - 没加载过 -> 进行同步加载
     ///     
-    /// <param name="_assetName">资源名称</param>
+    /// <param name="assetName">资源名称</param>
     /// <returns></returns>
-    public UnityEngine.Object LoadSync(string _assetName)
+    public UnityEngine.Object LoadSync(string assetBundleName, string assetName)
     {
-        if(!IsAssetExist(_assetName))
+        if(!IsAssetExist(assetBundleName, assetName))
         {
-            Utils.LogError("AssetsLoadMgr Asset Not Exist " + _assetName);
+            Utils.LogError("AssetsLoadMgr Asset Not Exist " + assetName);
             return null;
         }
 
         AssetObject assetObj = null;
-        if (this._loadedList.ContainsKey(_assetName))
+        if (this._loadedList.ContainsKey(assetName))
         {
-            assetObj = this._loadedList[_assetName];
+            assetObj = this._loadedList[assetName];
             assetObj._refCount++;
             return assetObj._asset;
         }
-        else if (this._loadingList.ContainsKey(_assetName))
+        else if (this._loadingList.ContainsKey(assetName))
         {
-            assetObj = this._loadingList[_assetName];
+            assetObj = this._loadingList[assetName];
 
             if (assetObj._request != null)
             {
@@ -251,15 +260,15 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 #else
                 if (assetObj._isABLoad)
                 {
-                    AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(_assetName);
-                    assetObj._asset = ab1.LoadAsset(ab1.GetAllAssetNames()[0]);
+                    AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(assetBundleName);
+                    assetObj._asset = ab1.LoadAsset(this.GetAssetNameForAB(assetName));
 
                     //异步转同步，需要卸载异步的引用计数
-                    AssetBundleLoadMgr.Instance.Unload(_assetName);
+                    AssetBundleLoadMgr.Instance.Unload(assetBundleName);
                 }
                 else
                 {
-                    assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(_assetName);
+                    assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(assetName);
                 }
 #endif
             }
@@ -285,22 +294,23 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         }
 
         assetObj = new AssetObject();
-        assetObj._assetName = _assetName;
+        assetObj._assetBundleName = assetBundleName;
+        assetObj._assetName = assetName;
 
 #if UNITY_EDITOR && !TEST_AB
         assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(_assetName);
 #else
-        if(ResourcesLoadMgr.Instance.IsFileExist(_assetName))
+        if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
             assetObj._isABLoad = false;
-            assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(_assetName);
+            assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(assetName);
         }
-        else if (AssetBundleLoadMgr.Instance.IsABExist(_assetName))
+        else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
         {
             assetObj._isABLoad = true;
-            Utils.LogWarning("AssetsLoadMgr LoadSync doubtful asset=" + assetObj._assetName);
-            AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(_assetName);
-            assetObj._asset = ab1.LoadAsset(ab1.GetAllAssetNames()[0]);
+            Utils.LogWarning(string.Format("AssetsLoadMgr LoadSync use AssetBundleLoadMgr assetBundleName:{0} assetname:{1}", assetObj._assetBundleName, assetObj._assetName));
+            AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(assetBundleName);
+            assetObj._asset = ab1.LoadAsset(this.GetAssetNameForAB(assetName));
         }
 #endif
         if(assetObj._asset == null)
@@ -313,7 +323,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._instanceID = assetObj._asset.GetInstanceID();
         this._goInstanceIDList.Add(assetObj._instanceID, assetObj);
 
-        this._loadedList.Add(_assetName, assetObj);
+        this._loadedList.Add(assetName, assetObj);
         assetObj._refCount = 1;
         return assetObj._asset;
     }
@@ -321,68 +331,72 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// <summary>
     /// 异步加载 即使资源已经加载完成 也会异步回调
     /// </summary>
-    /// <param name="_assetName"></param>
-    /// <param name="_callFun"></param>
-    public void LoadAsync(string _assetName, AssetsLoadCallback _callFun)
+    /// <param name="assetName"></param>
+    /// <param name="callFun"></param>
+    public void LoadAsync(string assetBundleName, string assetName, AssetsLoadCallback callFun)
     {
-        if(!IsAssetExist(_assetName))
+        if(!IsAssetExist(assetBundleName, assetName))
         {
-            Utils.LogError("AssetsLoadMgr Asset Not Exist " + _assetName);
+            Utils.LogError("AssetsLoadMgr Asset Not Exist " + assetName);
             return;
         }
 
         AssetObject assetObj = null;
-        if(this._loadedList.ContainsKey(_assetName))
+        if(this._loadedList.ContainsKey(assetName))
         {
-            assetObj = this._loadedList[_assetName];
-            assetObj._callbackList.Add(_callFun);
+            Utils.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 已经加载,无需再加载");
+            assetObj = this._loadedList[assetName];
+            assetObj._callbackList.Add(callFun);
             this._loadedAsyncList.Add(assetObj);
             return;
         }
-        else if(this._loadingList.ContainsKey(_assetName))
+        else if(this._loadingList.ContainsKey(assetName))
         {
-            assetObj = this._loadingList[_assetName];
-            assetObj._callbackList.Add(_callFun);
+            Utils.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 加载中,只添加 [加载完成回调函数] 即可");
+            assetObj = this._loadingList[assetName];
+            assetObj._callbackList.Add(callFun);
+            Utils.Log("[加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
             return;
         }
 
         assetObj = new AssetObject();
-        assetObj._assetName = _assetName;
-        assetObj._callbackList.Add(_callFun);
+        assetObj._assetBundleName = assetBundleName;
+        assetObj._assetName = assetName;
+        assetObj._callbackList.Add(callFun);
 
 #if UNITY_EDITOR && !TEST_AB
         this._loadingList.Add(_assetName, assetObj);
         assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(_assetName);
 #else
-        if (ResourcesLoadMgr.Instance.IsFileExist(_assetName))
+        if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
             assetObj._isABLoad = false;
-            this._loadingList.Add(_assetName, assetObj);
-            assetObj._request = ResourcesLoadMgr.Instance.LoadAsync(_assetName);
+            this._loadingList.Add(assetName, assetObj);
+            assetObj._request = ResourcesLoadMgr.Instance.LoadAsync(assetName);
         }
-        else if (AssetBundleLoadMgr.Instance.IsABExist(_assetName))
+        else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
         {
             assetObj._isABLoad = true;
-            this._loadingList.Add(_assetName, assetObj);
+            this._loadingList.Add(assetName, assetObj);
 
-            AssetBundleLoadMgr.Instance.LoadAsync(_assetName, (AssetBundle _ab) =>
+            AssetBundleLoadMgr.Instance.LoadAsync(assetBundleName, (AssetBundle _ab) =>
             {
                 if(_ab == null)
                 {
-                    string errormsg = string.Format("LoadAsset request error ! assetName:{0}", assetObj._assetName);
+                    string errormsg = string.Format("LoadAssetBundle request error ! assetBundleName:{0} assetName:{1}",assetObj._assetBundleName, assetObj._assetName);
                     Utils.LogError(errormsg);
-                    this._loadingList.Remove(_assetName);
+                    this._loadingList.Remove(assetName);
                     //重新添加 保证成功
                     for(int i = 0; i < assetObj._callbackList.Count; ++i)
                     {
-                        this.LoadAsync(assetObj._assetName, assetObj._callbackList[i]);
+                        this.LoadAsync(assetObj._assetBundleName, assetObj._assetName, assetObj._callbackList[i]);
                     }
                     return;
                 }
 
-                if(this._loadingList.ContainsKey(_assetName) && assetObj._request == null && assetObj._asset == null)
+                if(this._loadingList.ContainsKey(assetName) && assetObj._request == null && assetObj._asset == null)
                 {
-                    assetObj._request = _ab.LoadAssetAsync(_ab.GetAllAssetNames()[0]);
+                    assetObj._request = _ab.LoadAssetAsync(this.GetAssetNameForAB(assetName));
                 }
             });
         }
@@ -515,6 +529,19 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         }
     }
 
+    /// <summary>
+    /// 从AssetBundle取资源的资源名(不含扩展名 不含路径)
+    /// </summary>
+    /// <param name="assetName"></param>
+    /// <returns></returns>
+    private string GetAssetNameForAB(string assetName)
+    {
+        assetName = assetName.Substring(0, assetName.LastIndexOf("."));
+        string temp = assetName.Substring(0, assetName.LastIndexOf("/") + 1);
+        assetName = assetName.Replace(temp, "");
+        return assetName;
+    }
+
     private void RemoveCallBackByCallBack(AssetsLoadCallback _callFun)
     {
         foreach(var assetObj in this._loadingList.Values)
@@ -569,7 +596,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 #else
         if (_assetObj._isABLoad)
         {
-            AssetBundleLoadMgr.Instance.Unload(_assetObj._assetName);
+            AssetBundleLoadMgr.Instance.Unload(_assetObj._assetBundleName);
         }
         else
         {
@@ -755,7 +782,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             }
             else
             {
-                this.LoadAsync(plAssetObj._assetName, (AssetsLoadCallback)null);
+                this.LoadAsync(plAssetObj._assetBundleName, plAssetObj._assetName, (AssetsLoadCallback)null);
                 if (this._loadingList.ContainsKey(plAssetObj._assetName))
                 {
                     this._loadingList[plAssetObj._assetName]._isWeak = plAssetObj._isWeak;

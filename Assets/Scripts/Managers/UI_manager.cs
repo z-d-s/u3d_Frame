@@ -68,9 +68,9 @@ public class UI_manager : MonoBaseSingleton<UI_manager> {
 		
 	}
 
-    public UI_ctrl ShowUIView(string name) {
+    public UI_ctrl ShowUIView(string assetBundleName, string name) {
         string path = "GUI/UIPrefabs/" + name + ".prefab";
-        GameObject ui_prefab = (GameObject)AssetsLoadMgr.Instance.LoadSync(path);
+        GameObject ui_prefab = (GameObject)AssetsLoadMgr.Instance.LoadSync(assetBundleName, path);
         GameObject ui_view = GameObject.Instantiate(ui_prefab);
         ui_view.name = ui_prefab.name;
         ui_view.transform.SetParent(this.canvas.transform, false);
@@ -86,9 +86,9 @@ public class UI_manager : MonoBaseSingleton<UI_manager> {
         return ctrl;
     }
 
-    public GameObject ShowSubView(string name, GameObject parent = null) {
+    public GameObject ShowSubView(string assetBundleName, string name, GameObject parent = null) {
         string path = "GUI/UI_Prefabs/" + name + ".prefab";
-        GameObject ui_prefab = (GameObject)AssetsLoadMgr.Instance.LoadSync(path);
+        GameObject ui_prefab = (GameObject)AssetsLoadMgr.Instance.LoadSync(assetBundleName, path);
         GameObject ui_view = GameObject.Instantiate(ui_prefab);
         ui_view.name = ui_prefab.name;
         if (parent == null) {

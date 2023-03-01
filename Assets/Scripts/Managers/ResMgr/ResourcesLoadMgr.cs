@@ -56,15 +56,25 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
         }
     }
 
+    /// <summary>
+    /// 获取资源名(不含扩展名)
+    /// </summary>
+    /// <param name="_assetName"></param>
+    /// <returns></returns>
+    private string GetAssetName(string _assetName)
+    {
+        return _assetName.Substring(0, _assetName.LastIndexOf("."));
+    }
+
     public bool IsFileExist(string _assetName)
     {
-        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
+        _assetName = this.GetAssetName(_assetName);
         return this._resourcesList.Contains(_assetName);
     }
 
     public UnityEngine.Object LoadSync(string _assetName)
     {
-        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
+        _assetName = this.GetAssetName(_assetName);
         if (!this._resourcesList.Contains(_assetName))
         {
             Utils.LogError("ResourcesLoadMgr No Find File " + _assetName);
@@ -76,7 +86,7 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
 
     public ResourceRequest LoadAsync(string _assetName)
     {
-        _assetName = _assetName.Substring(0, _assetName.LastIndexOf("."));
+        _assetName = this.GetAssetName(_assetName);
         if (!this._resourcesList.Contains(_assetName))
         {
             Utils.LogError("ResourcesLoadMgr No Find File " + _assetName);

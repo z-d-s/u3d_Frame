@@ -9,12 +9,12 @@ public class FileHelper
     {
         get
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
-            return "Win64";
-#elif UNITY_ANDROID
-			return "Android";
+#if UNITY_ANDROID
+            return "Android";
 #elif UNITY_IOS
-			return "IOS";
+            return "IOS";
+#else
+            return "Win64";
 #endif
         }
     }
@@ -50,7 +50,7 @@ public class FileHelper
     /// <returns></returns>
     public static string BaseLocalResPath_Another()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR            //编辑器
         return Application.streamingAssetsPath + "/";
 #elif UNITY_STANDALONE      //Mac OS X, Windows or Linux
         return "file://" + Application.streamingAssetsPath + "/";

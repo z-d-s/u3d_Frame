@@ -144,7 +144,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
         }
     }
 
-    public GameObject LoadSync(string _assetName, Transform _parent = null)
+    public GameObject LoadSync(string assetBundleName, string _assetName, Transform _parent = null)
     {
         PrefabObject prefabObj = null;
         if(this._loadedList.ContainsKey(_assetName))
@@ -155,7 +155,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
             if(prefabObj._asset == null)
             {
                 //说明在异步加载中,需要不影响异步加载,加载后要释放
-                prefabObj._asset = AssetsLoadMgr.Instance.LoadSync(_assetName);
+                prefabObj._asset = AssetsLoadMgr.Instance.LoadSync(assetBundleName, _assetName);
                 var newGo = this.InstanceAsset(prefabObj, _parent);
                 AssetsLoadMgr.Instance.Unload(prefabObj._asset);
                 prefabObj._asset = null;
@@ -171,13 +171,13 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
         prefabObj = new PrefabObject();
         prefabObj._assetName = _assetName;
         prefabObj._refCount = 1;
-        prefabObj._asset = AssetsLoadMgr.Instance.LoadSync(_assetName);
+        prefabObj._asset = AssetsLoadMgr.Instance.LoadSync(assetBundleName, _assetName);
 
         this._loadedList.Add(_assetName, prefabObj);
         return this.InstanceAsset(prefabObj, _parent);
     }
 
-    public void LoadAsync(string _assetName, PrefabLoadCallback _callFun, Transform _parent = null)
+    public void LoadAsync(string assetBundleName, string _assetName, PrefabLoadCallback _callFun, Transform _parent = null)
     {
         PrefabObject prefabObj = null;
         if (this._loadedList.ContainsKey(_assetName))
@@ -202,7 +202,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
 
         this._loadedList.Add(_assetName, prefabObj);
 
-        AssetsLoadMgr.Instance.LoadAsync(_assetName, (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync(assetBundleName, _assetName, (string name, UnityEngine.Object obj) =>
         {
             prefabObj._asset = obj;
 

@@ -106,9 +106,9 @@ public class BuildAssetBundle : Editor
     /// [路径是文件，直接赋ABName]
     /// [同时判断是否有同名的文件夹，如果有，将文件夹下文件赋ABName，继续判断是否有子文件夹，如果有，递归执行设置ABName操作]
     /// </summary>
-    /// <param name="path"></param>
     /// <param name="name"></param>
-    private static void CheckPathFileOrDirectory(string path, string name)
+    /// <param name="path"></param>
+    private static void CheckPathFileOrDirectory(string name, string path)
     {
         if (File.Exists(path))
         {
@@ -144,10 +144,10 @@ public class BuildAssetBundle : Editor
             string[] lines = sr.ReadToEnd().Split("\r\n");
             for (int i = 0; i < lines.Length; ++i)
             {
-                string[] path_name = lines[i].Split(",");
-                if (path_name.Length == 2)
+                string[] name_path = lines[i].Split(":");
+                if (name_path.Length == 2)
                 {
-                    CheckPathFileOrDirectory(path_name[0], path_name[1]);
+                    CheckPathFileOrDirectory(name_path[0], name_path[1]);
                 }
                 else
                 {
