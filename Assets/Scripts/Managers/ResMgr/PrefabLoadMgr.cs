@@ -1,4 +1,15 @@
-using System.Collections;
+/****************************************************
+
+    外部接口：
+        -- LoadSync         同步加载
+        -- LoadAsync        异步加载
+        -- Destroy          销毁
+        -- RemoveCallBack
+        -- AddAssetRef
+        -- Update           刷新
+
+*****************************************************/
+
 using System.Collections.Generic;
 using UnityEngine;
 

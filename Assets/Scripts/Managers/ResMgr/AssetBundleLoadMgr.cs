@@ -300,7 +300,9 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
                 //同步下载解决
                 byte[] bytes = AssetsDownloadMgr.Instance.DownloadSync(this.GetFileName(abObj._hashName));
                 if (bytes != null && bytes.Length != 0)
+                {
                     abObj._ab = AssetBundle.LoadFromMemory(bytes);
+                }
             }
             catch (Exception ex)
             {

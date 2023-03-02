@@ -7,7 +7,7 @@
         -- PreLoad          预加载
         -- LoadAsync        异步加载
         -- LoadSync         同步加载
-        -- Unload           卸载
+        -- Unload           卸载(***资源销毁 请保证资源销毁都要调用这个接口***)
         -- Update           刷新
 
         -- AddAsset
