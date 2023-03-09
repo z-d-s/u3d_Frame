@@ -16,7 +16,7 @@
 
 *****************************************************/
 
-#define TEST_AB
+#define TEST_AB1
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -154,7 +154,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     public bool IsAssetExist(string assetBundleName, string assetName)
     {
 #if UNITY_EDITOR && !TEST_AB
-        return EditorAssetLoadMgr.Instance.IsFileExist(_assetName);
+        return EditorAssetLoadMgr.Instance.IsFileExist(assetName);
 #else
         if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
@@ -256,7 +256,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             else
             {
 #if UNITY_EDITOR && !TEST_AB
-                assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(_assetName);
+                assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
 #else
                 if (assetObj._isABLoad)
                 {
@@ -298,7 +298,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._assetName = assetName;
 
 #if UNITY_EDITOR && !TEST_AB
-        assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(_assetName);
+        assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
 #else
         if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
@@ -365,8 +365,8 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._callbackList.Add(callFun);
 
 #if UNITY_EDITOR && !TEST_AB
-        this._loadingList.Add(_assetName, assetObj);
-        assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(_assetName);
+        this._loadingList.Add(assetName, assetObj);
+        assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(assetName);
 #else
         if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {

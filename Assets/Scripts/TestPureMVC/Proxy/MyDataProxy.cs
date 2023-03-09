@@ -1,4 +1,6 @@
+using PureMVC.Interfaces;
 using PureMVC.Patterns.Proxy;
+using System.Collections.Concurrent;
 
 public class MyDataProxy : Proxy
 {
@@ -10,6 +12,7 @@ public class MyDataProxy : Proxy
         this.mydata = new MyData();
     }
 
+        ConcurrentDictionary<string, int> testMap = new ConcurrentDictionary<string, int>();
     public void AddValue(int value = 1)
     {
         ++this.mydata.dataValue;

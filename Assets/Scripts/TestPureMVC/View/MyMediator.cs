@@ -7,13 +7,13 @@ using UnityEngine.UI;
 public class MyMediator : Mediator
 {
     public const string mediatorName = "MyMediator_Name";
-    private TextMeshProUGUI txt_Number;
+    private Text txt_Number;
     private Button btn_Add;
     private Button btn_Sub;
 
-    public MyMediator(string mediatorName, GameObject viewComponent = null) : base(mediatorName, viewComponent)
+    public MyMediator(string mediatorName, GameObject viewComponent = null) : base(mediatorName)
     {
-        this.txt_Number = viewComponent.transform.Find("txt_Number").GetComponent<TextMeshProUGUI>();
+        this.txt_Number = viewComponent.transform.Find("txt_Number").GetComponent<Text>();
         this.btn_Add = viewComponent.transform.Find("btn_Add").GetComponent<Button>();
         this.btn_Sub = viewComponent.transform.Find("btn_Sub").GetComponent<Button>();
 

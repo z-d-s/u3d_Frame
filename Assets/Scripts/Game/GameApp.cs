@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class GameApp : MonoBaseSingleton<GameApp>
 {
+    public AppFacade facade;
+
+    public override void Awake()
+    {
+        base.Awake();
+        this.facade = new AppFacade();
+    }
+
     public void EnterGame()
     {
         this.EnterFightingScene();
@@ -20,7 +28,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
         #endregion
 
         #region 显示UI
-        UI_manager.Instance.ShowUIView("ui_gameui", "GameUI");
+        //UI_manager.Instance.ShowUIView("ui_gameui", "GameUI");
         #endregion
     }
 }

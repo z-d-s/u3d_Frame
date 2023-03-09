@@ -1,3 +1,4 @@
+using PureMVC.Patterns.Facade;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,26 +56,28 @@ public class GameMgr : MonoBehaviour
     {
         if(GUI.Button(new Rect(10, 10, 150, 50), "Add Role"))
         {
-            AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Charactors/Monsters/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
-            {
-                GameObject charactorPrefab = obj as GameObject;
-                GameObject e = GameObject.Instantiate(charactorPrefab);
-                this.enemies.Add(e);
-                e.transform.position = this.player.transform.position + new Vector3(3, 0, 3);
-                e.AddComponent<CharactorCtrl>().Init();
-                e.name = "enemy";
-            });
+            //AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Charactors/Monsters/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
+            //{
+            //    GameObject charactorPrefab = obj as GameObject;
+            //    GameObject e = GameObject.Instantiate(charactorPrefab);
+            //    this.enemies.Add(e);
+            //    e.transform.position = this.player.transform.position + new Vector3(3, 0, 3);
+            //    e.AddComponent<CharactorCtrl>().Init();
+            //    e.name = "enemy";
+            //});
+
+            AppFacade.GetInstance("", key => new Facade(key)).SendNotification(EnumGameNotify.GAMEUI_STARTUP.ToString());
         }
 
         if (GUI.Button(new Rect(10, 70, 150, 50), "Add Arrow"))
         {
-            AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/arrows.prefab", (string name, UnityEngine.Object obj) =>
-            {
-                GameObject charactorPrefab = obj as GameObject;
-                GameObject e = GameObject.Instantiate(charactorPrefab);
-                e.transform.position = this.player.transform.position + new Vector3(1, 0, 1);
-                e.name = "arrow";
-            });
+            //AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/arrows.prefab", (string name, UnityEngine.Object obj) =>
+            //{
+            //    GameObject charactorPrefab = obj as GameObject;
+            //    GameObject e = GameObject.Instantiate(charactorPrefab);
+            //    e.transform.position = this.player.transform.position + new Vector3(1, 0, 1);
+            //    e.name = "arrow";
+            //});
         }
 
         if (GUI.Button(new Rect(170, 70, 150, 50), "Add Sword"))

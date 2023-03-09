@@ -1,11 +1,5 @@
-using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System.Collections.Generic;
-
-public class GameUI_UICtrl : UI_ctrl
+public class GameUI : UI_Base
 {
-
 	public override void Awake()
 	{
 		base.Awake();
