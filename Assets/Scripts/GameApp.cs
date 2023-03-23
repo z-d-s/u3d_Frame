@@ -4,12 +4,27 @@ using UnityEngine;
 
 public class GameApp : MonoBaseSingleton<GameApp>
 {
-    public AppFacade facade;
+    public GameConfig config;
 
     public override void Awake()
     {
         base.Awake();
-        this.facade = new AppFacade();
+
+        #region 游戏框架的初始化
+        new AppFacade();
+        AssetBundleLoadMgr.Instance.LoadManifest();
+        #endregion
+
+        #region 初始化游戏模块
+        UIMgr.Instance.Init();
+        #endregion
+    }
+
+    private void Start()
+    {
+        #region 进入游戏
+        this.EnterGame();
+        #endregion
     }
 
     public void EnterGame()

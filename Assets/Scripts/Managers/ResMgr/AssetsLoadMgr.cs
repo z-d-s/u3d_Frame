@@ -164,8 +164,8 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         {
             return true;
         }
-#endif
         return false;
+#endif
     }
 
     /// <summary>

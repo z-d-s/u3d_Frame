@@ -1,8 +1,6 @@
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Mediator;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GameUI_Mediator : Mediator
@@ -13,15 +11,21 @@ public class GameUI_Mediator : Mediator
     public GameUI_Mediator(string mediatorName, object viewComponent = null) : base(mediatorName, viewComponent)
     {
         Debug.Log("=== AAA === GameUI_Mediator构造 ===");
+
+        if(viewComponent != null)
+        {
+            this.view = viewComponent as GameUI;
+        }
     }
 
     public override string[] ListNotificationInterests()
     {
         string[] notifies =
         {
-            EnumGameNotify.CHANGE_COIN.ToString(),
-            EnumGameNotify.CHANGE_SCORE.ToString(),
-            EnumGameNotify.CHANGE_ENERGY.ToString(),
+            GameEventDefine.GAMEUI_CHANGE_COIN,
+            GameEventDefine.GAMEUI_CHANGE_SCORE,
+            GameEventDefine.GAMEUI_CHANGE_ENERGY,
+            GameEventDefine.GAMEUI_HIDE,
         };
         return notifies;
     }
@@ -30,17 +34,22 @@ public class GameUI_Mediator : Mediator
     {
         base.HandleNotification(notification);
 
-        if(EnumGameNotify.CHANGE_COIN.ToString() == notification.Name)
+        switch(notification.Name)
         {
-
-        }
-        else if(EnumGameNotify.CHANGE_SCORE.ToString() == notification.Name)
-        {
-
-        }
-        else if(EnumGameNotify.CHANGE_ENERGY.ToString() == notification.Name)
-        {
-
+            case GameEventDefine.GAMEUI_CHANGE_COIN:
+                break;
+            case GameEventDefine.GAMEUI_CHANGE_SCORE:
+                break;
+            case GameEventDefine.GAMEUI_CHANGE_ENERGY:
+                break;
+            case GameEventDefine.GAMEUI_HIDE:
+                if (this.view)
+                {
+                    this.view.Hide();
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -49,12 +58,22 @@ public class GameUI_Mediator : Mediator
         base.OnRegister();
 
         Debug.Log("=== BBB === GameUI_Mediator::OnRegister ===");
+        this.Show();
+    }
 
-        string path = "GUI/UIPrefabs/GameUI.prefab";
-        GameObject ui_prefab = (GameObject)AssetsLoadMgr.Instance.LoadSync("ui_gameui", path);
-        GameObject ui_view = GameObject.Instantiate(ui_prefab);
-        ui_view.name = ui_prefab.name;
-        ui_view.transform.SetParent(GameObject.Find("Canvas").transform, false);
-        this.view = ui_view.AddComponent<GameUI>();
+    public void Show()
+    {
+        if(this.view)
+        {
+            this.view.Show();
+        }
+    }
+
+    public void Hide()
+    {
+        if (this.view)
+        {
+            this.view.Hide();
+        }
     }
 }

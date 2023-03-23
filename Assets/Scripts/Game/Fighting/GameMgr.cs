@@ -1,18 +1,10 @@
-using PureMVC.Patterns.Facade;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMgr : MonoBehaviour
+public class GameMgr : MonoBaseSingleton<GameMgr>
 {
-    public static GameMgr Instance = null;
     public GameObject player = null;
     public List<GameObject> enemies = new List<GameObject>();
-
-    private void Awake()
-    {
-        GameMgr.Instance = this;
-    }
 
     public List<GameObject> findCharactorInRadius(Vector3 o, float radius)
     {
@@ -66,7 +58,7 @@ public class GameMgr : MonoBehaviour
             //    e.name = "enemy";
             //});
 
-            AppFacade.GetInstance("", key => new Facade(key)).SendNotification(EnumGameNotify.GAMEUI_STARTUP.ToString());
+            AppFacade.Instance.SendNotification(GameEventDefine.GAMEUI_STARTUP);
         }
 
         if (GUI.Button(new Rect(10, 70, 150, 50), "Add Arrow"))
@@ -78,6 +70,8 @@ public class GameMgr : MonoBehaviour
             //    e.transform.position = this.player.transform.position + new Vector3(1, 0, 1);
             //    e.name = "arrow";
             //});
+
+            AppFacade.Instance.SendNotification(GameEventDefine.GAMEUI_HIDE);
         }
 
         if (GUI.Button(new Rect(170, 70, 150, 50), "Add Sword"))

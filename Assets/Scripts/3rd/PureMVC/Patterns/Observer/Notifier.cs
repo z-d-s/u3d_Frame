@@ -95,7 +95,8 @@ namespace PureMVC.Patterns.Observer
         /// <summary> Return the Multiton Facade instance</summary>
         protected IFacade Facade
         {
-            get {
+            get
+            {
                 if (MultitonKey == null) throw new Exception(MULTITON_MSG);
                 return Patterns.Facade.Facade.GetInstance(MultitonKey, key => new Facade.Facade(key));
             }

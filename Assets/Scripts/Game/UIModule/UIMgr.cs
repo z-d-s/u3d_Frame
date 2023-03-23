@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_manager : MonoBaseSingleton<UI_manager>
+public class UIMgr : MonoBaseSingleton<UIMgr>
 {
-    public GameObject canvas;
+    public Transform uiRoot;
+    public Transform canvas;
 
-    public override void Awake()
+    public void Init()
     {
-        base.Awake();
-        this.canvas = GameObject.Find("Canvas");
-        if (this.canvas == null)
-        {
-            Utils.LogError("UI manager load  Canvas failed!!!!!");
-        }
+        this.uiRoot = GameObject.Find("UIRoot").transform;
+        this.canvas = uiRoot.Find("Canvas").transform;
+        DontDestroyOnLoad(this.uiRoot);
     }
 
-    public UI_Base ShowUIView(string assetBundleName, string name)
+    public BaseUI ShowUIView(string assetBundleName, string name)
     {
         string path = "GUI/UIPrefabs/" + name + ".prefab";
         GameObject ui_prefab = (GameObject)AssetsLoadMgr.Instance.LoadSync(assetBundleName, path);
@@ -31,7 +29,7 @@ public class UI_manager : MonoBaseSingleton<UI_manager>
         }
 
         Type type = Type.GetType(name/* + "_UICtrl"*/);
-        UI_Base ctrl = (UI_Base)ui_view.AddComponent(type);
+        BaseUI ctrl = (BaseUI)ui_view.AddComponent(type);
 
         return ctrl;
     }
@@ -44,7 +42,7 @@ public class UI_manager : MonoBaseSingleton<UI_manager>
         ui_view.name = ui_prefab.name;
         if (parent == null)
         {
-            parent = this.canvas;
+            parent = this.canvas.gameObject;
         }
         ui_view.transform.SetParent(parent.transform, false);
         return ui_view;

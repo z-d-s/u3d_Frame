@@ -1,12 +1,17 @@
 using PureMVC.Patterns.Facade;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class AppFacade : Facade
 {
     public AppFacade() : base("")
     {
-        this.RegisterCommand(EnumGameNotify.GAMEUI_STARTUP.ToString(), () => new GameUI_Command());
+        this.RegisterCommand(GameEventDefine.GAMEUI_STARTUP, () => new GameUI_Command());
+    }
+
+    public static AppFacade Instance
+    {
+        get
+        {
+            return Facade.GetInstance("", key => new Facade(key)) as AppFacade;
+        }
     }
 }
