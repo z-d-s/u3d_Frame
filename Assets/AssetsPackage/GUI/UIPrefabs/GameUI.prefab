@@ -487,7 +487,7 @@ GameObject:
   - component: {fileID: 222577183471530448}
   - component: {fileID: 114294373103627974}
   m_Layer: 5
-  m_Name: blood
+  m_Name: img_Blood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,7 +1204,7 @@ GameObject:
   - component: {fileID: 222748508600188048}
   - component: {fileID: 114058415369484320}
   m_Layer: 5
-  m_Name: exp
+  m_Name: img_Exp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1592,7 +1592,7 @@ GameObject:
   - component: {fileID: 222799534959059266}
   - component: {fileID: 114807019201381856}
   m_Layer: 5
-  m_Name: blood_label
+  m_Name: text_Blood
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1748,7 +1748,7 @@ GameObject:
   - component: {fileID: 222521695036073158}
   - component: {fileID: 114542146983981704}
   m_Layer: 5
-  m_Name: exp_label
+  m_Name: text_Exp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

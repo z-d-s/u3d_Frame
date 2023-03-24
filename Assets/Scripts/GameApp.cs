@@ -11,7 +11,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
         base.Awake();
 
         #region 游戏框架的初始化
-        new AppFacade();
+        AppFacade.Instance.StartUp();
         AssetBundleLoadMgr.Instance.LoadManifest();
         #endregion
 

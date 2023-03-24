@@ -15,7 +15,7 @@ public class GameUI_Command : SimpleCommand
 
         switch(notification.Name)
         {
-            case GameEventDefine.GAMEUI_STARTUP:
+            case GameEventDefine.EV_GameUI_StartUp:
                 if (mediator == null)
                 {
                     string assetName = "GUI/UIPrefabs/" + this.uiName + ".prefab";

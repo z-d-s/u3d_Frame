@@ -22,10 +22,9 @@ public class GameUI_Mediator : Mediator
     {
         string[] notifies =
         {
-            GameEventDefine.GAMEUI_CHANGE_COIN,
-            GameEventDefine.GAMEUI_CHANGE_SCORE,
-            GameEventDefine.GAMEUI_CHANGE_ENERGY,
-            GameEventDefine.GAMEUI_HIDE,
+            GameEventDefine.EV_GameUI_Change_Hp,
+            GameEventDefine.EV_GameUI_Change_Exp,
+            GameEventDefine.EV_GameUI_Hide,
         };
         return notifies;
     }
@@ -36,17 +35,14 @@ public class GameUI_Mediator : Mediator
 
         switch(notification.Name)
         {
-            case GameEventDefine.GAMEUI_CHANGE_COIN:
+            case GameEventDefine.EV_GameUI_Change_Hp:
+                this.view.FillInfo(notification.Body as GameUIData);
                 break;
-            case GameEventDefine.GAMEUI_CHANGE_SCORE:
+            case GameEventDefine.EV_GameUI_Change_Exp:
+                this.view.FillInfo(notification.Body as GameUIData);
                 break;
-            case GameEventDefine.GAMEUI_CHANGE_ENERGY:
-                break;
-            case GameEventDefine.GAMEUI_HIDE:
-                if (this.view)
-                {
-                    this.view.Hide();
-                }
+            case GameEventDefine.EV_GameUI_Hide:
+                this.Hide();
                 break;
             default:
                 break;

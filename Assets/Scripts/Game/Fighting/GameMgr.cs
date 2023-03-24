@@ -58,7 +58,7 @@ public class GameMgr : MonoBaseSingleton<GameMgr>
             //    e.name = "enemy";
             //});
 
-            AppFacade.Instance.SendNotification(GameEventDefine.GAMEUI_STARTUP);
+            AppFacade.Instance.SendNotification(GameEventDefine.EV_GameUI_StartUp);
         }
 
         if (GUI.Button(new Rect(10, 70, 150, 50), "Add Arrow"))
@@ -71,7 +71,7 @@ public class GameMgr : MonoBaseSingleton<GameMgr>
             //    e.name = "arrow";
             //});
 
-            AppFacade.Instance.SendNotification(GameEventDefine.GAMEUI_HIDE);
+            AppFacade.Instance.SendNotification(GameEventDefine.EV_GameUI_Hide);
         }
 
         if (GUI.Button(new Rect(170, 70, 150, 50), "Add Sword"))
