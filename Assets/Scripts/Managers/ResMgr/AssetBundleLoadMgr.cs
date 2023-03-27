@@ -153,7 +153,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
     /// </summary>
     public void LoadManifest()
     {
-        //TODO::
+        //TODO::版本管理
         //string path = FileVersionMgr.Instance.GetFilePathByExist("Assets");
         string path = FileHelper.BaseLocalResPath() + FileHelper.ABManiName + "/" + FileHelper.ABManiName;
         if (string.IsNullOrEmpty(path))
@@ -193,7 +193,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         ab.Unload(true);
         ab = null;
 
-        Utils.Log("AssetBundleLoadMgr dependsCount=" + _dependsDataList.Count);
+        Utils.Log("AB主包依赖数量 AssetBundleLoadMgr::this._dependsDataList.Count=" + this._dependsDataList.Count);
     }
 
     public bool IsABExist(string assetBundleName)

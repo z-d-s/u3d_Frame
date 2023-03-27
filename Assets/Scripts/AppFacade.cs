@@ -43,7 +43,7 @@ public class AppFacade : Facade
     {
         base.InitializeController();
 
-        this.RegisterCommand(GameEventDefine.EV_GameUI_StartUp, () => new GameUI_Command());
+        this.RegisterCommand(EventDefine.MVC_GameUI_StartUp, () => new GameUI_Command());
     }
 
     protected override void InitializeModel()

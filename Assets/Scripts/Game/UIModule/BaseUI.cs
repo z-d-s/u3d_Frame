@@ -51,6 +51,11 @@ public class BaseUI : MonoBehaviour
         sl.onValueChanged.AddListener(on_value_changle);
     }
 
+    public virtual void FillDataInfo()
+    {
+
+    }
+
     public virtual void Show()
     {
         this.gameObject.SetActive(true);

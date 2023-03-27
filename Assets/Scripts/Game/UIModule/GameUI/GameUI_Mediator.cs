@@ -1,5 +1,7 @@
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Mediator;
+using System;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,8 +12,6 @@ public class GameUI_Mediator : Mediator
 
     public GameUI_Mediator(string mediatorName, object viewComponent = null) : base(mediatorName, viewComponent)
     {
-        Debug.Log("=== AAA === GameUI_Mediator构造 ===");
-
         if(viewComponent != null)
         {
             this.view = viewComponent as GameUI;
@@ -22,9 +22,10 @@ public class GameUI_Mediator : Mediator
     {
         string[] notifies =
         {
-            GameEventDefine.EV_GameUI_Change_Hp,
-            GameEventDefine.EV_GameUI_Change_Exp,
-            GameEventDefine.EV_GameUI_Hide,
+            EventDefine.MVC_GameUI_FillInfo,
+            EventDefine.MVC_GameUI_FillInfo,
+            EventDefine.MVC_GameUI_Change_Exp,
+            EventDefine.MVC_GameUI_Hide,
         };
         return notifies;
     }
@@ -35,13 +36,16 @@ public class GameUI_Mediator : Mediator
 
         switch(notification.Name)
         {
-            case GameEventDefine.EV_GameUI_Change_Hp:
-                this.view.FillInfo(notification.Body as GameUIData);
+            case EventDefine.MVC_GameUI_FillInfo:
+                this.view.FillDataInfo();
                 break;
-            case GameEventDefine.EV_GameUI_Change_Exp:
-                this.view.FillInfo(notification.Body as GameUIData);
+            case EventDefine.MVC_GameUI_Change_Hp:
+                this.view.RefreshDataInfo(notification.Body as GameUIData);
                 break;
-            case GameEventDefine.EV_GameUI_Hide:
+            case EventDefine.MVC_GameUI_Change_Exp:
+                this.view.RefreshDataInfo(notification.Body as GameUIData);
+                break;
+            case EventDefine.MVC_GameUI_Hide:
                 this.Hide();
                 break;
             default:
@@ -53,14 +57,17 @@ public class GameUI_Mediator : Mediator
     {
         base.OnRegister();
 
-        Debug.Log("=== BBB === GameUI_Mediator::OnRegister ===");
         this.Show();
     }
 
-    public void Show()
+    public void Show(GameObject parent = null)
     {
         if(this.view)
         {
+            if (parent != null)
+            {
+                this.view.transform.SetParent(parent.transform, false);
+            }
             this.view.Show();
         }
     }

@@ -8,7 +8,7 @@ public abstract class BaseSingleton<T> where T : new()
 {
     private static T _instance;
     private static object mutex = new object();
-    public static T instance
+    public static T Instance
     {
         get
         {

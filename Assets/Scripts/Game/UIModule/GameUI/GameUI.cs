@@ -1,3 +1,4 @@
+using PureMVC.Patterns.Facade;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,21 +15,32 @@ public class GameUI : BaseUI
 	{
 		base.Awake();
 
-		this.img_Blood = this.view["user_info/img_Blood"].GetComponent<Image>();
-		this.text_Blood = this.view["user_info/text_Blood"].GetComponent<Text>();
+		this.img_Blood = this.view["Top_Left/user_info/img_Blood"].GetComponent<Image>();
+		this.text_Blood = this.view["Top_Left/user_info/text_Blood"].GetComponent<Text>();
 
-		this.img_Exp = this.view["user_info/img_Exp"].GetComponent<Image>();
-		this.text_Exp = this.view["user_info/text_Exp"].GetComponent<Text>();
+		this.img_Exp = this.view["Top_Left/user_info/img_Exp"].GetComponent<Image>();
+		this.text_Exp = this.view["Top_Left/user_info/text_Exp"].GetComponent<Text>();
 
-		this.AddButtonListener("attack_opt/attack_skill1", this.OnSkillClick);
+		this.AddButtonListener("Bottom_Right/attack_opt/attack_skill1", this.OnSkillClick);
+		this.AddButtonListener("Bottom_Right/attack_opt/attack_normall", this.OnNormalClick);
+
+		this.AddButtonListener("Top_Right/Test_01", this.OnClickTest01);
+		this.AddButtonListener("Top_Right/Test_02", this.OnClickTest02);
 	}
 
 	private void OnEnable()
 	{
-		
+		this.dataProxy.RequestDataInfo();
 	}
 
-	public void FillInfo(GameUIData data)
+	public override void FillDataInfo()
+	{
+		base.FillDataInfo();
+
+		this.RefreshDataInfo(this.dataProxy.gameUIData);
+	}
+
+	public void RefreshDataInfo(GameUIData data)
 	{
 		this.img_Blood.fillAmount = data.hp / data.max_Hp;
 		this.text_Blood.text = data.hp + "/" + data.max_Hp;
@@ -39,8 +51,6 @@ public class GameUI : BaseUI
 
 	private void OnSkillClick()
 	{
-        //EventMgr.Instance.Emit("SkillAttack", null);
-
         AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/swords.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject charactorPrefab = obj as GameObject;
@@ -48,5 +58,28 @@ public class GameUI : BaseUI
             e.transform.position = GameMgr.Instance.player.transform.position + new Vector3(1, 0, 1);
             e.name = "sword";
         });
+    }
+
+    private void OnNormalClick()
+	{
+		this.Hide();
+	}
+
+    private void OnClickTest01()
+	{
+		EventMgr.Instance.Dispatch("SkillAttack");
+	}
+
+	private void OnClickTest02()
+	{
+		
+	}
+
+    private GameUI_Proxy dataProxy
+    {
+        get
+        {
+            return AppFacade.Instance.RetrieveProxy(GameUI_Proxy.NAME) as GameUI_Proxy;
+        }
     }
 }

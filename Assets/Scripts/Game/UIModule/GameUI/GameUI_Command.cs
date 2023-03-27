@@ -1,36 +1,39 @@
 using PureMVC.Interfaces;
 using PureMVC.Patterns.Command;
+using System;
 using UnityEngine;
 
 public class GameUI_Command : SimpleCommand
 {
-    private string assetBundleName = "ui_gameui";
-    private string uiName = "GameUI";
-
     public override void Execute(INotification notification)
     {
         base.Execute(notification);
 
-        GameUI_Mediator mediator = AppFacade.Instance.RetrieveMediator(GameUI_Mediator.NAME) as GameUI_Mediator;
-
         switch(notification.Name)
         {
-            case GameEventDefine.EV_GameUI_StartUp:
+            case EventDefine.MVC_GameUI_StartUp:
+                GameUI_Mediator mediator = AppFacade.Instance.RetrieveMediator(GameUI_Mediator.NAME) as GameUI_Mediator;
+                GameObject parent = notification.Body as GameObject;
+
                 if (mediator == null)
                 {
-                    string assetName = "GUI/UIPrefabs/" + this.uiName + ".prefab";
-                    AssetsLoadMgr.Instance.LoadAsync(this.assetBundleName, assetName, (string name, UnityEngine.Object obj) =>
+                    AssetsLoadMgr.Instance.LoadAsync("ui_gameui", "UI/Prefabs/GameUI.prefab", (_assetName, _obj) =>
                     {
-                        GameObject ui_view = GameObject.Instantiate(obj as GameObject);
-                        ui_view.name = obj.name;
-                        ui_view.transform.SetParent(UIMgr.Instance.canvas, false);
+                        GameObject ui_view = GameObject.Instantiate(_obj as GameObject);
+                        ui_view.name = _obj.name;
+                        if (parent == null)
+                        {
+                            parent = UIMgr.Instance.canvas.gameObject;
+                        }
+                        ui_view.transform.SetParent(parent.transform, false);
+                        ui_view.SetActive(false);
 
-                        AppFacade.Instance.RegisterMediator(new GameUI_Mediator(GameUI_Mediator.NAME, ui_view.AddComponent<GameUI>()));
+                        AppFacade.Instance.RegisterMediator(new GameUI_Mediator(GameUI_Mediator.NAME, ui_view.AddComponent(Type.GetType(ui_view.name))));
                     });
                 }
                 else
                 {
-                    mediator.Show();
+                    mediator.Show(parent);
                 }
                 break;
             default:
@@ -42,7 +45,7 @@ public class GameUI_Command : SimpleCommand
     {
         get
         {
-            return Facade.RetrieveProxy(GameUI_Proxy.NAME) as GameUI_Proxy;
+            return AppFacade.Instance.RetrieveProxy(GameUI_Proxy.NAME) as GameUI_Proxy;
         }
     }
 }

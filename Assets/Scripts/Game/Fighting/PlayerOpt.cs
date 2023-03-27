@@ -18,7 +18,7 @@ public class PlayerOpt : MonoBehaviour
         EventMgr.Instance.RemoveListener("SkillAttack", this.OnSkillEvent);
     }
 
-    public void OnSkillEvent(string event_name, object udata)
+    public void OnSkillEvent(IEventArgs args)
     {
         this.ctrl.OnPlayerSkill();
     }

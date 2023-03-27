@@ -24,7 +24,7 @@ public class joystick : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        EventMgr.Instance.Emit("JoyStick", this.touch_dir);
+        //EventMgr.Instance.Emit("JoyStick", this.touch_dir);
 	}
 
     public void on_stick_drag() {

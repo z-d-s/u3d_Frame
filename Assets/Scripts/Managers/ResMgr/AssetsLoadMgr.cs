@@ -355,7 +355,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             Utils.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 加载中,只添加 [加载完成回调函数] 即可");
             assetObj = this._loadingList[assetName];
             assetObj._callbackList.Add(callFun);
-            Utils.Log("[加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
+            Utils.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} [加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
             return;
         }
 

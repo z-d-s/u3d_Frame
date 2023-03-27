@@ -72,7 +72,7 @@ public class CharactorCtrl : MonoBehaviour
 
     private void OnComputeHurtBySkill()
     {
-        List<GameObject> objs = GameMgr.Instance.findCharactorInRadius(this.transform.position, this.skillAttackRadius);
+        List<GameObject> objs = GameMgr.Instance.FindCharactorsInRadius(this.transform.position, this.skillAttackRadius);
         for(int i = 0; i < objs.Count; ++i)
         {
             CharactorCtrl ctrl = objs[i].GetComponent<CharactorCtrl>();
