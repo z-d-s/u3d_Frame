@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnumGameMode
+public enum EnumColorLog
 {
-    Develop,
-    Local_AB,
-    Server_AB,
+    NONE,
+
+    WHITE,
+    RED,
+    GREEN,
+    BLUE,
+
+    CYAN,
+    MAGENTA,
+    YELLOW,
+
+    All
 }
 
 [CreateAssetMenu(fileName = "GameConfig", menuName = "Config/GameConfig", order = 1)]
 public class GameConfig : ScriptableObject
 {
-    public EnumGameMode enumGameMode;
+    public EnumColorLog enumColorLog = EnumColorLog.NONE;
 
     public float assetCacheTime = 5f;
 

@@ -20,6 +20,7 @@ public class PlayerOpt : MonoBehaviour
 
     public void OnSkillEvent(IEventArgs args)
     {
+        string t = args.GetValue<string>();
         this.ctrl.OnPlayerSkill();
     }
 }

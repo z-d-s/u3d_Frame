@@ -74,6 +74,6 @@ public class BuildUI : EditorWindow
         sw.Flush();
         sw.Close();
 
-        Utils.Log("Generate : " + Application.dataPath + "/Scripts/Game/UIModule/" + className + ".cs");
+        UtilLog.LogWhite("Generate : " + Application.dataPath + "/Scripts/Game/UIModule/" + className + ".cs");
     }
 }

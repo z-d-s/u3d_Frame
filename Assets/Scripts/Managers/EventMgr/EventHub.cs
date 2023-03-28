@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-public delegate void EventListener<T>(T arg);
-
 public class EventHub
 {
     private Dictionary<string, List<EventListener<IEventArgs>>> dic_Event = new Dictionary<string, List<EventListener<IEventArgs>>>();

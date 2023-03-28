@@ -51,6 +51,8 @@ public class GameUI : BaseUI
 
 	private void OnSkillClick()
 	{
+        EventMgr.Instance.Dispatch("SkillAttack");
+
         AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/swords.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject charactorPrefab = obj as GameObject;
@@ -67,7 +69,7 @@ public class GameUI : BaseUI
 
     private void OnClickTest01()
 	{
-		EventMgr.Instance.Dispatch("SkillAttack");
+		
 	}
 
 	private void OnClickTest02()

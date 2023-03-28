@@ -32,7 +32,7 @@ public class BaseUI : MonoBehaviour
         Button btn = this.view[view_name].GetComponent<Button>();
         if (btn == null)
         {
-            Utils.LogWarning("UI_manager add_button_listener: not Button Component!");
+            UtilLog.LogWarning("UI_manager add_button_listener: not Button Component!");
             return;
         }
 
@@ -44,7 +44,7 @@ public class BaseUI : MonoBehaviour
         Slider sl = this.view[view_name].GetComponent<Slider>();
         if (sl == null)
         {
-            Utils.LogWarning("UI_manager add_slider_listener: not Slider Component!");
+            UtilLog.LogWarning("UI_manager add_slider_listener: not Slider Component!");
             return;
         }
 

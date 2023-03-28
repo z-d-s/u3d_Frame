@@ -3,6 +3,11 @@ public interface IEventArgs
 
 }
 
+/// <summary>
+/// 事件参数
+/// 可以是值类型，也可以是引用类型
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class EventArgs<T> : IEventArgs
 {
     public T arg;
@@ -12,12 +17,20 @@ public class EventArgs<T> : IEventArgs
         this.arg = arg;
     }
 
+    /// <summary>
+    /// 创建事件参数
+    /// </summary>
+    /// <param name="val"></param>
+    /// <returns></returns>
     public static IEventArgs CreateEventArgs(T val)
     {
         return new EventArgs<T>(val);
     }
 }
 
+/// <summary>
+/// 事件参数扩展
+/// </summary>
 public static class EventArgsExtend
 {
     /// <summary>

@@ -143,7 +143,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
                 }
                 catch(System.Exception e)
                 {
-                    Utils.LogError(e.Message);
+                    UtilLog.LogError(e.Message);
                 }
 
                 //如果回调之后，节点挂在默认节点下，认为该节点无效，销毁
@@ -242,7 +242,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
 #if UNITY_EDITOR
             else if (UnityEditor.EditorApplication.isPlaying)
             {
-                Utils.LogError("PrefabLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
+                UtilLog.LogError("PrefabLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
             }
 #else
             else Utils.LogError("PrefabLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
@@ -262,14 +262,14 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
         else
         {
             string errormsg = string.Format("PrefabLoadMgr Destroy error ! assetName:{0}", prefabObj._assetName);
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
         if (prefabObj._refCount < 0)
         {
             string errormsg = string.Format("PrefabLoadMgr Destroy refCount error ! assetName:{0}", prefabObj._assetName);
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
@@ -314,7 +314,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
             if (prefabObj._refCount < 0)
             {
                 string errormsg = string.Format("PrefabLoadMgr Destroy refCount error ! assetName:{0}", prefabObj._assetName);
-                Utils.LogError(errormsg);
+                UtilLog.LogError(errormsg);
                 return;
             }
 
@@ -346,7 +346,7 @@ public class PrefabLoadMgr : MonoBaseSingleton<PrefabLoadMgr>
         if (this._goInstanceIDList.ContainsKey(instanceID))
         {
             string errormsg = string.Format("PrefabLoadMgr AddAssetRef error ! assetName:{0}", _assetName);
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 

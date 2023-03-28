@@ -16,6 +16,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
         #endregion
 
         #region 初始化游戏模块
+        UtilLog.enumColorLog = config != null ? config.enumColorLog : EnumColorLog.NONE;
         UIMgr.Instance.Init();
         GameMgr.Instance.Init();
         #endregion

@@ -167,7 +167,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         if(ab == null)
         {
             string errormsg = string.Format("LoadManifest ab NULL error !");
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
@@ -175,7 +175,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         if(manifest == null)
         {
             string errormsg = string.Format("LoadManifest NULL error !");
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
@@ -193,7 +193,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         ab.Unload(true);
         ab = null;
 
-        Utils.Log("AB主包依赖数量 AssetBundleLoadMgr::this._dependsDataList.Count=" + this._dependsDataList.Count);
+        UtilLog.LogWhite("AB主包依赖数量 AssetBundleLoadMgr::this._dependsDataList.Count=" + this._dependsDataList.Count);
     }
 
     public bool IsABExist(string assetBundleName)
@@ -306,7 +306,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
             }
             catch (Exception ex)
             {
-                Utils.LogError("LoadAssetBundleSync DownloadSync" + ex.Message);
+                UtilLog.LogError("LoadAssetBundleSync DownloadSync" + ex.Message);
             }
         }
 
@@ -352,14 +352,14 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         if(abObj == null)
         {
             string errormsg = string.Format("UnLoadAssetbundle error ! assetBundleName:{0}", assetBundleName);
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
         if(abObj._refCount == 0)
         {
             string errormsg = string.Format("UnLoadAssetbundle refCount error ! assetBundleName:{0}", assetBundleName);
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
@@ -425,7 +425,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
                     if (abObj._dependLoadingCount <= 0)
                     {
                         string errormsg = string.Format("LoadAssetBundleAsync depend error ! assetBundleName:{0}", assetBundleName);
-                        Utils.LogError(errormsg);
+                        UtilLog.LogError(errormsg);
                         return;
                     }
 
@@ -479,7 +479,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
                 if (abObj._request == null)
                 {
                     string errormsg = string.Format("LoadAssetbundle path error ! assetBundleName:{0}", abObj._hashName);
-                    Utils.LogError(errormsg);
+                    UtilLog.LogError(errormsg);
                 }
             });
         }
@@ -491,7 +491,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
             if (abObj._request == null)
             {
                 string errormsg = string.Format("LoadAssetbundle path error ! assetBundleName:{0}", abObj._hashName);
-                Utils.LogError(errormsg);
+                UtilLog.LogError(errormsg);
             }
         }
     }
@@ -527,7 +527,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
             }
             catch (Exception ex)
             {
-                Utils.LogError("LoadAssetbundle ReadAllBytes Error " + ex.Message);
+                UtilLog.LogError("LoadAssetbundle ReadAllBytes Error " + ex.Message);
             }
 
             if (abObj._ab == null)
@@ -543,7 +543,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
                     if (_loadedABList.ContainsKey(abObj._hashName)) _loadedABList.Remove(abObj._hashName);
                     else if (_loadingABList.ContainsKey(abObj._hashName)) _loadingABList.Remove(abObj._hashName);
 
-                    Utils.LogError(errormsg);
+                    UtilLog.LogError(errormsg);
 
                     if (isAsync)
                     {
@@ -592,7 +592,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         if (abObj._ab == null)
         {
             string errormsg = string.Format("LoadAssetbundle DoUnload error ! assetBundleName:{0}", abObj._hashName);
-            Utils.LogError(errormsg);
+            UtilLog.LogError(errormsg);
             return;
         }
 
