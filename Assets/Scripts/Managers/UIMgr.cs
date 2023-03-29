@@ -13,8 +13,10 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
     /// </summary>
     public Transform canvas;
 
-    public void Init()
+    public void StartUp()
     {
+        UtilLog.LogGreen("=== UIMgr 启动成功 ===");
+
         this.uiRoot = GameObject.Find("UIRoot").transform;
         this.canvas = uiRoot.Find("Canvas").transform;
         DontDestroyOnLoad(this.uiRoot);

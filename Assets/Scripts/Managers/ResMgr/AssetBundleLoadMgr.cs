@@ -193,7 +193,7 @@ public class AssetBundleLoadMgr : MonoBaseSingleton<AssetBundleLoadMgr>
         ab.Unload(true);
         ab = null;
 
-        UtilLog.LogWhite("AB主包依赖数量 AssetBundleLoadMgr::this._dependsDataList.Count=" + this._dependsDataList.Count);
+        UtilLog.Log("AB主包依赖数量 AssetBundleLoadMgr::this._dependsDataList.Count = " + this._dependsDataList.Count);
     }
 
     public bool IsABExist(string assetBundleName)

@@ -344,7 +344,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         AssetObject assetObj = null;
         if(this._loadedList.ContainsKey(assetName))
         {
-            UtilLog.LogWhite("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 已经加载,无需再加载");
+            UtilLog.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 已经加载,无需再加载");
             assetObj = this._loadedList[assetName];
             assetObj._callbackList.Add(callFun);
             this._loadedAsyncList.Add(assetObj);
@@ -352,10 +352,10 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         }
         else if(this._loadingList.ContainsKey(assetName))
         {
-            UtilLog.LogWhite("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 加载中,只添加 [加载完成回调函数] 即可");
+            UtilLog.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 加载中,只添加 [加载完成回调函数] 即可");
             assetObj = this._loadingList[assetName];
             assetObj._callbackList.Add(callFun);
-            UtilLog.LogWhite("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} [加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
+            UtilLog.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} [加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
             return;
         }
 

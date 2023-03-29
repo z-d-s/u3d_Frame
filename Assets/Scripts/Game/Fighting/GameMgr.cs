@@ -15,9 +15,9 @@ public class GameMgr : BaseSingleton<GameMgr>
         return enemies;
     }
 
-    public void Init()
+    public void StartUp()
     {
-
+        UtilLog.LogGreen("=== GameMgr 启动成功 ===");
     }
 
     /// <summary>

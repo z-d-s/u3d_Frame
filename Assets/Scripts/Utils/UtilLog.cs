@@ -4,6 +4,11 @@ public static class UtilLog
 {
     public static EnumColorLog enumColorLog = EnumColorLog.NONE;
 
+    public static void Log(object arg)
+    {
+        LogWhite(arg);
+    }
+
     public static void LogWhite(object arg)
     {
         if (UtilLog.enumColorLog == EnumColorLog.NONE)

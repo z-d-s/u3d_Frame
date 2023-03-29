@@ -1,6 +1,8 @@
 using PureMVC.Patterns.Facade;
+using System.Net.NetworkInformation;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 
 public class GameUI : BaseUI
@@ -69,13 +71,18 @@ public class GameUI : BaseUI
 
     private void OnClickTest01()
 	{
-		
-	}
+        TimerMgr.Instance.DoLoop(1000, this.Test);
+    }
 
 	private void OnClickTest02()
 	{
-		
+		TimerMgr.Instance.ClearTimer(this.Test);
 	}
+
+	private void Test()
+	{
+        UtilLog.Log("测试方法");
+    }
 
     private GameUI_Proxy dataProxy
     {

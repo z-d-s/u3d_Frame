@@ -10,15 +10,17 @@ public class GameApp : MonoBaseSingleton<GameApp>
     {
         base.Awake();
 
+        UtilLog.enumColorLog = config != null ? config.enumColorLog : EnumColorLog.NONE;
+
         #region 游戏框架的初始化
         AppFacade.Instance.StartUp();
+        TimerMgr.Instance.StartUp();
         AssetBundleLoadMgr.Instance.LoadManifest();
         #endregion
 
         #region 初始化游戏模块
-        UtilLog.enumColorLog = config != null ? config.enumColorLog : EnumColorLog.NONE;
-        UIMgr.Instance.Init();
-        GameMgr.Instance.Init();
+        UIMgr.Instance.StartUp();
+        GameMgr.Instance.StartUp();
         #endregion
     }
 
