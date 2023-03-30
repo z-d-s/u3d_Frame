@@ -3,7 +3,7 @@ using System;
 /// <summary>
 /// 定时器
 /// </summary>
-public class TimerHandler
+public class TimeHandler
 {
     /// <summary>
     /// 执行间隔

@@ -1,6 +1,5 @@
 FileList.bytes
 Excels/Excels.txt
-Maps/Maps.txt
 Sounds/Sounds.txt
 Charactors/Monster/jing_ling_nan_001_ty.FBX
 Charactors/Prefabs/Jinglingnan_6.prefab
@@ -9,8 +8,8 @@ Effects/Model/szdaoguang02.FBX
 Effects/Prefabs/arrows.prefab
 Effects/Prefabs/landcuts.prefab
 Effects/Prefabs/swords.prefab
-Maps/sgyd/game.prefab
-Maps/sgyd/SGYD.prefab
+Maps/Prefabs/game.prefab
+Maps/Prefabs/SGYD.prefab
 UI/Prefabs/GameUI.prefab
 Charactors/Monster/Materials/jing_ling_nan_001_ty.mat
 Charactors/Monster/Materials/jing_ling_nan_001_ty.tga

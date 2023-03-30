@@ -38,9 +38,10 @@ public class GameMgr : BaseSingleton<GameMgr>
     /// </summary>
     public void InitFightingScene()
     {
-        AssetsLoadMgr.Instance.LoadAsync("scene_sgyd", "Maps/sgyd/SGYD.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("scene_sgyd", "Maps/Prefabs/SGYD.prefab", (string name, UnityEngine.Object obj) =>
         {
-            GameObject.Instantiate(obj as GameObject);
+            GameObject map = GameObject.Instantiate(obj as GameObject);
+            map.name = obj.name;
         });
     }
 

@@ -3,17 +3,17 @@
 	事件管理系统
 
     使用事例：
-        TimerMgr.Instance.DoOnce(2000, () =>
+        TimeMgr.Instance.DoOnce(2000, () =>
         {
             dosomething();
         });
-        TimerMgr.Instance.DoOnce<int, int, int>(3000, (a, b, c) =>
+        TimeMgr.Instance.DoOnce<int, int, int>(3000, (a, b, c) =>
         {
            dosomething();
         }, 123, 456, 789);
 
-        TimerMgr.Instance.DoLoop(1000, this.Test);
-        TimerMgr.Instance.ClearTimer(this.Test);
+        TimeMgr.Instance.DoLoop(1000, this.Test);
+        TimeMgr.Instance.ClearTime(this.Test);
         void Test()
 	    {
             dosomething();
@@ -33,16 +33,16 @@ public delegate void Handler<T1>(T1 param1);
 public delegate void Handler<T1, T2>(T1 param1, T2 param2);
 public delegate void Handler<T1, T2, T3>(T1 param1, T2 param2, T3 param3);
 
-public class TimerMgr : MonoBaseSingleton<TimerMgr>
+public class TimeMgr : MonoBaseSingleton<TimeMgr>
 {
         /// <summary>
     /// 游戏自启动运行帧数
     /// </summary>
-    public int currFrame = 0;
+    private int currFrame = 0;
     /// <summary>
     /// 游戏自启动运行时间(毫秒)
     /// </summary>
-    public long currentTime
+    private long currentTime
     {
         get
         {
@@ -52,18 +52,18 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
     /// <summary>
     /// 缓存的定时器(执行后缓存起来，避免每次重新创建)
     /// </summary>
-    private List<TimerHandler> poolHandlers = new List<TimerHandler>();
+    private List<TimeHandler> poolHandlers = new List<TimeHandler>();
     /// <summary>
     /// 准备执行的定时器
     /// </summary>
-    private List<TimerHandler> readyHandlers = new List<TimerHandler>();
+    private List<TimeHandler> readyHandlers = new List<TimeHandler>();
 
     /// <summary>
     /// 启动
     /// </summary>
     public void StartUp()
     {
-        UtilLog.LogGreen("=== TimerMgr 启动成功 ===");
+        UtilLog.LogGreen("=== TimeMgr 启动成功 ===");
     }
 
     public void Update()
@@ -71,7 +71,7 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
         this.currFrame++;
         for (int i = 0; i < this.readyHandlers.Count; i++)
         {
-            TimerHandler handler = this.readyHandlers[i];
+            TimeHandler handler = this.readyHandlers[i];
             long t = handler.userFrame ? this.currFrame : this.currentTime;
             if (t >= handler.exeTime)
             {
@@ -191,19 +191,19 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
     /// 清理定时器
     /// </summary>
     /// <param name="method">method为回调函数本身</param>
-    public void ClearTimer(Handler method)
+    public void ClearTime(Handler method)
     {
         this.RecycleHandler(method);
     }
-    public void ClearTimer<T1>(Handler<T1> method)
+    public void ClearTime<T1>(Handler<T1> method)
     {
         this.RecycleHandler(method);
     }
-    public void ClearTimer<T1, T2>(Handler<T1, T2> method)
+    public void ClearTime<T1, T2>(Handler<T1, T2> method)
     {
         this.RecycleHandler(method);
     }
-    public void ClearTimer<T1, T2, T3>(Handler<T1, T2, T3> method)
+    public void ClearTime<T1, T2, T3>(Handler<T1, T2, T3> method)
     {
         this.RecycleHandler(method);
     }
@@ -211,12 +211,12 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
     /// <summary>
     /// 清理所有定时器
     /// </summary>
-    public void ClearAllTimer()
+    public void ClearAllTime()
     {
-        foreach (TimerHandler handler in this.readyHandlers)
+        foreach (TimeHandler handler in this.readyHandlers)
         {
             this.RecycleHandler(handler.method);
-            this.ClearAllTimer();
+            this.ClearAllTime();
             return;
         }
     }
@@ -243,7 +243,7 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
             method.DynamicInvoke(args);
             return;
         }
-        TimerHandler handler;
+        TimeHandler handler;
         if (this.poolHandlers.Count > 0)
         {
             handler = this.poolHandlers[this.poolHandlers.Count - 1];
@@ -251,7 +251,7 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
         }
         else
         {
-            handler = new TimerHandler();
+            handler = new TimeHandler();
         }
         handler.userFrame = useFrame;
         handler.repeat = repeat;
@@ -268,7 +268,7 @@ public class TimerMgr : MonoBaseSingleton<TimerMgr>
     /// <param name="method"></param>
     private void RecycleHandler(Delegate method)
     {
-        TimerHandler handler = this.readyHandlers.FirstOrDefault(t => t.method == method);
+        TimeHandler handler = this.readyHandlers.FirstOrDefault(t => t.method == method);
         if (handler != null)
         {
             this.readyHandlers.Remove(handler);

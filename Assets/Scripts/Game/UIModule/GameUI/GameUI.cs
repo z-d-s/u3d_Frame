@@ -23,7 +23,8 @@ public class GameUI : BaseUI
 		this.img_Exp = this.view["Top_Left/user_info/img_Exp"].GetComponent<Image>();
 		this.text_Exp = this.view["Top_Left/user_info/text_Exp"].GetComponent<Text>();
 
-		this.AddButtonListener("Bottom_Right/attack_opt/attack_skill1", this.OnSkillClick);
+		this.AddButtonListener("Bottom_Right/attack_opt/attack_skill1", this.OnClick_Skill01);
+		this.AddButtonListener("Bottom_Right/attack_opt/attack_skill2", this.OnClick_Skill02);
 		this.AddButtonListener("Bottom_Right/attack_opt/attack_normall", this.OnNormalClick);
 
 		this.AddButtonListener("Top_Right/Test_01", this.OnClickTest01);
@@ -51,16 +52,31 @@ public class GameUI : BaseUI
 		this.text_Exp.text = data.exp + "/" + data.max_Exp;
 	}
 
-	private void OnSkillClick()
+	private void OnClick_Skill01()
 	{
         EventMgr.Instance.Dispatch("SkillAttack");
 
         AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/swords.prefab", (string name, UnityEngine.Object obj) =>
         {
-            GameObject charactorPrefab = obj as GameObject;
-            GameObject e = GameObject.Instantiate(charactorPrefab);
-            e.transform.position = GameMgr.Instance.player.transform.position + new Vector3(1, 0, 1);
-            e.name = "sword";
+			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
+			o.transform.position = GameMgr.Instance.player.transform.position;
+			TimeMgr.Instance.DoOnce(1000, () =>
+			{
+				PoolMgr.Instance.RecycleObject(o.name, o);
+			});
+        });
+    }
+
+	private void OnClick_Skill02()
+	{
+        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/landcuts.prefab", (string name, UnityEngine.Object obj) =>
+        {
+			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
+            o.transform.position = GameMgr.Instance.player.transform.position;
+            TimeMgr.Instance.DoOnce(600, () =>
+			{
+				PoolMgr.Instance.RecycleObject(o.name, o);
+			});
         });
     }
 
@@ -71,12 +87,12 @@ public class GameUI : BaseUI
 
     private void OnClickTest01()
 	{
-        TimerMgr.Instance.DoLoop(1000, this.Test);
+        TimeMgr.Instance.DoLoop(1000, this.Test);
     }
 
 	private void OnClickTest02()
 	{
-		TimerMgr.Instance.ClearTimer(this.Test);
+		TimeMgr.Instance.ClearTime(this.Test);
 	}
 
 	private void Test()

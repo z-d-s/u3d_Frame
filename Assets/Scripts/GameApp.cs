@@ -14,7 +14,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
 
         #region 游戏框架的初始化
         AppFacade.Instance.StartUp();
-        TimerMgr.Instance.StartUp();
+        TimeMgr.Instance.StartUp();
         AssetBundleLoadMgr.Instance.LoadManifest();
         #endregion
 
