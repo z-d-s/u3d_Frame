@@ -10,7 +10,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
     {
         base.Awake();
 
-        UtilLog.enumColorLog = config != null ? config.enumColorLog : EnumColorLog.NONE;
+        LogHelper.enumColorLog = config != null ? config.enumColorLog : EnumColorLog.NONE;
 
         #region 游戏框架的初始化
         AppFacade.Instance.StartUp();

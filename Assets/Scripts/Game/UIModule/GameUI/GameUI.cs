@@ -56,7 +56,7 @@ public class GameUI : BaseUI
 	{
         EventMgr.Instance.Dispatch("SkillAttack");
 
-        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/swords.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/swords.prefab", (string name, UnityEngine.Object obj) =>
         {
 			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
 			o.transform.position = GameMgr.Instance.player.transform.position;
@@ -69,7 +69,7 @@ public class GameUI : BaseUI
 
 	private void OnClick_Skill02()
 	{
-        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/landcuts.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/landcuts.prefab", (string name, UnityEngine.Object obj) =>
         {
 			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
             o.transform.position = GameMgr.Instance.player.transform.position;
@@ -97,7 +97,7 @@ public class GameUI : BaseUI
 
 	private void Test()
 	{
-        UtilLog.Log("测试方法");
+        LogHelper.Log("测试方法");
     }
 
     private GameUI_Proxy dataProxy

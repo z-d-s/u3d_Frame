@@ -35,7 +35,7 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
         TextAsset textAsset = Resources.Load<TextAsset>("FileList");
         if (textAsset == null)
         {
-            UtilLog.LogError("请先创建Resources加载模式下资源列表 --- FileList.bytes --- 文件");
+            LogHelper.LogError("请先创建Resources加载模式下资源列表 --- FileList.bytes --- 文件");
             return;
         }
 
@@ -77,7 +77,7 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
         _assetName = this.GetAssetName(_assetName);
         if (!this._resourcesList.Contains(_assetName))
         {
-            UtilLog.LogError("ResourcesLoadMgr No Find File " + _assetName);
+            LogHelper.LogError("ResourcesLoadMgr No Find File " + _assetName);
             return null;
         }
 
@@ -89,7 +89,7 @@ public class ResourcesLoadMgr : MonoBaseSingleton<ResourcesLoadMgr>
         _assetName = this.GetAssetName(_assetName);
         if (!this._resourcesList.Contains(_assetName))
         {
-            UtilLog.LogError("ResourcesLoadMgr No Find File " + _assetName);
+            LogHelper.LogError("ResourcesLoadMgr No Find File " + _assetName);
             return null;
         }
 

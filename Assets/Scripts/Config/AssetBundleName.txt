@@ -1,4 +1,4 @@
-role_jinglingnan:Assets/AssetsPackage/Charactors/Prefabs/Jinglingnan_6.prefab
+role_jinglingnan:Assets/AssetsPackage/Characters/Prefabs/Jinglingnan_6.prefab
 scene_sgyd:Assets/AssetsPackage/Maps/Prefabs/SGYD.prefab
-effect_asset:Assets/AssetsPackage/Effects/Prefabs
+effect_asset:Assets/AssetsPackage/Effects/Arrow
 ui_gameui:Assets/AssetsPackage/UI/Prefabs/GameUI.prefab

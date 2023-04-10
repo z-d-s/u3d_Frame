@@ -17,7 +17,7 @@ public class GameMgr : BaseSingleton<GameMgr>
 
     public void StartUp()
     {
-        UtilLog.LogGreen("=== GameMgr 启动成功 ===");
+        LogHelper.LogGreen("=== GameMgr 启动成功 ===");
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public class GameMgr : BaseSingleton<GameMgr>
         #endregion
 
         #region 放置角色player
-        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Charactors/Prefabs/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Prefabs/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject charactorPrefab = obj as GameObject;
             this.player = GameObject.Instantiate(charactorPrefab);
@@ -67,7 +67,7 @@ public class GameMgr : BaseSingleton<GameMgr>
         #endregion
 
         #region 放置敌人
-        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Charactors/Prefabs/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Prefabs/Jinglingnan_6.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject charactorPrefab = obj as GameObject;
             GameObject e = GameObject.Instantiate(charactorPrefab);

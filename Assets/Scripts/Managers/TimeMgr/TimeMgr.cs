@@ -63,7 +63,7 @@ public class TimeMgr : MonoBaseSingleton<TimeMgr>
     /// </summary>
     public void StartUp()
     {
-        UtilLog.LogGreen("=== TimeMgr 启动成功 ===");
+        LogHelper.LogGreen("=== TimeMgr 启动成功 ===");
     }
 
     public void Update()

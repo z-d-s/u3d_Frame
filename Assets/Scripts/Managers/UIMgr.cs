@@ -15,7 +15,7 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
 
     public void StartUp()
     {
-        UtilLog.LogGreen("=== UIMgr 启动成功 ===");
+        LogHelper.LogGreen("=== UIMgr 启动成功 ===");
 
         this.uiRoot = GameObject.Find("UIRoot").transform;
         this.canvas = uiRoot.Find("Canvas").transform;

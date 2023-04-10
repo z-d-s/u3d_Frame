@@ -16,7 +16,7 @@
 
 *****************************************************/
 
-#define TEST_AB1
+#define TEST_AB
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -222,7 +222,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     {
         if(!IsAssetExist(assetBundleName, assetName))
         {
-            UtilLog.LogError("AssetsLoadMgr Asset Not Exist " + assetName);
+            LogHelper.LogError("AssetsLoadMgr Asset Not Exist " + assetName);
             return null;
         }
 
@@ -277,7 +277,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             {
                 //提取的资源失败，从加载列表删除
                 this._loadingList.Remove(assetObj._assetName);
-                UtilLog.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+                LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
                 return null;
             }
 
@@ -308,7 +308,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
         {
             assetObj._isABLoad = true;
-            Utils.LogWarning(string.Format("AssetsLoadMgr LoadSync use AssetBundleLoadMgr assetBundleName:{0} assetname:{1}", assetObj._assetBundleName, assetObj._assetName));
+            LogHelper.LogWarning(string.Format("AssetsLoadMgr LoadSync use AssetBundleLoadMgr assetBundleName:{0} assetname:{1}", assetObj._assetBundleName, assetObj._assetName));
             AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(assetBundleName);
             assetObj._asset = ab1.LoadAsset(this.GetAssetNameForAB(assetName));
         }
@@ -316,7 +316,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         if(assetObj._asset == null)
         {
             //提取的资源失败，从加载列表删除
-            UtilLog.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+            LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
             return null;
         }
 
@@ -337,14 +337,14 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     {
         if(!IsAssetExist(assetBundleName, assetName))
         {
-            UtilLog.LogError("AssetsLoadMgr Asset Not Exist " + assetName);
+            LogHelper.LogError("AssetsLoadMgr Asset Not Exist " + assetName);
             return;
         }
 
         AssetObject assetObj = null;
         if(this._loadedList.ContainsKey(assetName))
         {
-            UtilLog.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 已经加载,无需再加载");
+            LogHelper.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 已经加载,无需再加载");
             assetObj = this._loadedList[assetName];
             assetObj._callbackList.Add(callFun);
             this._loadedAsyncList.Add(assetObj);
@@ -352,10 +352,10 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         }
         else if(this._loadingList.ContainsKey(assetName))
         {
-            UtilLog.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 加载中,只添加 [加载完成回调函数] 即可");
+            LogHelper.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} 加载中,只添加 [加载完成回调函数] 即可");
             assetObj = this._loadingList[assetName];
             assetObj._callbackList.Add(callFun);
-            UtilLog.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} [加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
+            LogHelper.Log("AssetsLoadMgr::LoadAsync assetName:{" + assetName + "} [加载完成回调函数] 数量:" + assetObj._callbackList.Count.ToString());
             return;
         }
 
@@ -384,7 +384,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                 if(_ab == null)
                 {
                     string errormsg = string.Format("LoadAssetBundle request error ! assetBundleName:{0} assetName:{1}",assetObj._assetBundleName, assetObj._assetName);
-                    Utils.LogError(errormsg);
+                    LogHelper.LogError(errormsg);
                     this._loadingList.Remove(assetName);
                     //重新添加 保证成功
                     for(int i = 0; i < assetObj._callbackList.Count; ++i)
@@ -423,12 +423,12 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 #if UNITY_EDITOR
             else if (UnityEditor.EditorApplication.isPlaying)
             {
-                UtilLog.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
+                LogHelper.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
             }
 #else
             else
             {
-                Utils.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
+                LogHelper.LogError("AssetsLoadMgr destroy NoGameObject name=" + _obj.name + " type=" + _obj.GetType().Name);
             }
 #endif
             return;
@@ -443,7 +443,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         {
             //Error
             string errormsg = string.Format("AssetsLoadMgr Destroy error ! assetName:{0}", assetObj._assetName);
-            UtilLog.LogError(errormsg);
+            LogHelper.LogError(errormsg);
             return;
         }
 
@@ -451,7 +451,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         {
             //Error
             string errormsg = string.Format("AssetsLoadMgr Destroy refCount error ! assetName:{0}", assetObj._assetName);
-            UtilLog.LogError(errormsg);
+            LogHelper.LogError(errormsg);
             return;
         }
 
@@ -488,7 +488,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     {
         if(!this._loadedList.ContainsKey(_assetName))
         {
-            UtilLog.LogError("AssetsLoadMgr AddAssetRef Error " + _assetName);
+            LogHelper.LogError("AssetsLoadMgr AddAssetRef Error " + _assetName);
             return;
         }
 
@@ -582,7 +582,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                 }
                 catch(System.Exception e)
                 {
-                    UtilLog.LogError(e.Message);
+                    LogHelper.LogError(e.Message);
                 }
             }
         }
@@ -664,7 +664,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                 {
                     //提取的资源失败，从加载列表删除
                     this._loadingList.Remove(assetObj._assetName);
-                    UtilLog.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+                    LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
                     break;
                 }
 
@@ -690,7 +690,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
                 {
                     //提取的资源失败，从加载列表删除
                     this._loadingList.Remove(assetObj._assetName);
-                    Utils.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+                    LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
                     break;
                 }
 

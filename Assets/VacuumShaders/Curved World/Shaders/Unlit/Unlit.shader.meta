@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: f7742757fa2e3d34f860c2a3539f739e
+labels:
+- Mobile
+- Unlit
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _EmissionMap: {instanceID: 0}
+  - _V_CW_IBL_Cube: {instanceID: 0}
+  - _V_CW_IBL_Matcap: {instanceID: 0}
+  - _V_CW_Cube: {instanceID: 0}
+  - _V_CW_NormalMap: {instanceID: 0}
+  - _V_CW_SecondaryNormalMap: {instanceID: 0}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

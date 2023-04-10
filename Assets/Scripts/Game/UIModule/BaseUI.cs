@@ -18,7 +18,7 @@ public class BaseUI : MonoBehaviour
         {
             if (this.view.ContainsKey(path + tf.gameObject.name))
             {
-                //Utils.LogWarning("Warning object is exist:" + path + tf.gameObject.name + "!");
+                //LogHelper.LogWarning("Warning object is exist:" + path + tf.gameObject.name + "!");
                 continue;
             }
             this.view.Add(path + tf.gameObject.name, tf.gameObject);
@@ -32,7 +32,7 @@ public class BaseUI : MonoBehaviour
         Button btn = this.view[view_name].GetComponent<Button>();
         if (btn == null)
         {
-            UtilLog.LogWarning("UI_manager add_button_listener: not Button Component!");
+            LogHelper.LogWarning("UI_manager add_button_listener: not Button Component!");
             return;
         }
 
@@ -44,7 +44,7 @@ public class BaseUI : MonoBehaviour
         Slider sl = this.view[view_name].GetComponent<Slider>();
         if (sl == null)
         {
-            UtilLog.LogWarning("UI_manager add_slider_listener: not Slider Component!");
+            LogHelper.LogWarning("UI_manager add_slider_listener: not Slider Component!");
             return;
         }
 

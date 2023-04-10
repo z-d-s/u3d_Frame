@@ -47,7 +47,7 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
         TextAsset textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(path + "FileList.bytes");
         if (textAsset == null)
         {
-            UtilLog.LogError("请先创建Editor模式下资源列表 --- FileList.bytes --- 文件");
+            LogHelper.LogError("请先创建Editor模式下资源列表 --- FileList.bytes --- 文件");
             return;
         }
 
@@ -78,7 +78,7 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
     {
         if (!this._resourcesList.Contains(_assetName))
         {
-            UtilLog.LogError("EditorAssetLoadMgr No Find File " + _assetName);
+            LogHelper.LogError("EditorAssetLoadMgr No Find File " + _assetName);
             return null;
         }
 
@@ -93,7 +93,7 @@ public class EditorAssetLoadMgr : MonoBaseSingleton<EditorAssetLoadMgr>
     {
         if (!this._resourcesList.Contains(_assetName))
         {
-            UtilLog.LogError("EditorAssetLoadMgr No Find File " + _assetName);
+            LogHelper.LogError("EditorAssetLoadMgr No Find File " + _assetName);
             return null;
         }
 

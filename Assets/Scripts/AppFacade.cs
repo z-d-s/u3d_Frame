@@ -32,7 +32,7 @@ public class AppFacade : Facade
 
     public void StartUp()
     {
-        UtilLog.LogGreen("=== AppFacade 启动成功 ===");
+        LogHelper.LogGreen("=== AppFacade 启动成功 ===");
     }
 
     protected override void InitializeView()
