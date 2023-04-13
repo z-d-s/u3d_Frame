@@ -44,13 +44,14 @@ public class AppFacade : Facade
     {
         base.InitializeController();
 
-        this.RegisterCommand(EventDefine.MVC_GameUI_StartUp, () => new GameUI_Command());
+        this.RegisterCommand(EventDefine.MVC_UI_Game_StartUp, () => new UI_Game_Command());
+        this.RegisterCommand(EventDefine.MVC_UI_Loading_StartUp, () => new UI_Loading_Command());
     }
 
     protected override void InitializeModel()
     {
         base.InitializeModel();
 
-        this.RegisterProxy(new GameUI_Proxy(GameUI_Proxy.NAME));
+        this.RegisterProxy(new UI_Game_Proxy(UI_Game_Proxy.NAME));
     }
 }

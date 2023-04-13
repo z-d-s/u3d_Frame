@@ -26,7 +26,8 @@ public class GameMgr : BaseSingleton<GameMgr>
     public void EnterGame()
     {
         #region 显示UI
-        AppFacade.Instance.SendNotification(EventDefine.MVC_GameUI_StartUp);
+        //AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Game_StartUp);
+        AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_StartUp);
         #endregion
 
         this.InitFightingScene();

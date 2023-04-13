@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class EventDefine
 {
-    public const string None                        = "";
+    public const string None                            = "";
 
-    public const string MVC_GameUI_StartUp          = "GameUI_StartUp";
-    public const string MVC_GameUI_FillInfo         = "GameUI_FillInfo";
-    public const string MVC_GameUI_Change_Hp        = "GameUI_Change_Hp";
-    public const string MVC_GameUI_Change_Exp       = "GameUI_Change_Score";
-    public const string MVC_GameUI_Hide             = "GameUI_Hide";
+    public const string MVC_UI_Game_StartUp             = "UI_Game_StartUp";
+    public const string MVC_UI_Game_FillInfo            = "UI_Game_FillInfo";
+    public const string MVC_UI_Game_Change_Hp           = "UI_Game_Change_Hp";
+    public const string MVC_UI_Game_Change_Score        = "UI_Game_Change_Score";
+    public const string MVC_UI_Game_Hide                = "UI_Game_Hide";
+
+    public const string MVC_UI_Loading_StartUp          = "UI_Loading_StartUp";
+    public const string MVC_UI_Loading_FillInfo         = "UI_Loading_FillInfo";
+    public const string MVC_UI_Loading_Hide             = "UI_Loading_Hide";
 }

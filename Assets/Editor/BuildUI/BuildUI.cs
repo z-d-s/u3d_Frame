@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using DG.Tweening.Plugins.Core.PathCore;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 public class BuildUI : EditorWindow
 {
@@ -46,34 +45,39 @@ public class BuildUI : EditorWindow
     public static void CreatUISourceFile(GameObject selectGameObject)
     {
         string gameObjectName = selectGameObject.name;
-        string className = gameObjectName;// + "_UICtrl";
-        StreamWriter sw = null;
+        string className = gameObjectName;
+        StreamWriter sw;
 
-        if (File.Exists(Application.dataPath + "/Scripts/Game/UIModule/" + className + ".cs"))
+        string dirPath = Application.dataPath + "/Scripts/Game/UIModule/" + className;
+        if (Directory.Exists(dirPath) == false)
+        {
+            Directory.CreateDirectory(dirPath);
+        }
+        if (File.Exists(dirPath + "/" + className + ".cs"))
         {
             return;
         }
 
-        sw = new StreamWriter(Application.dataPath + "/Scripts/Game/UIModule/" + className + ".cs");
+        sw = new StreamWriter(dirPath + "/" + className + ".cs");
         sw.WriteLine("using UnityEngine;\nusing System.Collections;\nusing UnityEngine.UI;\nusing System.Collections.Generic;\n");
+        sw.WriteLine("public class " + className + " : BaseUI");
 
-        sw.WriteLine("public class " + className + " : UI_Base" + "\n");
-        sw.WriteLine("{" + "\n");
+        sw.WriteLine("{");
 
         sw.WriteLine("\t" + "public override void Awake()");
-        sw.WriteLine("\t" + "{" + "\n");
-        sw.WriteLine("\t\t" + "base.Awake();" + "\n");
+        sw.WriteLine("\t" + "{");
+        sw.WriteLine("\t\t" + "base.Awake();");
         sw.WriteLine("\t" + "}" + "\n");
 
         sw.WriteLine("\t" + "void Start()");
-        sw.WriteLine("\t" + "{" + "\n");
-        sw.WriteLine("\t" + "}" + "\n");
+        sw.WriteLine("\t" + "{");
+        sw.WriteLine("\t" + "}");
 
         sw.WriteLine("}");
 
         sw.Flush();
         sw.Close();
 
-        LogHelper.Log("Generate : " + Application.dataPath + "/Scripts/Game/UIModule/" + className + ".cs");
+        Debug.Log("Generate : " + Application.dataPath + "/Scripts/Game/UIModule/" + className + ".cs");
     }
 }
