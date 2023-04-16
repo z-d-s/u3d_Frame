@@ -18,7 +18,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.WHITE || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.white);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= WHITE =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 
@@ -31,7 +31,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.RED || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.red);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= RED =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 
@@ -44,7 +44,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.GREEN || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.green);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= GREEN =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 
@@ -57,7 +57,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.BLUE || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.blue);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= BLUE =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 
@@ -70,7 +70,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.CYAN || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.cyan);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= CYAN =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 
@@ -83,7 +83,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.MAGENTA || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.magenta);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= MAGENTA =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 
@@ -96,7 +96,7 @@ public static class LogHelper
         else if (LogHelper.enumColorLog == EnumColorLog.YELLOW || LogHelper.enumColorLog == EnumColorLog.All)
         {
             string colHtmlString = ColorUtility.ToHtmlStringRGB(Color.yellow);
-            Debug.Log(string.Format("<color=#{0}>{1}</color>", colHtmlString, arg.ToString()));
+            Debug.Log(string.Format("<color=#{0}>= YELLOW =:{1}</color>", colHtmlString, arg.ToString()));
         }
     }
 

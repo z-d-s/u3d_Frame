@@ -16,7 +16,7 @@
 
 *****************************************************/
 
-#define TEST_AB1
+//#define USE_AB
 
 using System.Collections.Generic;
 using UnityEngine;
@@ -153,7 +153,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// <returns></returns>
     public bool IsAssetExist(string assetBundleName, string assetName)
     {
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
         return EditorAssetLoadMgr.Instance.IsFileExist(assetName);
 #else
         if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
@@ -255,7 +255,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             }
             else
             {
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
                 assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
 #else
                 if (assetObj._isABLoad)
@@ -297,7 +297,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._assetBundleName = assetBundleName;
         assetObj._assetName = assetName;
 
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
         assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
 #else
         if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
@@ -364,7 +364,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._assetName = assetName;
         assetObj._callbackList.Add(callFun);
 
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
         this._loadingList.Add(assetName, assetObj);
         assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(assetName);
 #else
@@ -591,7 +591,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
     private void DoUnload(AssetObject _assetObj)
     {
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
         EditorAssetLoadMgr.Instance.Unload(_assetObj._asset);
 #else
         if (_assetObj._isABLoad)
@@ -655,7 +655,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         this.tempLoadeds.Clear();
         foreach(var assetObj in this._loadingList.Values)
         {
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
             if(assetObj._request != null && (assetObj._request as EditorResourceRequest).isDone)
             {
                 assetObj._asset = (assetObj._request as EditorResourceRequest).asset;
@@ -802,7 +802,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         this.UpdateLoading();       //加载完成回调
         this.UpdateUnload();        //卸载需要销毁的资源
 
-#if UNITY_EDITOR && !TEST_AB
+#if UNITY_EDITOR && !USE_AB
         EditorAssetLoadMgr.Instance.Update();
 #else
         AssetBundleLoadMgr.Instance.Update();

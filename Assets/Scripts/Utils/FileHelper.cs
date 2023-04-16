@@ -36,7 +36,8 @@ public class FileHelper
 #if UNITY_EDITOR            //编辑器
         return Application.dataPath + "/StreamingAssets/";
 #elif UNITY_STANDALONE      //Mac OS X, Windows or Linux
-        return "file://" + Application.dataPath + "/StreamingAssets/";
+        //return "file://" + Application.dataPath + "/StreamingAssets/";
+        return Application.dataPath + "/StreamingAssets/";
 #elif UNITY_ANDROID
         return "jar:file://" + Application.dataPath + "!/assets/";
 #elif UNITY_IOS
@@ -53,6 +54,7 @@ public class FileHelper
 #if UNITY_EDITOR            //编辑器
         return Application.streamingAssetsPath + "/";
 #elif UNITY_STANDALONE      //Mac OS X, Windows or Linux
+        //return "file://" + Application.streamingAssetsPath + "/";
         return "file://" + Application.streamingAssetsPath + "/";
 #elif UNITY_ANDROID
         return Application.streamingAssetsPath + "/";

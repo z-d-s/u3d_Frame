@@ -22,8 +22,4 @@ public enum EnumColorLog
 public class GameConfig : ScriptableObject
 {
     public EnumColorLog enumColorLog = EnumColorLog.NONE;
-
-    public float assetCacheTime = 5f;
-
-    public string serverUrl = string.Empty;
 }
