@@ -25,7 +25,7 @@ public class AnimCtrl : MonoBehaviour
         Death,
     }
 
-    private Animation anim;
+    private Animator anim;
     private AnimState state;
     private static string[] animNames = new string[]
     {
@@ -45,7 +45,7 @@ public class AnimCtrl : MonoBehaviour
 
     public void Init()
     {
-        this.anim = this.gameObject.GetComponentInChildren<Animation>();
+        this.anim = this.gameObject.GetComponentInChildren<Animator>();
         this.state = AnimState.Invalid;
     }
 
@@ -57,6 +57,6 @@ public class AnimCtrl : MonoBehaviour
         }
 
         this.state = state;
-        this.anim.CrossFade(AnimCtrl.animNames[(int)this.state]);
+        this.anim.Play(AnimCtrl.animNames[(int)this.state]);
     }
 }

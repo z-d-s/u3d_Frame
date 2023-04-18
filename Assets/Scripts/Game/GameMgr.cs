@@ -55,12 +55,12 @@ public class GameMgr : BaseSingleton<GameMgr>
         #endregion
 
         #region 放置角色player
-        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Prefabs/Jinglingnan.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("role_max", "Characters/Prefabs/Role_Max.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject charactorPrefab = obj as GameObject;
             this.player = GameObject.Instantiate(charactorPrefab);
-            this.player.transform.position = new Vector3(45f, 60.25f, 100f);
-            this.player.transform.localScale = Vector3.one * 1.5f;
+            this.player.transform.position = new Vector3(0f, 0f, 0f);
+            this.player.transform.localScale = Vector3.one;
             this.player.AddComponent<CharactorCtrl>().Init();
             this.player.AddComponent<PlayerOpt>().Init();
             this.player.name = "player";
@@ -68,13 +68,13 @@ public class GameMgr : BaseSingleton<GameMgr>
         #endregion
 
         #region 放置敌人
-        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Prefabs/Jinglingnan.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("role_max", "Characters/Prefabs/Role_Max.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject charactorPrefab = obj as GameObject;
             GameObject e = GameObject.Instantiate(charactorPrefab);
             this.enemies.Add(e);
             e.transform.position = this.player.transform.position + new Vector3(2, 0, 2);
-            e.transform.localScale = Vector3.one * 1.5f;
+            e.transform.localScale = Vector3.one;
             e.AddComponent<CharactorCtrl>().Init();
             e.name = "enemy";
         });

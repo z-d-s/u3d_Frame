@@ -575,15 +575,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             if (_assetObj._callbackList[i] != null)
             {
                 _assetObj._refCount++; //每次回调 引用计数+1
-
-                try
-                {
-                    _assetObj._callbackList[i](_assetObj._assetName, _assetObj._asset);
-                }
-                catch(System.Exception e)
-                {
-                    LogHelper.LogError(e.Message);
-                }
+                _assetObj._callbackList[i](_assetObj._assetName, _assetObj._asset);
             }
         }
         _assetObj._callbackList.RemoveRange(0, count);

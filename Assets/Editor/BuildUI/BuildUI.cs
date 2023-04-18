@@ -44,8 +44,7 @@ public class BuildUI : EditorWindow
     //创建UISource文件的函数
     public static void CreatUISourceFile(GameObject selectGameObject)
     {
-        string gameObjectName = selectGameObject.name;
-        string className = gameObjectName;
+        string className = selectGameObject.name;
         StreamWriter sw;
 
         string dirPath = Application.dataPath + "/Scripts/Game/UIModule/" + className;

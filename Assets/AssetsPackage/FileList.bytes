@@ -1,4 +1,5 @@
 FileList.bytes
+Characters/Role_Animator.controller
 Fonts/FontMain-CN.ttf
 Fonts/FontSub-CN.ttf
 Sounds/AudioBonusText.wav
@@ -80,6 +81,7 @@ Characters/Police/PoliceJump.FBX
 Characters/Police/PoliceRun.FBX
 Characters/Police/PoliceStartRunning.FBX
 Characters/Prefabs/Jinglingnan.prefab
+Characters/Prefabs/Role_Max.prefab
 Characters/RockStar/RockStarArristed.FBX
 Characters/RockStar/RockStarIdle.FBX
 Characters/Runubos/RunubisIdle.FBX
