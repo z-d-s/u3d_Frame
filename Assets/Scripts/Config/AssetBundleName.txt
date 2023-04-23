@@ -1,6 +1,4 @@
-role_jinglingnan:Assets/AssetsPackage/Characters/Prefabs/Jinglingnan.prefab
 role_max:Assets/AssetsPackage/Characters/Prefabs/Role_Max.prefab
 terrain_a000:Assets/AssetsPackage/Models/Prefabs/Maps/TerrainA000.prefab
-effect_asset:Assets/AssetsPackage/Effects/Arrow
 ui_game:Assets/AssetsPackage/UI/Prefabs/UI_Game.prefab
 ui_loading:Assets/AssetsPackage/UI/Prefabs/UI_Loading.prefab

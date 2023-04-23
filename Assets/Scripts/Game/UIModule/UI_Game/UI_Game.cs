@@ -1,8 +1,4 @@
-using PureMVC.Patterns.Facade;
-using System.Net.NetworkInformation;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 
 public class UI_Game : BaseUI
@@ -54,41 +50,41 @@ public class UI_Game : BaseUI
 
 	private void OnClick_Skill01()
 	{
-        EventMgr.Instance.Dispatch("SkillAttack");
+		EventMgr.Instance.Dispatch("SkillAttack");
 
-        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/swords.prefab", (string name, UnityEngine.Object obj) =>
-        {
+		AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/swords.prefab", (string name, UnityEngine.Object obj) =>
+		{
 			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
-			o.transform.position = GameMgr.Instance.player.transform.position;
+			o.transform.position = GameMgr.Instance.characterMain.transform.position;
 			TimeMgr.Instance.DoOnce(1000, () =>
 			{
 				PoolMgr.Instance.RecycleObject(o.name, o);
 			});
-        });
-    }
+		});
+	}
 
 	private void OnClick_Skill02()
 	{
-        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/landcuts.prefab", (string name, UnityEngine.Object obj) =>
-        {
+		AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/landcuts.prefab", (string name, UnityEngine.Object obj) =>
+		{
 			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
-            o.transform.position = GameMgr.Instance.player.transform.position;
-            TimeMgr.Instance.DoOnce(600, () =>
+			o.transform.position = GameMgr.Instance.characterMain.transform.position;
+			TimeMgr.Instance.DoOnce(600, () =>
 			{
 				PoolMgr.Instance.RecycleObject(o.name, o);
 			});
-        });
-    }
+		});
+	}
 
-    private void OnNormalClick()
+	private void OnNormalClick()
 	{
 		this.Hide();
 	}
 
-    private void OnClickTest01()
+	private void OnClickTest01()
 	{
-        TimeMgr.Instance.DoLoop(1000, this.Test);
-    }
+		TimeMgr.Instance.DoLoop(1000, this.Test);
+	}
 
 	private void OnClickTest02()
 	{
@@ -97,14 +93,14 @@ public class UI_Game : BaseUI
 
 	private void Test()
 	{
-        LogHelper.Log("测试方法");
-    }
+		LogHelper.Log("测试方法");
+	}
 
-    private UI_Game_Proxy dataProxy
-    {
-        get
-        {
-            return AppFacade.Instance.RetrieveProxy(UI_Game_Proxy.NAME) as UI_Game_Proxy;
-        }
-    }
+	private UI_Game_Proxy dataProxy
+	{
+		get
+		{
+			return AppFacade.Instance.RetrieveProxy(UI_Game_Proxy.NAME) as UI_Game_Proxy;
+		}
+	}
 }

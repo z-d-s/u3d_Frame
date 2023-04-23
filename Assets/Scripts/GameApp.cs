@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameApp : MonoBaseSingleton<GameApp>
 {
@@ -33,5 +34,16 @@ public class GameApp : MonoBaseSingleton<GameApp>
     {
         //进入游戏
         GameMgr.Instance.EnterGame();
+    }
+
+    public void EnterMainScene()
+    {
+        LogHelper.LogMagenta("=== before enter MainScene ===");
+        SceneManager.LoadScene("GameMainScene", LoadSceneMode.Single);
+    }
+
+    public void EnterFightingScene()
+    {
+        SceneManager.LoadScene("GameFightingScene", LoadSceneMode.Additive);
     }
 }

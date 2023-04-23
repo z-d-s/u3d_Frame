@@ -22,6 +22,16 @@ public class PoolMgr : BaseSingleton<PoolMgr>
     private GameObject root_Pool;
     private Dictionary<string, PoolData> dic_Pool = new Dictionary<string, PoolData>();
 
+    public GameObject GetObject(string name)
+    {
+        GameObject obj = null;
+        if (this.dic_Pool.ContainsKey(name) && this.dic_Pool[name].poolList.Count > 0)
+        {
+            obj = this.dic_Pool[name].GetObject();
+        }
+        return obj;
+    }
+
     public GameObject GetObject(string name, GameObject template)
     {
         if(template == null)

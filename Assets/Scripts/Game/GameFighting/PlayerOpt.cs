@@ -1,14 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+/**
+ * 自身操控角色(实现屏幕前玩家的主动操控响应)
+ */
+
 using UnityEngine;
 
 public class PlayerOpt : MonoBehaviour
 {
-    private CharactorCtrl ctrl;
+    private CharacterBase ctrl;
 
     public void Init()
     {
-        this.ctrl = this.gameObject.GetComponent<CharactorCtrl>();
+        this.ctrl = this.gameObject.GetComponent<CharacterBase>();
 
         EventMgr.Instance.AddListener("SkillAttack", this.OnSkillEvent);
     }
@@ -20,7 +22,6 @@ public class PlayerOpt : MonoBehaviour
 
     public void OnSkillEvent(IEventArgs args)
     {
-        string t = args.GetValue<string>();
-        this.ctrl.OnPlayerSkill();
+        
     }
 }

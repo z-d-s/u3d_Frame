@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimCtrl : MonoBehaviour
+public class AnimatorCtrl : MonoBehaviour
 {
     public enum AnimState
     {
@@ -57,6 +57,6 @@ public class AnimCtrl : MonoBehaviour
         }
 
         this.state = state;
-        this.anim.Play(AnimCtrl.animNames[(int)this.state]);
+        this.anim.Play(AnimatorCtrl.animNames[(int)this.state]);
     }
 }

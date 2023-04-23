@@ -36,7 +36,7 @@ public class UI_Loading_Mediator : Mediator
             case EventDefine.MVC_UI_Loading_FillInfo:
                 this.view.FillDataInfo();
                 break;
-            case EventDefine.MVC_UI_Game_Hide:
+            case EventDefine.MVC_UI_Loading_Hide:
                 this.Hide();
                 break;
             default:

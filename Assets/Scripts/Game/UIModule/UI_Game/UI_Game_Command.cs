@@ -23,7 +23,7 @@ public class UI_Game_Command : SimpleCommand
                         ui_view.name = _obj.name;
                         if (parent == null)
                         {
-                            parent = UIMgr.Instance.canvas.gameObject;
+                            parent = UIMgr.Instance.ui_Canvas.gameObject;
                         }
                         ui_view.transform.SetParent(parent.transform, false);
                         ui_view.SetActive(false);
