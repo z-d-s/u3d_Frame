@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameMgr : BaseSingleton<GameMgr>
 {
     public CharacterMain characterMain = null;
+    public CameraCtrl cameraCtrl = null;
 
     public void StartUp()
     {
@@ -20,7 +21,7 @@ public class GameMgr : BaseSingleton<GameMgr>
         AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_StartUp);
         #endregion
 
-        TimeMgr.Instance.DoOnce(2000, () =>
+        TimeMgr.Instance.DoOnce(1000, () =>
         {
             AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_Hide);
             GameApp.Instance.EnterMainScene();

@@ -417,8 +417,6 @@ public class Modules : MonoBehaviour {
             txtValue.color = setColor;
         }
     }
-
-    private static int oldTypeMessage = 2;
     
     public static DateTime LoadOldDateTime(string firstSave)
     {

@@ -44,6 +44,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
 
     public void EnterFightingScene()
     {
+        LogHelper.LogMagenta("=== before enter FightingScene ===");
         SceneManager.LoadScene("GameFightingScene", LoadSceneMode.Additive);
     }
 }

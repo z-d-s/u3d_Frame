@@ -43,6 +43,11 @@ public class CharacterBase : MonoBehaviour
         });
     }
 
+    public Vector3 GetCharacterPos()
+    {
+        return this.transform.position;
+    }
+
     private void OnEndBySkill()
     {
         if(this.isAlive == false)

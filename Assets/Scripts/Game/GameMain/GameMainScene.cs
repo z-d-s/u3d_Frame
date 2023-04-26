@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameMainScene : MonoBehaviour
@@ -25,10 +26,11 @@ public class GameMainScene : MonoBehaviour
     /// </summary>
     public void InitFightingScene()
     {
-        AssetsLoadMgr.Instance.LoadAsync("terrain_a000", "Models/Prefabs/Maps/TerrainA000.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("terrain_a016", "Models/Prefabs/Maps/TerrainA016.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject map = GameObject.Instantiate(obj as GameObject);
             map.name = obj.name;
+            map.transform.position = new Vector3(0, 0, 90);
         });
     }
 
@@ -47,8 +49,19 @@ public class GameMainScene : MonoBehaviour
             player.AddComponent<PlayerOpt>().Init();
             GameMgr.Instance.characterMain = player.AddComponent<CharacterMain>();
             GameMgr.Instance.characterMain.Init();
+
+            this.InitMainCamera();
         });
         #endregion
+    }
+
+    /// <summary>
+    /// 初始化主摄像机
+    /// </summary>
+    public void InitMainCamera()
+    {
+        GameMgr.Instance.cameraCtrl = Camera.main.transform.AddComponent<CameraCtrl>();
+        GameMgr.Instance.cameraCtrl.Init();
     }
 
     public void ResetGame()
