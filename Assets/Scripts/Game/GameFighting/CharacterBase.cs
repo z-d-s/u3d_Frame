@@ -35,7 +35,7 @@ public class CharacterBase : MonoBehaviour
 
     private void AddShadow()
     {
-        AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/swords.prefab", (string name, UnityEngine.Object obj) =>
+        AssetsLoadMgr.Instance.LoadAsync("shadow", "Effects/Prefabs/Shadow.prefab", (string name, UnityEngine.Object obj) =>
         {
             GameObject _obj = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
             this.shadowCtrl = _obj.AddComponent<ShadowCtrl>();

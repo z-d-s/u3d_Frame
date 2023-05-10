@@ -1,34 +1,32 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Game : BaseUI
 {
-	private Image img_Blood;
-	private Text text_Blood;
-
-	private Image img_Exp;
-	private Text text_Exp;
+	private Image		img_Touch;
+	private Text		text_FrameID;
+	private Text		text_TouchingTime;
+	private Button		btn_StartGame;
 
 	public override void Awake()
 	{
 		base.Awake();
 
-		this.img_Blood = this.view["Top_Left/user_info/img_Blood"].GetComponent<Image>();
-		this.text_Blood = this.view["Top_Left/user_info/text_Blood"].GetComponent<Text>();
+		this.img_Touch = this.transform.Find("img_Touch").GetComponent<Image>();
+		this.img_Touch.AddComponent<GameTouchCtrl>();
 
-		this.img_Exp = this.view["Top_Left/user_info/img_Exp"].GetComponent<Image>();
-		this.text_Exp = this.view["Top_Left/user_info/text_Exp"].GetComponent<Text>();
+		this.text_TouchingTime = this.transform.Find("Top_Right/text_FrameID").GetComponent<Text>();
+		this.text_TouchingTime = this.transform.Find("Top_Right/text_TouchingTime").GetComponent<Text>();
 
-		this.AddButtonListener("Bottom_Right/attack_opt/attack_skill1", this.OnClick_Skill01);
-		this.AddButtonListener("Bottom_Right/attack_opt/attack_skill2", this.OnClick_Skill02);
-		this.AddButtonListener("Bottom_Right/attack_opt/attack_normall", this.OnNormalClick);
-
-		this.AddButtonListener("Top_Right/Test_01", this.OnClickTest01);
-		this.AddButtonListener("Top_Right/Test_02", this.OnClickTest02);
+		this.btn_StartGame = this.transform.Find("Mid_Center/btn_StartGame").GetComponent<Button>();
+		this.btn_StartGame.onClick.AddListener(this.OnClickStartGame);
 	}
 
 	private void OnEnable()
 	{
+		this.SetStartBtnActive(true);
 		this.dataProxy.RequestDataInfo();
 	}
 
@@ -41,59 +39,25 @@ public class UI_Game : BaseUI
 
 	public void RefreshDataInfo(UI_GameData data)
 	{
-		this.img_Blood.fillAmount = data.hp / data.max_Hp;
-		this.text_Blood.text = data.hp + "/" + data.max_Hp;
-
-		this.img_Exp.fillAmount = data.exp / data.max_Exp;
-		this.text_Exp.text = data.exp + "/" + data.max_Exp;
+		
 	}
 
-	private void OnClick_Skill01()
+	public void RefreshTouchingTime(float time)
 	{
-		EventMgr.Instance.Dispatch("SkillAttack");
-
-		AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/swords.prefab", (string name, UnityEngine.Object obj) =>
-		{
-			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
-			o.transform.position = GameMgr.Instance.characterMain.transform.position;
-			TimeMgr.Instance.DoOnce(1000, () =>
-			{
-				PoolMgr.Instance.RecycleObject(o.name, o);
-			});
-		});
+		this.text_TouchingTime.text = $"TouchingTime:{string.Format("{0:F2}", time)}";
 	}
 
-	private void OnClick_Skill02()
+	private void OnClickStartGame()
 	{
-		AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Arrow/landcuts.prefab", (string name, UnityEngine.Object obj) =>
-		{
-			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
-			o.transform.position = GameMgr.Instance.characterMain.transform.position;
-			TimeMgr.Instance.DoOnce(600, () =>
-			{
-				PoolMgr.Instance.RecycleObject(o.name, o);
-			});
-		});
+		LogHelper.Log("=== 点击开始游戏 ===");
+
+		this.SetStartBtnActive(false);
+		GameMgr.Instance.gameState = GameState.Gameing;
 	}
 
-	private void OnNormalClick()
+	private void SetStartBtnActive(bool active)
 	{
-		this.Hide();
-	}
-
-	private void OnClickTest01()
-	{
-		TimeMgr.Instance.DoLoop(1000, this.Test);
-	}
-
-	private void OnClickTest02()
-	{
-		TimeMgr.Instance.ClearTime(this.Test);
-	}
-
-	private void Test()
-	{
-		LogHelper.Log("测试方法");
+		this.btn_StartGame.gameObject.SetActive(active);
 	}
 
 	private UI_Game_Proxy dataProxy

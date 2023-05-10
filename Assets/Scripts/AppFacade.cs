@@ -44,8 +44,8 @@ public class AppFacade : Facade
     {
         base.InitializeController();
 
-        this.RegisterCommand(EventDefine.MVC_UI_Game_StartUp, () => new UI_Game_Command());
         this.RegisterCommand(EventDefine.MVC_UI_Loading_StartUp, () => new UI_Loading_Command());
+        this.RegisterCommand(EventDefine.MVC_UI_Game_StartUp, () => new UI_Game_Command());
     }
 
     protected override void InitializeModel()

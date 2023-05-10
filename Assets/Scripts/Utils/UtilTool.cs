@@ -23,6 +23,43 @@ public static class UtilTool
 
         return angle;
     }
+
+    //                 0
+    //       -45      ↑       45
+    //                 |
+    //                 |
+    //      -90 ←-----o-----→ 90
+    //                 |
+    //                 |
+    //       -135      ↓      135
+    //             -180/180
+    /// <summary>
+    /// 获取角度 (目标点与基准点在世界坐标系下的夹角)
+    /// </summary>
+    /// <param name="oriPos">基准点</param>
+    /// <param name="targetPos">目标点</param>
+    /// <returns></returns>
+    public static float GetAngle_XZ(Vector3 oriPos, Vector3 targetPos)
+    {
+        oriPos = new Vector3(oriPos.x, 0, oriPos.z);
+        targetPos = new Vector3(targetPos.x, 0, targetPos.z);
+        Vector3 offsetPos = targetPos - oriPos;
+        float distance = Vector3.Distance(targetPos, oriPos);
+        float _typeSin = offsetPos.x / distance;
+        float _typeCos = offsetPos.z / distance;
+        float angle_Sin = Mathf.Asin(offsetPos.x / distance) * (180 / Mathf.PI);
+        float angle_Cos = Mathf.Asin(offsetPos.z / distance) * (180 / Mathf.PI);
+        if (_typeSin >= 0 && _typeCos <= 0)
+        {
+            angle_Sin = 90 + (90 - angle_Sin);
+        }
+        else if (_typeSin <= 0 && _typeCos <= 0)
+        {
+            angle_Sin = -90 + (-90 - angle_Sin);
+        }
+        return angle_Sin;
+    }
+
     /// <summary>
     /// 根据名字获取物体中的子物体(也会递归在子物体的子物体中查找)
     /// </summary>

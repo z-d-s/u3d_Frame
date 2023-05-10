@@ -1,10 +1,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GameState
+{
+    None,
+    Gameing,
+    Jumping,
+    Death,
+    GameOver
+}
+
 public class GameMgr : BaseSingleton<GameMgr>
 {
     public CharacterMain characterMain = null;
     public CameraCtrl cameraCtrl = null;
+    public GameState gameState = GameState.None;
 
     public void StartUp()
     {
@@ -16,15 +26,13 @@ public class GameMgr : BaseSingleton<GameMgr>
     /// </summary>
     public void EnterGame()
     {
-        #region 显示UI
-        //AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Game_StartUp);
+        // 显示UI_Loading界面
         AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_StartUp);
-        #endregion
+    }
 
-        TimeMgr.Instance.DoOnce(1000, () =>
-        {
-            AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_Hide);
-            GameApp.Instance.EnterMainScene();
-        });
+    public void GameOver()
+    {
+        // 显示UI_GameOver界面
+        AppFacade.Instance.SendNotification(EventDefine.MVC_UI_GameOver_StartUp);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class UIMgr : MonoBaseSingleton<UIMgr>
 {
@@ -23,17 +24,23 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
     public Transform ui_Up;
     public Transform ui_Top;
 
+    /// <summary>
+    /// UI 事件系统
+    /// </summary>
+    public EventSystem ui_EventSystem;
+
     public void StartUp()
     {
         LogHelper.LogGreen("=== UIMgr 启动成功 ===");
 
         this.ui_Root        = GameObject.Find("UI_Root").transform;
-        this.ui_Bg          = GameObject.Find("UI_Bg").transform;
+        this.ui_Bg          = this.ui_Root.Find("UI_Bg").transform;
         this.ui_Canvas      = this.ui_Root.Find("UI_Canvas").transform;
         this.ui_Down        = this.ui_Canvas.Find("UI_Down").transform;
         this.ui_Mid         = this.ui_Canvas.Find("UI_Mid").transform;
         this.ui_Up          = this.ui_Canvas.Find("UI_Up").transform;
         this.ui_Top         = this.ui_Canvas.Find("UI_Top").transform;
+        this.ui_EventSystem = this.ui_Root.Find("EventSystem").GetComponent<EventSystem>();
 
         DontDestroyOnLoad(this.ui_Root);
     }

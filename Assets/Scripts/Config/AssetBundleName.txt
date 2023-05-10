@@ -1,5 +1,5 @@
-role_max:Assets/AssetsPackage/Characters/Prefabs/Role_Max.prefab
-terrain_a000:Assets/AssetsPackage/Models/Prefabs/Maps/TerrainA000.prefab
-terrain_a016:Assets/AssetsPackage/Models/Prefabs/Maps/TerrainA016.prefab
+role_jinglingnan:Assets/AssetsPackage/Characters/Jinglingnan/Prefabs/JingLingNan.prefab
+shadow:Assets/AssetsPackage/Effects/Prefabs/Shadow.prefab
+map_foundation:Assets/AssetsPackage/Maps/Prefabs
 ui_game:Assets/AssetsPackage/UI/Prefabs/UI_Game.prefab
 ui_loading:Assets/AssetsPackage/UI/Prefabs/UI_Loading.prefab

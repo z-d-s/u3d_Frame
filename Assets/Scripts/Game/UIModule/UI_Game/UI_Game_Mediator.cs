@@ -25,6 +25,7 @@ public class UI_Game_Mediator : Mediator
             EventDefine.MVC_UI_Game_FillInfo,
             EventDefine.MVC_UI_Game_Change_Hp,
             EventDefine.MVC_UI_Game_Change_Score,
+            EventDefine.MVC_UI_Game_RefreshTouchingTime,
             EventDefine.MVC_UI_Game_Hide,
         };
         return notifies;
@@ -44,6 +45,9 @@ public class UI_Game_Mediator : Mediator
                 break;
             case EventDefine.MVC_UI_Game_Change_Score:
                 this.view.RefreshDataInfo(notification.Body as UI_GameData);
+                break;
+            case EventDefine.MVC_UI_Game_RefreshTouchingTime:
+                this.view.RefreshTouchingTime((float)notification.Body);
                 break;
             case EventDefine.MVC_UI_Game_Hide:
                 this.Hide();

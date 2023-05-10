@@ -5,11 +5,11 @@
     使用事例：
         AssetsLoadMgr.Instance.LoadAsync("effect_asset", "Effects/Prefabs/landcuts.prefab", (string name, UnityEngine.Object obj) =>
         {
-			GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
-			TimeMgr.Instance.DoOnce(600, () =>
-			{
-				PoolMgr.Instance.RecycleObject(o.name, o);
-			});
+	        GameObject o = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
+	        TimeMgr.Instance.DoOnce(600, () =>
+	        {
+		        PoolMgr.Instance.RecycleObject(o.name, o);
+	        });
         });
 
 *****************************************************/
