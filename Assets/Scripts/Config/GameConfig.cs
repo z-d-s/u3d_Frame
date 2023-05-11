@@ -22,4 +22,14 @@ public enum EnumColorLog
 public class GameConfig : ScriptableObject
 {
     public EnumColorLog enumColorLog = EnumColorLog.NONE;
+
+    /// <summary>
+    /// 蓄力移动速度
+    /// </summary>
+    public float energyMoveSpeed = 10f;
+
+    /// <summary>
+    /// 跳跃移动速度
+    /// </summary>
+    public float jumpMoveSpeed = 20f;
 }

@@ -6,12 +6,18 @@ public class FoundationNode
 {
     public GameObject nodeObj { get; set; }
 
+    /// <summary>
+    /// 上一个地基
+    /// </summary>
     private FoundationNode preNode;
     public FoundationNode GetPreNode()
     {
         return this.preNode;
     }
 
+    /// <summary>
+    /// 下一个地基
+    /// </summary>
     private FoundationNode nextNode;
     public FoundationNode GetNextNode()
     {

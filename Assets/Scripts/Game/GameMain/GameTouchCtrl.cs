@@ -52,7 +52,7 @@ public class GameTouchCtrl : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         this.touching = false;
         this.cacheTime = this.touchingTime;
         this.touchingTime = 0f;
+        EventMgr.Instance.Dispatch(EventDefine.EVE_UI_Game_Jump, EventArgs<float>.CreateEventArgs(this.cacheTime));
         AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Game_RefreshTouchingTime, this.touchingTime);
-        EventMgr.Instance.Dispatch(EventDefine.MVC_UI_Game_Jump, EventArgs<float>.CreateEventArgs(this.cacheTime));
     }
 }

@@ -15,8 +15,8 @@ public class EventDefine
     public const string MVC_UI_Game_Change_Hp           = "UI_Game_Change_Hp";
     public const string MVC_UI_Game_Change_Score        = "UI_Game_Change_Score";
     public const string MVC_UI_Game_RefreshTouchingTime = "UI_Game_RefreshTouchingTime";
-    public const string MVC_UI_Game_Jump                = "UI_Game_Jump";
     public const string MVC_UI_Game_Hide                = "UI_Game_Hide";
+    public const string EVE_UI_Game_Jump                = "UI_Game_Jump";
 
     public const string MVC_UI_GameOver_StartUp         = "UI_GameOver_StartUp";
     public const string MVC_UI_GameOver_FillInfo        = "UI_GameOver_FillInfo";
