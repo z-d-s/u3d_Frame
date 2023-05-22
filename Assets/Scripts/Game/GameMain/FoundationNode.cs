@@ -6,6 +6,9 @@ public class FoundationNode
 {
     public GameObject nodeObj { get; set; }
 
+    public float x_Length = 0f;
+    public float z_Length = 0f;
+
     /// <summary>
     /// 上一个地基
     /// </summary>
@@ -59,6 +62,24 @@ public class FoundationNode
             prePos = preNode.nodeObj.transform.position;
         }
         this.nodeObj.transform.position = prePos + offsetPos;
+    }
+
+    public void Init(float xLength = 1f, float zLength = 1f)
+    {
+        this.x_Length = xLength;
+        this.z_Length = zLength;
+
+        if(this.nodeObj)
+        {
+            this.nodeObj.transform.localScale = new Vector3(xLength, 1f, zLength);
+        }
+    }
+
+    public bool CheckPosInFoundation(Vector3 pos)
+    {
+        bool bX = Mathf.Abs(pos.x - this.nodeObj.transform.position.x) <= this.x_Length / 2;
+        bool bZ = Mathf.Abs(pos.z - this.nodeObj.transform.position.z) <= this.z_Length / 2;
+        return bX && bZ;
     }
 
     /// <summary>

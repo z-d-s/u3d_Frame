@@ -12,6 +12,7 @@ public enum GameState
 
 public class GameMgr : BaseSingleton<GameMgr>
 {
+    public FoundationNode firstFoundationNode;
     public CharacterMain characterMain = null;
     public CameraCtrl cameraCtrl = null;
     public GameState gameState = GameState.None;

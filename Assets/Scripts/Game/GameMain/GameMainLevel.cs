@@ -37,6 +37,7 @@ public class GameMainLevel : MonoBehaviour
             FoundationNode node = new FoundationNode();
             node.nodeObj = foundationObj;
             node.SetPos(Vector3.zero);
+            node.Init(2f, 2f);
 
             GameObject foundationObj_02 = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
             FoundationNode node_02 = new FoundationNode();
@@ -44,6 +45,7 @@ public class GameMainLevel : MonoBehaviour
 
             node.SetNextNode(node_02);
             node_02.SetOffsetPos(new Vector3(0, 0, 6));
+            node_02.Init(2f, 2f);
 
             this.InitRole(node);
         });
@@ -64,6 +66,7 @@ public class GameMainLevel : MonoBehaviour
             GameMgr.Instance.characterMain = player.AddComponent<CharacterMain>();
             GameMgr.Instance.characterMain.Init();
             GameMgr.Instance.characterMain.currentFoundationNode = node;
+            GameMgr.Instance.firstFoundationNode = node;
 
             this.InitMainCamera();
         });

@@ -26,10 +26,10 @@ public class GameConfig : ScriptableObject
     /// <summary>
     /// 蓄力移动速度
     /// </summary>
-    public float energyMoveSpeed = 10f;
+    public float energyMoveSpeed = 5f;
 
     /// <summary>
     /// 跳跃移动速度
     /// </summary>
-    public float jumpMoveSpeed = 20f;
+    public float jumpMoveSpeed = 10f;
 }

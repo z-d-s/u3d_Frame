@@ -46,6 +46,7 @@ public class AppFacade : Facade
 
         this.RegisterCommand(EventDefine.MVC_UI_Loading_StartUp, () => new UI_Loading_Command());
         this.RegisterCommand(EventDefine.MVC_UI_Game_StartUp, () => new UI_Game_Command());
+        this.RegisterCommand(EventDefine.MVC_UI_GameOver_StartUp, () => new UI_GameOver_Command());
     }
 
     protected override void InitializeModel()
@@ -53,5 +54,6 @@ public class AppFacade : Facade
         base.InitializeModel();
 
         this.RegisterProxy(new UI_Game_Proxy(UI_Game_Proxy.NAME));
+        this.RegisterProxy(new UI_GameOver_Proxy(UI_GameOver_Proxy.NAME));
     }
 }
