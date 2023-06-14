@@ -44,8 +44,7 @@ public class UI_GameOver : BaseUI
 		LogHelper.Log("=== 点击重新开始游戏 ===");
 
 		this.Hide();
-		GameMgr.Instance.gameState = GameState.Gameing;
-		GameMgr.Instance.characterMain.RestartGame();
+		EventMgr.Instance.Dispatch(EventDefine.EVE_GameRestart);
 	}
 
 	private UI_GameOver_Proxy dataProxy

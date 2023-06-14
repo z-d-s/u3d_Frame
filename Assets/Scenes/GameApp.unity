@@ -762,7 +762,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af4167163b7f4a540ab685de0d9abba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: 106ba399cae2b5d45b9e170f11024439, type: 2}
+  config:
+    rid: 7075614737606377472
+  references:
+    version: 2
+    RefIds:
+    - rid: 7075614737606377472
+      type: {class: GameConfig, ns: , asm: Assembly-CSharp}
+      data:
+        enumColorLog: 8
+        energyMoveSpeed: 5
+        jumpMoveSpeed: 20
 --- !u!1 &1627542725
 GameObject:
   m_ObjectHideFlags: 0

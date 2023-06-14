@@ -36,12 +36,15 @@ Sounds/WavesoundDisco.wav
 Tables/Maps.json
 Effects/Materials/Shadow.mat
 Effects/Prefabs/Shadow.prefab
+Maps/Materials/southeast.mat
 Maps/Models/Cube_Blue.mat
 Maps/Models/Cube_Green.mat
 Maps/Models/Cube_Red.mat
 Maps/Prefabs/Foundation_001.prefab
 Maps/Prefabs/Foundation_002.prefab
 Maps/Prefabs/Foundation_003.prefab
+Maps/Prefabs/ReferenceBall.prefab
+Maps/Textures/southeast.png
 Sounds/Heros/Kiki.mp3
 Sounds/Heros/Max.mp3
 Sounds/Heros/NinjaAkio.mp3

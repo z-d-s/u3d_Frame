@@ -18,8 +18,7 @@ public enum EnumColorLog
     All
 }
 
-[CreateAssetMenu(fileName = "GameConfig", menuName = "Config/GameConfig", order = 1)]
-public class GameConfig : ScriptableObject
+public class GameConfig
 {
     public EnumColorLog enumColorLog = EnumColorLog.NONE;
 
@@ -31,5 +30,5 @@ public class GameConfig : ScriptableObject
     /// <summary>
     /// 跳跃移动速度
     /// </summary>
-    public float jumpMoveSpeed = 10f;
+    public float jumpMoveSpeed = 20f;
 }

@@ -29,7 +29,10 @@ public class FoundationNode
     public void SetNextNode(FoundationNode node)
     {
         this.nextNode = node;
-        this.nextNode.preNode = this;
+        if(this.nextNode != null)
+        {
+            this.nextNode.preNode = this;
+        }
     }
 
     /// <summary>
@@ -48,6 +51,7 @@ public class FoundationNode
     public void SetPos(Vector3 pos)
     {
         this.nodeObj.transform.position = pos;
+        EventMgr.Instance.Dispatch(EventDefine.EVE_Game_SetNextNode, EventArgs<FoundationNode[]>.CreateEventArgs(new FoundationNode[] { this.preNode, this }));
     }
 
     /// <summary>
@@ -61,7 +65,7 @@ public class FoundationNode
         {
             prePos = preNode.nodeObj.transform.position;
         }
-        this.nodeObj.transform.position = prePos + offsetPos;
+        this.SetPos(prePos + offsetPos);
     }
 
     public void Init(float xLength = 1f, float zLength = 1f)

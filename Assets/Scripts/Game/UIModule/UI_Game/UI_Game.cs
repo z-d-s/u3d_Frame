@@ -1,5 +1,6 @@
 using System;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,8 @@ public class UI_Game : BaseUI
 
 		this.btn_StartGame = this.transform.Find("Mid_Center/btn_StartGame").GetComponent<Button>();
 		this.btn_StartGame.onClick.AddListener(this.OnClickStartGame);
+
+		EventMgr.Instance.AddListener(EventDefine.EVE_GameRestart, this.GameRestart);
 	}
 
 	private void OnEnable()
@@ -30,7 +33,12 @@ public class UI_Game : BaseUI
 		this.dataProxy.RequestDataInfo();
 	}
 
-	public override void FillDataInfo()
+    private void OnDestroy()
+    {
+		EventMgr.Instance.RemoveListener(EventDefine.EVE_GameRestart, this.GameRestart);
+    }
+
+    public override void FillDataInfo()
 	{
 		base.FillDataInfo();
 
@@ -53,11 +61,24 @@ public class UI_Game : BaseUI
 
 		this.SetStartBtnActive(false);
 		GameMgr.Instance.gameState = GameState.Gameing;
+
+		LogHelper.LogBlue("需要新的基座02");
+		GameObject foundationObj = PoolMgr.Instance.GetObject("map_foundation", "Maps/Prefabs/Foundation_001.prefab");
+		FoundationNode node = new FoundationNode();
+		node.nodeObj = foundationObj;
+		GameMgr.Instance.characterMain.currentFoundationNode.SetNextNode(node);
+		node.SetOffsetPos(new Vector3(0, 0, 6));
+		node.Init(2f, 2f);
 	}
 
 	private void SetStartBtnActive(bool active)
 	{
 		this.btn_StartGame.gameObject.SetActive(active);
+	}
+
+	private void GameRestart(IEventArgs args)
+	{
+		this.OnClickStartGame();
 	}
 
 	private UI_Game_Proxy dataProxy

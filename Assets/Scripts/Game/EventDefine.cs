@@ -16,9 +16,12 @@ public class EventDefine
     public const string MVC_UI_Game_Change_Score        = "UI_Game_Change_Score";
     public const string MVC_UI_Game_RefreshTouchingTime = "UI_Game_RefreshTouchingTime";
     public const string MVC_UI_Game_Hide                = "UI_Game_Hide";
-    public const string EVE_UI_Game_Jump                = "UI_Game_Jump";
+    public const string EVE_Game_RefreshTargetPos       = "Game_RefreshTargetPos";
+    public const string EVE_Game_Jump                   = "Game_Jump";
+    public const string EVE_Game_SetNextNode            = "Game_SetNextNode";
 
     public const string MVC_UI_GameOver_StartUp         = "UI_GameOver_StartUp";
     public const string MVC_UI_GameOver_FillInfo        = "UI_GameOver_FillInfo";
     public const string MVC_UI_GameOver_Hide            = "UI_GameOver_Hide";
+    public const string EVE_GameRestart                 = "UI_GameRestart";
 }

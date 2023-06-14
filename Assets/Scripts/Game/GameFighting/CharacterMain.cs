@@ -34,7 +34,8 @@ public class CharacterMain : CharacterBase
 
     private void Awake()
     {
-        EventMgr.Instance.AddListener(EventDefine.EVE_UI_Game_Jump, this.Jump);
+        EventMgr.Instance.AddListener(EventDefine.EVE_Game_Jump, this.Jump);
+        EventMgr.Instance.AddListener(EventDefine.EVE_GameRestart, this.GameRestart);
     }
 
     private void Update()
@@ -60,7 +61,8 @@ public class CharacterMain : CharacterBase
 
     private void OnDestroy()
     {
-        EventMgr.Instance.RemoveListener(EventDefine.EVE_UI_Game_Jump, this.Jump);
+        EventMgr.Instance.RemoveListener(EventDefine.EVE_Game_Jump, this.Jump);
+        EventMgr.Instance.RemoveListener(EventDefine.EVE_GameRestart, this.GameRestart);
     }
 
     /// <summary>
@@ -70,25 +72,8 @@ public class CharacterMain : CharacterBase
     /// <returns></returns>
     private float GetJumpTime(float energyTime)
     {
-        return (GameApp.Instance.config.jumpMoveSpeed / GameApp.Instance.config.energyMoveSpeed) * energyTime;
-    }
-
-    /// <summary>
-    /// 计算跳跃速度X、Z轴向分量
-    /// </summary>
-    /// <param name="oriPos">起始点</param>
-    /// <param name="targetPos">目标点</param>
-    /// <param name="energyTime">蓄力时间</param>
-    /// <param name="x"></param>
-    /// <param name="z"></param>
-    private void GetJumpDeviceSpeed(Vector3 oriPos, Vector3 targetPos, float energyTime, out float x, out float z)
-    {
-        oriPos = new Vector3(oriPos.x, 0, oriPos.z);
-        targetPos = new Vector3(targetPos.x, 0, targetPos.z);
-        Vector3 offsetPos = targetPos - oriPos;
-        float distance = Vector3.Distance(targetPos, oriPos);
-        x = GameApp.Instance.config.energyMoveSpeed * offsetPos.x / distance;
-        z = GameApp.Instance.config.energyMoveSpeed * offsetPos.z / distance;
+        float jumpTime = (GameApp.Instance.config.energyMoveSpeed / GameApp.Instance.config.jumpMoveSpeed) * energyTime;
+        return jumpTime;
     }
 
     private void Jump(IEventArgs args)
@@ -110,13 +95,49 @@ public class CharacterMain : CharacterBase
             return;
         }
 
-        this.currentJumpTime = 0f;
-        this.oriJumpPos = this.GetCharacterPos();
-        GameMgr.Instance.gameState = GameState.Jumping;
+        //计算跳跃速度X、Z轴向分量
+        Vector3 oriPos = this.GetCharacterPos();
+        oriPos = new Vector3(oriPos.x, 0, oriPos.z);
+        Vector3 targetPos = nextNode.GetPos();
+        targetPos = new Vector3(targetPos.x, 0, targetPos.z);
+        Vector3 offsetPos = targetPos - oriPos;
+        float distance = Vector3.Distance(targetPos, oriPos);
+        this.speed_X = GameApp.Instance.config.jumpMoveSpeed * offsetPos.x / distance;
+        this.speed_Z = GameApp.Instance.config.jumpMoveSpeed * offsetPos.z / distance;
 
         float energyMoveTime = args.GetValue<float>();
         this.jumpTime = this.GetJumpTime(energyMoveTime);
-        this.GetJumpDeviceSpeed(this.GetCharacterPos(), nextNode.GetPos(), energyMoveTime, out this.speed_X, out this.speed_Z);
+        LogHelper.LogRed($"jumpTime = {jumpTime}");
+        this.currentJumpTime = 0f;
+        this.oriJumpPos = this.GetCharacterPos();
+        GameMgr.Instance.gameState = GameState.Jumping;
+    }
+
+    private void GameRestart(IEventArgs args)
+    {
+        if (GameMgr.Instance.firstFoundationNode != null)
+        {
+            //第一基座赋值为当前角色基座
+            this.currentFoundationNode = GameMgr.Instance.firstFoundationNode;
+
+            //角色位置复位
+            this.transform.position = this.currentFoundationNode.GetPos();
+
+            //目标参考球复位
+            GameMgr.Instance.ball_Target.SetPos(this.transform.position);
+
+            //标定参考球复位
+            GameMgr.Instance.ball_Calibration.SetTargetNode(this.currentFoundationNode);
+            GameMgr.Instance.ball_Calibration.SetTargetPos(this.currentFoundationNode.GetPos(), 0f);
+
+            FoundationNode temp = this.currentFoundationNode.GetNextNode();
+            while(temp != null)
+            {
+                temp.Recycle();
+                temp = temp.GetNextNode();
+            }
+            this.currentFoundationNode.SetNextNode(null);
+        }
     }
 
     private void JumpOver()
@@ -141,16 +162,24 @@ public class CharacterMain : CharacterBase
                 {
                     LogHelper.LogRed("角色跳跃到了下一基块上 === 游戏继续 ===");
                     this.currentFoundationNode = nextNode;
+                    GameMgr.Instance.ball_Calibration.SetTargetNode(this.currentFoundationNode);
 
-                    AssetsLoadMgr.Instance.LoadAsync("map_foundation", "Maps/Prefabs/Foundation_001.prefab", (string name, UnityEngine.Object obj) =>
+                    FoundationNode temp_NextNode = this.currentFoundationNode.GetNextNode();
+                    if (temp_NextNode == null)
                     {
-                        GameObject foundationObj = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
+                        LogHelper.LogBlue("需要新的基座 pro");
+                        GameObject foundationObj = PoolMgr.Instance.GetObject("map_foundation", "Maps/Prefabs/Foundation_001.prefab");
                         FoundationNode node = new FoundationNode();
                         node.nodeObj = foundationObj;
                         this.currentFoundationNode.SetNextNode(node);
-                        node.SetOffsetPos(new Vector3(0, 0, 6));
+                        node.SetOffsetPos(new Vector3(Random.Range(-5f, 5f), 0, Random.Range(6f, 9f)));
                         node.Init(2f, 2f);
-                    });
+                    }
+                    else
+                    {
+                        LogHelper.LogYellow("当前基座有后续基座，不需要新创建");
+                        temp_NextNode.SetOffsetPos(new Vector3(Random.Range(-5f, 5f), 0, Random.Range(6f, 9f)));
+                    }
                 }
                 else
                 {
@@ -163,15 +192,6 @@ public class CharacterMain : CharacterBase
                 LogHelper.Log("没找到下一个基块 === 游戏结束 ===");
                 GameMgr.Instance.GameOver();
             }
-        }
-    }
-
-    public void RestartGame()
-    {
-        if(GameMgr.Instance.firstFoundationNode != null)
-        {
-            this.currentFoundationNode = GameMgr.Instance.firstFoundationNode;
-            this.transform.position = this.currentFoundationNode.GetPos();
         }
     }
 }

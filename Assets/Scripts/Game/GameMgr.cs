@@ -12,10 +12,12 @@ public enum GameState
 
 public class GameMgr : BaseSingleton<GameMgr>
 {
+    public GameState gameState = GameState.None;
     public FoundationNode firstFoundationNode;
     public CharacterMain characterMain = null;
     public CameraCtrl cameraCtrl = null;
-    public GameState gameState = GameState.None;
+    public ReferenceBall_Target ball_Target;
+    public ReferenceBall_Calibration ball_Calibration;
 
     public void StartUp()
     {

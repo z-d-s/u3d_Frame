@@ -32,6 +32,12 @@ public class PoolMgr : BaseSingleton<PoolMgr>
         return obj;
     }
 
+    public GameObject GetObject(string assetBundleName, string assetName)
+    {
+        GameObject template = AssetsLoadMgr.Instance.LoadSync(assetBundleName, assetName) as GameObject;
+        return this.GetObject(template.name, template);
+    }
+
     public GameObject GetObject(string name, GameObject template)
     {
         if(template == null)
@@ -43,6 +49,7 @@ public class PoolMgr : BaseSingleton<PoolMgr>
         if(this.dic_Pool.ContainsKey(name) && this.dic_Pool[name].poolList.Count > 0)
         {
             obj = this.dic_Pool[name].GetObject();
+            obj.SetActive(true);
         }
         else
         {

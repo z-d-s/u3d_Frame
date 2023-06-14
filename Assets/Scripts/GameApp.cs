@@ -3,7 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class GameApp : MonoBaseSingleton<GameApp>
 {
-    public GameConfig config;
+    [SerializeReference]
+    public GameConfig config = new GameConfig();
 
     public override void Awake()
     {
