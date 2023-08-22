@@ -1,0 +1,26 @@
+{
+  "2001": {
+    "ID": 2001,
+    "Name": "name_2001",
+    "Path": "path_2001",
+    "Hp": 10,
+    "Attack": 1,
+    "Defence": 0.5
+  },
+  "2002": {
+    "ID": 2002,
+    "Name": "name_2002",
+    "Path": "path_2002",
+    "Hp": 20,
+    "Attack": 2,
+    "Defence": 1.5
+  },
+  "2003": {
+    "ID": 2003,
+    "Name": "name_2003",
+    "Path": "path_2003",
+    "Hp": 30,
+    "Attack": 3,
+    "Defence": 2.5
+  }
+}

@@ -33,7 +33,8 @@ Sounds/SwipeDown.wav
 Sounds/SwipeMove.wav
 Sounds/SwipeUp.wav
 Sounds/WavesoundDisco.wav
-Tables/Maps.json
+Tables/Car.json
+Tables/NPC.json
 Effects/Materials/Shadow.mat
 Effects/Prefabs/Shadow.prefab
 Maps/Materials/southeast.mat

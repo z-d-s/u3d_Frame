@@ -1,0 +1,26 @@
+{
+  "1001": {
+    "ID": 1001,
+    "Name": "name_1001",
+    "Path": "path_1001",
+    "Hp": 10,
+    "Attack": 1,
+    "Defence": 0.5
+  },
+  "1002": {
+    "ID": 1002,
+    "Name": "name_1002",
+    "Path": "path_1002",
+    "Hp": 20,
+    "Attack": 2,
+    "Defence": 1.5
+  },
+  "1003": {
+    "ID": 1003,
+    "Name": "name_1003",
+    "Path": "path_1003",
+    "Hp": 30,
+    "Attack": 3,
+    "Defence": 2.5
+  }
+}
