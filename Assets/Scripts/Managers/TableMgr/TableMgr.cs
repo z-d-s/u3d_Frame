@@ -1,12 +1,31 @@
+/****************************************************
+
+	TableMgr - 表格管理
+
+        使用事例：
+                -- 获取表格           Car car = TableMgr.Instance.GetTable<Car>("1001");
+                -- 表格是否存在       bool b = TableMgr.Instance.ExistTableID<Car>("1001");
+
+        ps：如果有新的表格添加，需要向TableDefine中添加表格同名的枚举
+
+*****************************************************/
+
 using Newtonsoft.Json;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TableDefine
+{
+    None = 0,
+    Car,
+    NPC,
+
+    Max,    //此枚举始终在最后
+}
+
 public class TableMgr : MonoBaseSingleton<TableMgr>
 {
-    private Dictionary<string, Dictionary<string, Car>> storeTables = new Dictionary<string, Dictionary<string, Car>>();
+    private Dictionary<string, Dictionary<string, object>> dic_Tables = new Dictionary<string, Dictionary<string, object>>();
 
     public void StartUp()
     {
@@ -17,16 +36,31 @@ public class TableMgr : MonoBaseSingleton<TableMgr>
 
     private void LoadTables()
     {
-        AssetsLoadMgr.Instance.LoadAsync("table", "Tables/Car.json", (string name, UnityEngine.Object obj) =>
+        for(int i = 1; i < (int)TableDefine.Max; ++i)
         {
-            TextAsset info = obj as TextAsset;
-            Debug.Log(info.text);
-            Dictionary<string, Car> _dic = this.DeserializeStringToDictionary<string, Car>(info.text);
-            Debug.Log(_dic);
-        });
+            this.LoadOneTable(((TableDefine)i).ToString());
+        }
     }
 
-    public Dictionary<TKey, TValue> DeserializeStringToDictionary<TKey, TValue>(string jsonStr)
+    private void LoadOneTable(string tableName)
+    {
+        UnityEngine.Object obj = AssetsLoadMgr.Instance.LoadSync("table", string.Format("Tables/{0}.json", tableName));
+        TextAsset info = obj as TextAsset;
+        Dictionary<string, object> _dic = this.DeserializeStringToDictionary<string, object>(info.text);
+        this.AddOneTable(tableName, _dic);
+    }
+
+    private void AddOneTable(string tableName, Dictionary<string, object> dic)
+    {
+        if(this.dic_Tables.ContainsKey(tableName))
+        {
+            return;
+        }
+
+        this.dic_Tables.Add(tableName, dic);
+    }
+
+    private Dictionary<TKey, TValue> DeserializeStringToDictionary<TKey, TValue>(string jsonStr)
     {
         if (string.IsNullOrEmpty(jsonStr))
         {
@@ -35,5 +69,41 @@ public class TableMgr : MonoBaseSingleton<TableMgr>
 
         Dictionary<TKey, TValue> jsonDict = JsonConvert.DeserializeObject<Dictionary<TKey, TValue>>(jsonStr);
         return jsonDict;
+    }
+
+    public bool ExistTableID<T>(string ID)
+    {
+        foreach (var v in this.dic_Tables)
+        {
+            if (v.Key == typeof(T).Name)
+            {
+                foreach (var _id in v.Value)
+                {
+                    if (_id.Key == ID)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public T GetTable<T>(string ID)
+    {
+        foreach(var v in this.dic_Tables)
+        {
+            if(v.Key == typeof(T).Name)
+            {
+                foreach(var _id in v.Value)
+                {
+                    if(_id.Key == ID)
+                    {
+                        return JsonConvert.DeserializeObject<T>(_id.Value.ToString());
+                    }
+                }
+            }
+        }
+        return default(T);
     }
 }
