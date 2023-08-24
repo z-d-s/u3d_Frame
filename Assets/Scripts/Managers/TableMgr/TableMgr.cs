@@ -3,8 +3,9 @@
 	TableMgr - 表格管理
 
         使用事例：
-                -- 获取表格           Car car = TableMgr.Instance.GetTable<Car>("1001");
-                -- 表格是否存在       bool b = TableMgr.Instance.ExistTableID<Car>("1001");
+                -- 获取表格             Car car = TableMgr.Instance.GetTable<Car>("1001");
+                -- 获取表格中所有ID     List<string> list_IDs = TableMgr.Instance.GetTableIDs<Car>();
+                -- 表格ID是否存在       bool b = TableMgr.Instance.ExistTableID<Car>("1001");
 
         ps：如果有新的表格添加，需要向TableDefine中添加表格同名的枚举
 
@@ -71,24 +72,6 @@ public class TableMgr : MonoBaseSingleton<TableMgr>
         return jsonDict;
     }
 
-    public bool ExistTableID<T>(string ID)
-    {
-        foreach (var v in this.dic_Tables)
-        {
-            if (v.Key == typeof(T).Name)
-            {
-                foreach (var _id in v.Value)
-                {
-                    if (_id.Key == ID)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     public T GetTable<T>(string ID)
     {
         foreach(var v in this.dic_Tables)
@@ -105,5 +88,40 @@ public class TableMgr : MonoBaseSingleton<TableMgr>
             }
         }
         return default(T);
+    }
+
+    public List<string> GetTableIDs<T>()
+    {
+        List<string> list_IDs = new List<string>();
+        foreach (var v in this.dic_Tables)
+        {
+            if (v.Key == typeof(T).Name)
+            {
+                foreach (var _id in v.Value)
+                {
+                    list_IDs.Add(_id.Key);
+                }
+                return list_IDs;
+            }
+        }
+        return list_IDs;
+    }
+
+    public bool ExistTableID<T>(string ID)
+    {
+        foreach (var v in this.dic_Tables)
+        {
+            if (v.Key == typeof(T).Name)
+            {
+                foreach (var _id in v.Value)
+                {
+                    if (_id.Key == ID)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
