@@ -46,6 +46,7 @@ public class AppFacade : Facade
 
         this.RegisterCommand(EventDefine.MVC_UI_Loading_StartUp, () => new UI_Loading_Command());
         this.RegisterCommand(EventDefine.MVC_UI_Game_StartUp, () => new UI_Game_Command());
+        this.RegisterCommand(EventDefine.MVC_UI_Setting_StartUp, () => new UI_Setting_Command());
         this.RegisterCommand(EventDefine.MVC_UI_GameOver_StartUp, () => new UI_GameOver_Command());
     }
 

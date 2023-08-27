@@ -34,6 +34,7 @@ Sounds/SwipeMove.wav
 Sounds/SwipeUp.wav
 Sounds/WavesoundDisco.wav
 Tables/Car.json
+Tables/Language.json
 Tables/NPC.json
 Effects/Materials/Shadow.mat
 Effects/Prefabs/Shadow.prefab
@@ -68,6 +69,7 @@ UI/Common/white_circle.png
 UI/Prefabs/UI_Game.prefab
 UI/Prefabs/UI_GameOver.prefab
 UI/Prefabs/UI_Loading.prefab
+UI/Prefabs/UI_Setting.prefab
 UI/SkyAirbrush/Back.png
 UI/SkyAirbrush/Down.png
 UI/SkyAirbrush/Front.png

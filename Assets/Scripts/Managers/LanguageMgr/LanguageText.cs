@@ -1,28 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExecuteInEditMode]
+[RequireComponent(typeof(Text))]
 public class LanguageText : MonoBehaviour
 {
     public string key;
+    private Text com_Text;
+
     public void Localize()
     {
-        this.GetComponent<Text>().text = "";
+        this.SetText();
+    }
+
+    private void Awake()
+    {
+        Debug.Log("=== LanguageText::Awake ===");
+        this.com_Text = this.GetComponent<Text>();
     }
 
     private void Start()
     {
-        this.GetComponent<Text>().text = "";
+        Debug.Log("=== LanguageText::Start ===");
+        this.SetText();
     }
 
     private void OnEnable()
     {
-        //LanguageMgr.OnLocalize += Localize;
+        this.SetText();
+        Debug.Log("=== LanguageText::OnEnable ===");
+        LanguageMgr.OnLocalize += Localize;
     }
 
     private void OnDisable()
     {
-        //LanguageMgr.OnLocalize -= Localize;
+        Debug.Log("=== LanguageText::OnDisable ===");
+        LanguageMgr.OnLocalize -= Localize;
+    }
+
+    private void SetText()
+    {
+        if (this.com_Text == null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(this.key))
+        {
+            return;
+        }
+
+        this.GetComponent<Text>().text = LanguageData.Get(this.key);
     }
 }

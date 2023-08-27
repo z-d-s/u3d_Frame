@@ -10,6 +10,7 @@ public class UI_Game : BaseUI
 	private Text		text_FrameID;
 	private Text		text_TouchingTime;
 	private Button		btn_StartGame;
+	private Button		btn_Setting;
 
 	public override void Awake()
 	{
@@ -23,6 +24,9 @@ public class UI_Game : BaseUI
 
 		this.btn_StartGame = this.transform.Find("Mid_Center/btn_StartGame").GetComponent<Button>();
 		this.btn_StartGame.onClick.AddListener(this.OnClickStartGame);
+
+		this.btn_Setting = this.transform.Find("Top_Left/btn_Setting").GetComponent<Button>();
+		this.btn_Setting.onClick.AddListener(this.OnClickSetting);
 
 		EventMgr.Instance.AddListener(EventDefine.EVE_GameRestart, this.GameRestart);
 	}
@@ -69,6 +73,11 @@ public class UI_Game : BaseUI
 		GameMgr.Instance.characterMain.currentFoundationNode.SetNextNode(node);
 		node.SetOffsetPos(new Vector3(0, 0, 6));
 		node.Init(2f, 2f);
+	}
+
+	private void OnClickSetting()
+	{
+		AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Setting_StartUp);
 	}
 
 	private void SetStartBtnActive(bool active)
