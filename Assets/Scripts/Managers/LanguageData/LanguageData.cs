@@ -74,13 +74,15 @@ public static class LanguageData
     }
 
     /// <summary>
-    /// 获取语言文本
+    /// 填充语言数据
     /// </summary>
-    /// <param name="id">文本ID</param>
-    /// <returns></returns>
-    public static string GetText(string id)
+    /// <param name="clearCache">填充语言数据之前是否先清理</param>
+    public static void FillLanguageData(bool clearCache = false)
     {
-        string text = "=NaN=";
+        if(clearCache)
+        {
+            LanguageData.dic_Language.Clear();
+        }
 
         if (LanguageData.dic_Language.Keys.Count <= 0)
         {
@@ -92,7 +94,18 @@ public static class LanguageData
             LanguageData.dic_Language = JsonConvert.DeserializeObject<Dictionary<string, Language>>(info.text);
 #endif
         }
+    }
 
+    /// <summary>
+    /// 获取语言文本
+    /// </summary>
+    /// <param name="id">文本ID</param>
+    /// <returns></returns>
+    public static string GetText(string id)
+    {
+        LanguageData.FillLanguageData();
+
+        string text = "=NaN=";
         if (LanguageData.dic_Language.TryGetValue(id, out Language data))
         {
             if (LanguageData.type == LanguageType.Chinese)

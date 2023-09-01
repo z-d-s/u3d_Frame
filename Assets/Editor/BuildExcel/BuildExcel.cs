@@ -63,6 +63,8 @@ public class BuildExcel : Editor
         }
 
         AssetDatabase.Refresh();
+        LanguageData.FillLanguageData(true);
+        LanguageData.SetLanguage(LanguageData.type);
     }
 
     /// <summary>

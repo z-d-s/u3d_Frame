@@ -1,23 +1,30 @@
 {
   "100001": {
     "ID": 100001,
-    "Chinese": "100001_张三",
-    "English": "100001_ZhangSan",
-    "Japanese": "100001_張三の名前",
+    "Chinese": "中文",
+    "English": "Chinese",
+    "Japanese": "中国語",
     "Other": "xxx"
   },
   "100002": {
     "ID": 100002,
-    "Chinese": "100002_李四",
-    "English": "100002_LiSi",
-    "Japanese": "100002_李四の名前",
+    "Chinese": "英文",
+    "English": "English",
+    "Japanese": "英語",
     "Other": "xxx"
   },
   "100003": {
     "ID": 100003,
-    "Chinese": "100003_王五",
-    "English": "100003_WangWu",
-    "Japanese": "100003_王五の名前",
+    "Chinese": "日文",
+    "English": "Japanese",
+    "Japanese": "日本語",
+    "Other": "xxx"
+  },
+  "100004": {
+    "ID": 100004,
+    "Chinese": "你好，欢迎来到我的游戏！",
+    "English": "Hello, welcome to my game!",
+    "Japanese": "こんにちは、私のゲームへようこそ！",
     "Other": "xxx"
   }
 }

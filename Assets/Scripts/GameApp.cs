@@ -27,6 +27,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
         AssetBundleLoadMgr.Instance.LoadManifest();
 
         //初始化游戏模块
+        LanguageData.FillLanguageData(true);
         TableMgr.Instance.StartUp();
         UIMgr.Instance.StartUp();
         GameMgr.Instance.StartUp();
