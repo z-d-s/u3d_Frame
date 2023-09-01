@@ -1,6 +1,8 @@
+table:Assets/AssetsPackage/Tables
 role_jinglingnan:Assets/AssetsPackage/Characters/Jinglingnan/Prefabs/JingLingNan.prefab
 shadow:Assets/AssetsPackage/Effects/Prefabs/Shadow.prefab
 map_foundation:Assets/AssetsPackage/Maps/Prefabs
 ui_loading:Assets/AssetsPackage/UI/Prefabs/UI_Loading.prefab
 ui_game:Assets/AssetsPackage/UI/Prefabs/UI_Game.prefab
 ui_gameover:Assets/AssetsPackage/UI/Prefabs/UI_GameOver.prefab
+ui_setting:Assets/AssetsPackage/UI/Prefabs/UI_Setting.prefab

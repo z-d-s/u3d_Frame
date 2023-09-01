@@ -1,17 +1,23 @@
 {
   "100001": {
     "ID": 100001,
-    "Chinese": "100001_张三：",
-    "English": "100001_ZhangSan:"
+    "Chinese": "100001_张三",
+    "English": "100001_ZhangSan",
+    "Japanese": "100001_張三の名前",
+    "Other": "xxx"
   },
   "100002": {
     "ID": 100002,
-    "Chinese": "100002_李四：",
-    "English": "100002_LiSi:"
+    "Chinese": "100002_李四",
+    "English": "100002_LiSi",
+    "Japanese": "100002_李四の名前",
+    "Other": "xxx"
   },
   "100003": {
     "ID": 100003,
-    "Chinese": "100003_王五：",
-    "English": "100003_WangWu:"
+    "Chinese": "100003_王五",
+    "English": "100003_WangWu",
+    "Japanese": "100003_王五の名前",
+    "Other": "xxx"
   }
 }

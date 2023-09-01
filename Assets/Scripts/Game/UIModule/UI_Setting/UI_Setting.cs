@@ -8,6 +8,9 @@ public class UI_Setting : BaseUI
 	private Button		btn_Mask;
 	private Button		btn_Language_CN;
 	private Button		btn_Language_EN;
+	private Text text_01;
+	private Text text_02;
+	private Text text_03;
 
 	public override void Awake()
 	{
@@ -20,10 +23,15 @@ public class UI_Setting : BaseUI
 		this.btn_Mask.onClick.AddListener(this.OnClickMask);
 		this.btn_Language_CN.onClick.AddListener(this.OnClickLanguageCN);
 		this.btn_Language_EN.onClick.AddListener(this.OnClickLanguageEN);
+
+		this.text_01 = this.transform.Find("text_01").GetComponent<Text>();
+		this.text_02 = this.transform.Find("text_02").GetComponent<Text>();
+		this.text_03 = this.transform.Find("text_03").GetComponent<Text>();
 	}
 
 	void Start()
 	{
+		
 	}
 
 	private void OnClickMask()
@@ -33,11 +41,11 @@ public class UI_Setting : BaseUI
 
 	private void OnClickLanguageCN()
 	{
-		LanguageMgr.Instance.SetLanguage(LanguageType.Chinese);
+		LanguageData.SetLanguage(LanguageType.Chinese);
 	}
 
 	private void OnClickLanguageEN()
 	{
-        LanguageMgr.Instance.SetLanguage(LanguageType.English);
+        LanguageData.SetLanguage(LanguageType.English);
 	}
 }

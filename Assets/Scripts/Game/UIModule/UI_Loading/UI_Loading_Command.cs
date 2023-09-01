@@ -26,7 +26,7 @@ public class UI_Loading_Command : SimpleCommand
                         ui_view.name = _obj.name;
                         if (parent == null)
                         {
-                            parent = UIMgr.Instance.ui_Canvas.gameObject;
+                            parent = UIMgr.Instance.ui_Mid.gameObject;
                         }
                         ui_view.transform.SetParent(parent.transform, false);
                         ui_view.SetActive(false);

@@ -5,43 +5,62 @@ using UnityEngine;
 
 public class LanguageSwitch : Editor
 {
-    [MenuItem("语言/添加LanguageText", false, 1)]
-    public static void AddLanguageText()
-    {
-        LanguageSwitch.AddLanguageTextToAllPrefabs();
-    }
-
-    [MenuItem("语言/语言切换/中文", false, 1)]
+    [MenuItem("语言切换/中文 &C", false, 1)]
     public static void ChangeCn()
     {
-        LanguageMgr.type = LanguageType.Chinese;
+        LanguageData.type = LanguageType.Chinese;
         LanguageSwitch.SetLanguage();
     }
-    [MenuItem("语言/语言切换/中文", true)]
+    [MenuItem("语言切换/中文 &C", true)]
     public static bool CNToggle()
     {
-        Menu.SetChecked("语言切换/中文", LanguageMgr.type == LanguageType.Chinese);
+        Menu.SetChecked("语言切换/中文", LanguageData.type == LanguageType.Chinese);
         return true;
     }
 
-    [MenuItem("语言/语言切换/英文", false, 2)]
+    [MenuItem("语言切换/英文 &E", false, 2)]
     public static void ChangeEn()
     {
-        LanguageMgr.type = LanguageType.English;
+        LanguageData.type = LanguageType.English;
         LanguageSwitch.SetLanguage();
     }
-    [MenuItem("语言/语言切换/英文", true)]
+    [MenuItem("语言切换/英文 &E", true)]
     public static bool ENToggle()
     {
-        Menu.SetChecked("语言/语言切换/英文", LanguageMgr.type == LanguageType.English);
+        Menu.SetChecked("语言切换/英文", LanguageData.type == LanguageType.English);
         return true;
+    }
+
+    [MenuItem("语言切换/日文 &J", false, 3)]
+    public static void ChangeJp()
+    {
+        LanguageData.type = LanguageType.Japanese;
+        LanguageSwitch.SetLanguage();
+    }
+    [MenuItem("语言切换/日文 &J", true)]
+    public static bool JPToggle()
+    {
+        Menu.SetChecked("语言切换/日文", LanguageData.type == LanguageType.Japanese);
+        return true;
+    }
+
+    [MenuItem("语言切换/添加LanguageText ", false, 101)]
+    public static void AddLanguageText()
+    {
+        //LanguageSwitch.AddLanguageTextToAllPrefabs();
+        LanguageSwitch.AddLanguageTextToSelectedPrefabs();
+    }
+    [MenuItem("语言切换/添加LanguageText ", true, 101)]
+    public static bool AddLanguageText_Check()
+    {
+        return Selection.activeGameObject != null;
     }
 
     private static void SetLanguage()
     {
-        if (LanguageMgr.OnLocalize != null)
+        if (LanguageData.OnLocalize != null)
         {
-            LanguageMgr.OnLocalize();
+            LanguageData.OnLocalize();
         }
 
         if (Application.isPlaying == false)
@@ -84,7 +103,38 @@ public class LanguageSwitch : Editor
         for (int i = 0; i < prefabCount; ++i)
         {
             EditorUtility.DisplayProgressBar("预制体添加LanguageText", "LanguageText添加中...", (float)(i / prefabCount));
-            foreach (Transform trans in list_Prefabs[i].GetComponentInChildren<Transform>(true))
+            foreach (Transform trans in list_Prefabs[i].GetComponentsInChildren<Transform>(true))
+            {
+                UnityEngine.UI.Text text = trans.GetComponent<UnityEngine.UI.Text>();
+                LanguageText languageText = trans.GetComponent<LanguageText>();
+                if (text != null && languageText == null)
+                {
+                    trans.gameObject.AddComponent<LanguageText>();
+                }
+            }
+            AssetDatabase.SaveAssets();
+        }
+        EditorUtility.ClearProgressBar();
+        RefreshScenePrefab();
+    }
+
+    /// <summary>
+    /// 为选中预制体中包含Text组件的节点添加LanguageText组件
+    /// </summary>
+    private static void AddLanguageTextToSelectedPrefabs()
+    {
+        List<GameObject> list_Prefabs = new List<GameObject>();
+        Object[] tempArr = Selection.objects;
+        for(int i = 0; i < tempArr.Length; ++i)
+        {
+            list_Prefabs.Add(tempArr[i] as GameObject);
+        }
+
+        int prefabCount = list_Prefabs.Count;
+        for (int i = 0; i < prefabCount; ++i)
+        {
+            EditorUtility.DisplayProgressBar("预制体添加LanguageText", "LanguageText添加中...", (float)(i / prefabCount));
+            foreach (Transform trans in list_Prefabs[i].GetComponentsInChildren<Transform>(true))
             {
                 UnityEngine.UI.Text text = trans.GetComponent<UnityEngine.UI.Text>();
                 LanguageText languageText = trans.GetComponent<LanguageText>();
@@ -109,7 +159,7 @@ public class LanguageSwitch : Editor
         for (int i = 0; i < prefabCount; ++i)
         {
             EditorUtility.DisplayProgressBar("刷新预制体", "预制体刷新中...", (float)(i / prefabCount));
-            foreach (Transform trans in list_Prefabs[i].GetComponentInChildren<Transform>(true))
+            foreach (Transform trans in list_Prefabs[i].GetComponentsInChildren<Transform>(true))
             {
                 LanguageText languageText = trans.GetComponent<LanguageText>();
                 UnityEngine.UI.Text text = trans.GetComponent<UnityEngine.UI.Text>();

@@ -160,7 +160,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "100001_\u5F20\u4E09\uFF1A"
+  m_Text: xxx
 --- !u!114 &270754193513217441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85be3805f6539fd45a36ed38bbbea0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 100001
+  ID: 100001
 --- !u!1 &806566627658917941
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +334,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "100003_\u738B\u4E94\uFF1A"
+  m_Text: xxx
 --- !u!114 &5227773672422544560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85be3805f6539fd45a36ed38bbbea0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 100003
+  ID: 100003
 --- !u!1 &4110691120874144944
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,7 +714,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "100002_\u674E\u56DB\uFF1A"
+  m_Text: xxx
 --- !u!114 &4100137433743342724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85be3805f6539fd45a36ed38bbbea0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 100002
+  ID: 100002
 --- !u!1 &8887604114295651585
 GameObject:
   m_ObjectHideFlags: 0

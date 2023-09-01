@@ -5,9 +5,9 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class GameTools : EditorWindow
+public class GameTools : Editor
 {
-    [MenuItem("Tools/CleanupMissingScripts", false, 1002)]
+    [MenuItem("Tools/CleanupMissingScripts", false, 2003)]
     public static void CleanupMissingScripts()
     {
         if (Selection.gameObjects.Length > 0)

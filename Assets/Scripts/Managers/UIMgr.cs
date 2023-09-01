@@ -12,13 +12,14 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
     /// <summary>
     /// UI 背景父节点
     /// </summary>
+    private Transform ui_Bg_Canvas;
     public Transform ui_Bg;
 
     /// <summary>
     /// UI 层级父节点
     /// </summary>
-    public Transform ui_Canvas;
-
+    private Transform ui_Canvas;
+    public Transform ui_Bottom;
     public Transform ui_Down;
     public Transform ui_Mid;
     public Transform ui_Up;
@@ -34,8 +35,12 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
         LogHelper.LogGreen("=== UIMgr 启动成功 ===");
 
         this.ui_Root        = GameObject.Find("UI_Root").transform;
-        this.ui_Bg          = this.ui_Root.Find("UI_Bg").transform;
+
+        this.ui_Bg_Canvas   = this.ui_Root.Find("UI_Bg_Canvas").transform;
+        this.ui_Bg          = this.ui_Bg_Canvas.Find("UI_Bg").transform;
+
         this.ui_Canvas      = this.ui_Root.Find("UI_Canvas").transform;
+        this.ui_Bottom      = this.ui_Canvas.Find("UI_Bottom").transform;
         this.ui_Down        = this.ui_Canvas.Find("UI_Down").transform;
         this.ui_Mid         = this.ui_Canvas.Find("UI_Mid").transform;
         this.ui_Up          = this.ui_Canvas.Find("UI_Up").transform;

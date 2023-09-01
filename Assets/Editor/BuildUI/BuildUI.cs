@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BuildUI : EditorWindow
 {
-    [MenuItem("Tools/Build UI", false, 1001)]
+    [MenuItem("Tools/Build UI", false, 2002)]
     public static void AutoBuildUI()
     {
         EditorWindow.GetWindow<BuildUI>();

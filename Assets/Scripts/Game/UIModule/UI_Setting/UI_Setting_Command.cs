@@ -17,13 +17,13 @@ public class UI_Setting_Command : SimpleCommand
 
                 if (mediator == null)
                 {
-                    AssetsLoadMgr.Instance.LoadAsync("ui_game", "UI/Prefabs/UI_Setting.prefab", (_assetName, _obj) =>
+                    AssetsLoadMgr.Instance.LoadAsync("ui_setting", "UI/Prefabs/UI_Setting.prefab", (_assetName, _obj) =>
                     {
                         GameObject ui_view = GameObject.Instantiate(_obj as GameObject);
                         ui_view.name = _obj.name;
                         if (parent == null)
                         {
-                            parent = UIMgr.Instance.ui_Canvas.gameObject;
+                            parent = UIMgr.Instance.ui_Down.gameObject;
                         }
                         ui_view.transform.SetParent(parent.transform, false);
                         ui_view.SetActive(false);
