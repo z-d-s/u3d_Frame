@@ -15,7 +15,7 @@ public class UI_Loading_Command : SimpleCommand
         switch (notification.Name)
         {
             case EventDefine.MVC_UI_Loading_StartUp:
-                UI_Loading_Mediator mediator = AppFacade.Instance.RetrieveMediator(UI_Loading_Mediator.NAME) as UI_Loading_Mediator;
+                UI_Loading_Mediator mediator = GameFacade.Instance.RetrieveMediator(UI_Loading_Mediator.NAME) as UI_Loading_Mediator;
                 GameObject parent = notification.Body as GameObject;
 
                 if (mediator == null)
@@ -31,7 +31,7 @@ public class UI_Loading_Command : SimpleCommand
                         ui_view.transform.SetParent(parent.transform, false);
                         ui_view.SetActive(false);
 
-                        AppFacade.Instance.RegisterMediator(new UI_Loading_Mediator(UI_Loading_Mediator.NAME, ui_view.AddComponent(Type.GetType(ui_view.name))));
+                        GameFacade.Instance.RegisterMediator(new UI_Loading_Mediator(UI_Loading_Mediator.NAME, ui_view.AddComponent(Type.GetType(ui_view.name))));
                     });
                 }
                 else

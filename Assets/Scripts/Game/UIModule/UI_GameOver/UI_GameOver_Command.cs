@@ -12,7 +12,7 @@ public class UI_GameOver_Command : SimpleCommand
         switch(notification.Name)
         {
             case EventDefine.MVC_UI_GameOver_StartUp:
-                UI_GameOver_Mediator mediator = AppFacade.Instance.RetrieveMediator(UI_GameOver_Mediator.NAME) as UI_GameOver_Mediator;
+                UI_GameOver_Mediator mediator = GameFacade.Instance.RetrieveMediator(UI_GameOver_Mediator.NAME) as UI_GameOver_Mediator;
                 GameObject parent = notification.Body as GameObject;
 
                 if (mediator == null)
@@ -28,7 +28,7 @@ public class UI_GameOver_Command : SimpleCommand
                         ui_view.transform.SetParent(parent.transform, false);
                         ui_view.SetActive(false);
 
-                        AppFacade.Instance.RegisterMediator(new UI_GameOver_Mediator(UI_GameOver_Mediator.NAME, ui_view.AddComponent(Type.GetType(ui_view.name))));
+                        GameFacade.Instance.RegisterMediator(new UI_GameOver_Mediator(UI_GameOver_Mediator.NAME, ui_view.AddComponent(Type.GetType(ui_view.name))));
                     });
                 }
                 else
@@ -45,7 +45,7 @@ public class UI_GameOver_Command : SimpleCommand
     {
         get
         {
-            return AppFacade.Instance.RetrieveProxy(UI_GameOver_Proxy.NAME) as UI_GameOver_Proxy;
+            return GameFacade.Instance.RetrieveProxy(UI_GameOver_Proxy.NAME) as UI_GameOver_Proxy;
         }
     }
 }

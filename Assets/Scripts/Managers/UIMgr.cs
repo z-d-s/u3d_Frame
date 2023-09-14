@@ -52,12 +52,12 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
 
     public void ShowUIView(string event_Show, GameObject parent = null)
     {
-        AppFacade.Instance.SendNotification(event_Show, parent);
+        GameFacade.Instance.SendNotification(event_Show, parent);
     }
 
     public void HideUIView(string event_Hide)
     {
-        AppFacade.Instance.SendNotification(event_Hide);
+        GameFacade.Instance.SendNotification(event_Hide);
     }
 
     public void HideAllViews()

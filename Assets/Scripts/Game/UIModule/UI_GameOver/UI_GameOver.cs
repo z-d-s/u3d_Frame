@@ -29,7 +29,7 @@ public class UI_GameOver : BaseUI
 		this.RefreshDataInfo(this.dataProxy.gameUIData);
 	}
 
-	public void RefreshDataInfo(UI_GameData data)
+	public void RefreshDataInfo(UI_GameMainData data)
 	{
 		
 	}
@@ -44,14 +44,14 @@ public class UI_GameOver : BaseUI
 		LogHelper.Log("=== 点击重新开始游戏 ===");
 
 		this.Hide();
-		EventMgr.Instance.Dispatch(EventDefine.EVE_GameRestart);
+		GameMgr.Instance.EnterMainScene();
 	}
 
 	private UI_GameOver_Proxy dataProxy
 	{
 		get
 		{
-			return AppFacade.Instance.RetrieveProxy(UI_GameOver_Proxy.NAME) as UI_GameOver_Proxy;
+			return GameFacade.Instance.RetrieveProxy(UI_GameOver_Proxy.NAME) as UI_GameOver_Proxy;
 		}
 	}
 }

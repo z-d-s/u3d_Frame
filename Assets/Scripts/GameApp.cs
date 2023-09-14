@@ -22,14 +22,14 @@ public class GameApp : MonoBaseSingleton<GameApp>
 #endif
 
         //游戏框架的初始化
-        AppFacade.Instance.StartUp();
-        TimeMgr.Instance.StartUp();
         AssetBundleLoadMgr.Instance.LoadManifest();
+        GameFacade.Instance.StartUp();
 
         //初始化游戏模块
+        TimeMgr.Instance.StartUp();
+        UIMgr.Instance.StartUp();
         LanguageData.FillLanguageData(true);
         TableMgr.Instance.StartUp();
-        UIMgr.Instance.StartUp();
         GameMgr.Instance.StartUp();
     }
 
@@ -37,17 +37,5 @@ public class GameApp : MonoBaseSingleton<GameApp>
     {
         //进入游戏
         GameMgr.Instance.EnterGame();
-    }
-
-    public void EnterMainScene()
-    {
-        LogHelper.LogMagenta("=== before enter MainScene ===");
-        SceneManager.LoadScene("GameMainScene", LoadSceneMode.Single);
-    }
-
-    public void EnterFightingScene()
-    {
-        LogHelper.LogMagenta("=== before enter FightingScene ===");
-        SceneManager.LoadScene("GameFightingScene", LoadSceneMode.Additive);
     }
 }

@@ -1,6 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+public enum EnumLoadType
+{
+    LocalRes,
+    AssetBundle
+}
 
 public enum EnumColorLog
 {
@@ -20,6 +22,8 @@ public enum EnumColorLog
 
 public class GameConfig
 {
+    public EnumLoadType loadType = EnumLoadType.LocalRes;
+
     public EnumColorLog enumColorLog = EnumColorLog.NONE;
 
     /// <summary>

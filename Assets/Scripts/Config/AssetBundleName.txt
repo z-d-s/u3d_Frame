@@ -1,8 +1,10 @@
 table:Assets/AssetsPackage/Tables
+gizmos_ball:Assets/AssetsPackage/GizmosModels/Prefabs/Gizmos_Ball.prefab
 role_jinglingnan:Assets/AssetsPackage/Characters/Jinglingnan/Prefabs/JingLingNan.prefab
 shadow:Assets/AssetsPackage/Effects/Prefabs/Shadow.prefab
-map_foundation:Assets/AssetsPackage/Maps/Prefabs
+map_001:Assets/AssetsPackage/Maps/Map_001/Map_001.prefab
 ui_loading:Assets/AssetsPackage/UI/Prefabs/UI_Loading.prefab
-ui_game:Assets/AssetsPackage/UI/Prefabs/UI_Game.prefab
+ui_gamemain:Assets/AssetsPackage/UI/Prefabs/UI_GameMain.prefab
+ui_gamecontrol:Assets/AssetsPackage/UI/Prefabs/UI_GameControl.prefab
 ui_gameover:Assets/AssetsPackage/UI/Prefabs/UI_GameOver.prefab
 ui_setting:Assets/AssetsPackage/UI/Prefabs/UI_Setting.prefab

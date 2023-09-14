@@ -7,7 +7,11 @@ using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
 {
-    public bool isAlive;
+    /// <summary>
+    /// 是否死亡
+    /// </summary>
+    [HideInInspector]
+    public bool isDeath;
 
     protected float hp;
     protected float define;
@@ -18,7 +22,7 @@ public class CharacterBase : MonoBehaviour
     //正式项目使用Excel表格读取数据
     public void Init()
     {
-        this.isAlive = true;
+        this.isDeath = false;
         this.hp = 1;
         this.define = 1;
 
@@ -50,7 +54,7 @@ public class CharacterBase : MonoBehaviour
 
     private void OnEndBySkill()
     {
-        if(this.isAlive == false)
+        if(this.isDeath == true)
         {
             return;
         }
@@ -60,7 +64,7 @@ public class CharacterBase : MonoBehaviour
 
     private void OnHurt(float attack)
     {
-        if (this.isAlive == false)
+        if (this.isDeath == true)
         {
             return;
         }
@@ -74,7 +78,7 @@ public class CharacterBase : MonoBehaviour
         this.hp -= lost;
         if (this.hp <= 0)
         {
-            this.isAlive = false;
+            this.isDeath = true;
             this.animCtrl.SetState(AnimatorCtrl.AnimState.Death);
         }
     }

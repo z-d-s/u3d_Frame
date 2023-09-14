@@ -45,12 +45,6 @@ public class TableMgr : MonoBaseSingleton<TableMgr>
 
     private void LoadOneTable(string tableName)
     {
-        if (this.dic_Tables.ContainsKey(tableName))
-        {
-            Debug.Log("=== AAA === 已经包含表格" + tableName);
-            //return;
-        }
-
         UnityEngine.Object obj = AssetsLoadMgr.Instance.LoadSync("table", string.Format("Tables/{0}.json", tableName));
         TextAsset info = obj as TextAsset;
         Dictionary<string, object> _dic = this.DeserializeStringToDictionary<string, object>(info.text);
@@ -61,7 +55,6 @@ public class TableMgr : MonoBaseSingleton<TableMgr>
     {
         if(this.dic_Tables.ContainsKey(tableName))
         {
-            Debug.Log("=== BBB === 已经包含表格" + tableName);
             return;
         }
 

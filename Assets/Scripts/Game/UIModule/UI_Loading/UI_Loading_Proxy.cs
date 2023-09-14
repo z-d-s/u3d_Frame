@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UI_Loading_Proxy : Proxy
 {
-    public new const string NAME = "UI_Game_Proxy";
+    public new const string NAME = "UI_GameMain_Proxy";
 
     public UI_Loading_Proxy(string proxyName, object data = null) : base(proxyName, data)
     {

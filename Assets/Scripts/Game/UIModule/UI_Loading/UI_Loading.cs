@@ -39,8 +39,8 @@ public class UI_Loading : BaseUI
             this.loading = false;
             this.SetLoadingBar(1f);
 
-            AppFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_Hide);
-            GameApp.Instance.EnterMainScene();
+            GameFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_Hide);
+            GameMgr.Instance.EnterMainScene();
             return;
         }
 

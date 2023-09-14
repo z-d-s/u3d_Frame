@@ -1,18 +1,18 @@
 ﻿/****************************************************
 
-	事件系统
+    事件系统
 
     使用事例：
         EventMgr.Instance.AddListener("xxx", this.XXXFunc);
         EventMgr.Instance.RemoveListener("xxx", this.XXXFunc);
-	    EventMgr.Instance.Dispatch("xxx");
+        EventMgr.Instance.Dispatch("xxx");
         EventMgr.Instance.Dispatch("xxx", EventArgs<string>.CreateEventArgs("=== xxx ==="));
         private void XXXFunc(IEventArgs args)
         {
-		    if(args == null)
-		    {
-			    return;
-		    }
+            if(args == null)
+            {
+                return;
+            }
             Debug.Log(args.GetValue<string>());
         }
 

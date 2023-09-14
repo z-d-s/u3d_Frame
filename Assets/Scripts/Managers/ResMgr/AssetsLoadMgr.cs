@@ -16,8 +16,6 @@
 
 *****************************************************/
 
-#define USE_AB
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -153,19 +151,33 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// <returns></returns>
     public bool IsAssetExist(string assetBundleName, string assetName)
     {
-#if UNITY_EDITOR && !USE_AB
-        return EditorAssetLoadMgr.Instance.IsFileExist(assetName);
+#if UNITY_EDITOR
+        if(GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
+        {
+            return EditorAssetLoadMgr.Instance.IsFileExist(assetName);
+        }
+        else if(GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+        {
+            if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
+            {
+                return true;
+            }
+            else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
+            {
+                return true;
+            }
+        }
 #else
-        if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
+        if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
             return true;
         }
-        else if(AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
+        else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
         {
             return true;
         }
-        return false;
 #endif
+        return false;
     }
 
     /// <summary>
@@ -255,8 +267,26 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             }
             else
             {
-#if UNITY_EDITOR && !USE_AB
-                assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
+#if UNITY_EDITOR
+                if(GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
+                {
+                    assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
+                }
+                else if(GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+                {
+                    if (assetObj._isABLoad)
+                    {
+                        AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(assetBundleName);
+                        assetObj._asset = ab1.LoadAsset(this.GetAssetNameForAB(assetName));
+
+                        //异步转同步，需要卸载异步的引用计数
+                        AssetBundleLoadMgr.Instance.Unload(assetBundleName);
+                    }
+                    else
+                    {
+                        assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(assetName);
+                    }
+                }
 #else
                 if (assetObj._isABLoad)
                 {
@@ -297,10 +327,29 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._assetBundleName = assetBundleName;
         assetObj._assetName = assetName;
 
-#if UNITY_EDITOR && !USE_AB
-        assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
+#if UNITY_EDITOR
+
+        if(GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
+        {
+            assetObj._asset = EditorAssetLoadMgr.Instance.LoadSync(assetName);
+        }
+        else if(GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+        {
+            if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
+            {
+                assetObj._isABLoad = false;
+                assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(assetName);
+            }
+            else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
+            {
+                assetObj._isABLoad = true;
+                //LogHelper.LogWarning(string.Format("AssetsLoadMgr LoadSync use AssetBundleLoadMgr assetBundleName:{0} assetname:{1}", assetObj._assetBundleName, assetObj._assetName));
+                AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(assetBundleName);
+                assetObj._asset = ab1.LoadAsset(this.GetAssetNameForAB(assetName));
+            }
+        }
 #else
-        if(ResourcesLoadMgr.Instance.IsFileExist(assetName))
+        if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
             assetObj._isABLoad = false;
             assetObj._asset = ResourcesLoadMgr.Instance.LoadSync(assetName);
@@ -308,7 +357,6 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
         {
             assetObj._isABLoad = true;
-            LogHelper.LogWarning(string.Format("AssetsLoadMgr LoadSync use AssetBundleLoadMgr assetBundleName:{0} assetname:{1}", assetObj._assetBundleName, assetObj._assetName));
             AssetBundle ab1 = AssetBundleLoadMgr.Instance.LoadSync(assetBundleName);
             assetObj._asset = ab1.LoadAsset(this.GetAssetNameForAB(assetName));
         }
@@ -364,9 +412,47 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         assetObj._assetName = assetName;
         assetObj._callbackList.Add(callFun);
 
-#if UNITY_EDITOR && !USE_AB
-        this._loadingList.Add(assetName, assetObj);
-        assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(assetName);
+#if UNITY_EDITOR
+        if(GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
+        {
+            this._loadingList.Add(assetName, assetObj);
+            assetObj._request = EditorAssetLoadMgr.Instance.LoadAsync(assetName);
+        }
+        else if(GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+        {
+            if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
+            {
+                assetObj._isABLoad = false;
+                this._loadingList.Add(assetName, assetObj);
+                assetObj._request = ResourcesLoadMgr.Instance.LoadAsync(assetName);
+            }
+            else if (AssetBundleLoadMgr.Instance.IsABExist(assetBundleName))
+            {
+                assetObj._isABLoad = true;
+                this._loadingList.Add(assetName, assetObj);
+
+                AssetBundleLoadMgr.Instance.LoadAsync(assetBundleName, (AssetBundle _ab) =>
+                {
+                    if(_ab == null)
+                    {
+                        string errormsg = string.Format("LoadAssetBundle request error ! assetBundleName:{0} assetName:{1}",assetObj._assetBundleName, assetObj._assetName);
+                        LogHelper.LogError(errormsg);
+                        this._loadingList.Remove(assetName);
+                        //重新添加 保证成功
+                        for(int i = 0; i < assetObj._callbackList.Count; ++i)
+                        {
+                            this.LoadAsync(assetObj._assetBundleName, assetObj._assetName, assetObj._callbackList[i]);
+                        }
+                        return;
+                    }
+
+                    if(this._loadingList.ContainsKey(assetName) && assetObj._request == null && assetObj._asset == null)
+                    {
+                        assetObj._request = _ab.LoadAssetAsync(this.GetAssetNameForAB(assetName));
+                    }
+                });
+            }
+        }
 #else
         if (ResourcesLoadMgr.Instance.IsFileExist(assetName))
         {
@@ -583,8 +669,22 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
 
     private void DoUnload(AssetObject _assetObj)
     {
-#if UNITY_EDITOR && !USE_AB
-        EditorAssetLoadMgr.Instance.Unload(_assetObj._asset);
+#if UNITY_EDITOR
+        if (GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
+        {
+            EditorAssetLoadMgr.Instance.Unload(_assetObj._asset);
+        }
+        else if (GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+        {
+            if (_assetObj._isABLoad)
+            {
+                AssetBundleLoadMgr.Instance.Unload(_assetObj._assetBundleName);
+            }
+            else
+            {
+                ResourcesLoadMgr.Instance.Unload(_assetObj._asset);
+            }
+        }
 #else
         if (_assetObj._isABLoad)
         {
@@ -595,7 +695,7 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
             ResourcesLoadMgr.Instance.Unload(_assetObj._asset);
         }
 #endif
-        _assetObj._asset = null;
+            _assetObj._asset = null;
 
         if (this._goInstanceIDList.ContainsKey(_assetObj._instanceID))
         {
@@ -647,23 +747,54 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         this.tempLoadeds.Clear();
         foreach(var assetObj in this._loadingList.Values)
         {
-#if UNITY_EDITOR && !USE_AB
-            if(assetObj._request != null && (assetObj._request as EditorResourceRequest).isDone)
+#if UNITY_EDITOR
+            if (GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
             {
-                assetObj._asset = (assetObj._request as EditorResourceRequest).asset;
-
-                if(assetObj._asset == null)
+                if (assetObj._request != null && (assetObj._request as EditorResourceRequest).isDone)
                 {
-                    //提取的资源失败，从加载列表删除
-                    this._loadingList.Remove(assetObj._assetName);
-                    LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
-                    break;
-                }
+                    assetObj._asset = (assetObj._request as EditorResourceRequest).asset;
 
-                assetObj._instanceID = assetObj._asset.GetInstanceID();
-                this._goInstanceIDList.Add(assetObj._instanceID, assetObj);
-                assetObj._request = null;
-                tempLoadeds.Add(assetObj);
+                    if (assetObj._asset == null)
+                    {
+                        //提取的资源失败，从加载列表删除
+                        this._loadingList.Remove(assetObj._assetName);
+                        LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+                        break;
+                    }
+
+                    assetObj._instanceID = assetObj._asset.GetInstanceID();
+                    this._goInstanceIDList.Add(assetObj._instanceID, assetObj);
+                    assetObj._request = null;
+                    tempLoadeds.Add(assetObj);
+                }
+            }
+            else if (GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+            {
+                if (assetObj._request != null && assetObj._request.isDone)
+                {
+                    //加载完进行数据清理
+                    if (assetObj._request is AssetBundleRequest)
+                    {
+                        assetObj._asset = (assetObj._request as AssetBundleRequest).asset;
+                    }
+                    else
+                    {
+                        assetObj._asset = (assetObj._request as ResourceRequest).asset;
+                    }
+
+                    if (assetObj._asset == null)
+                    {
+                        //提取的资源失败，从加载列表删除
+                        this._loadingList.Remove(assetObj._assetName);
+                        LogHelper.LogError("AssetsLoadMgr assetObj._asset Null " + assetObj._assetName);
+                        break;
+                    }
+
+                    assetObj._instanceID = assetObj._asset.GetInstanceID();
+                    this._goInstanceIDList.Add(assetObj._instanceID, assetObj);
+                    assetObj._request = null;
+                    tempLoadeds.Add(assetObj);
+                }
             }
 #else
             if (assetObj._request != null && assetObj._request.isDone)
@@ -794,8 +925,15 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
         this.UpdateLoading();       //加载完成回调
         this.UpdateUnload();        //卸载需要销毁的资源
 
-#if UNITY_EDITOR && !USE_AB
-        EditorAssetLoadMgr.Instance.Update();
+#if UNITY_EDITOR
+        if (GameApp.Instance.config.loadType == EnumLoadType.LocalRes)
+        {
+            EditorAssetLoadMgr.Instance.Update();
+        }
+        else if (GameApp.Instance.config.loadType == EnumLoadType.AssetBundle)
+        {
+            AssetBundleLoadMgr.Instance.Update();
+        }
 #else
         AssetBundleLoadMgr.Instance.Update();
 #endif
