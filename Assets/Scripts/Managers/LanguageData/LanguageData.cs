@@ -54,7 +54,7 @@ public static class LanguageData
     /// <summary>
     /// 语言表格数据存储
     /// </summary>
-    public static Dictionary<string, Language> dic_Language = new Dictionary<string, Language>();
+    public static Dictionary<string, Tbl_Language> dic_Language = new Dictionary<string, Tbl_Language>();
     /// <summary>
     /// 语言修改回调
     /// </summary>
@@ -87,11 +87,11 @@ public static class LanguageData
         if (LanguageData.dic_Language.Keys.Count <= 0)
         {
 #if UNITY_EDITOR
-            TextAsset info = AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Tables/Language.json", typeof(UnityEngine.Object)) as TextAsset;
-            LanguageData.dic_Language = JsonConvert.DeserializeObject<Dictionary<string, Language>>(info.text);
+            TextAsset info = AssetDatabase.LoadAssetAtPath("Assets/AssetsPackage/Tables/Tbl_Language.json", typeof(UnityEngine.Object)) as TextAsset;
+            LanguageData.dic_Language = JsonConvert.DeserializeObject<Dictionary<string, Tbl_Language>>(info.text);
 #else
-            TextAsset info = AssetsLoadMgr.Instance.LoadSync("table", "Tables/Language.json") as TextAsset;
-            LanguageData.dic_Language = JsonConvert.DeserializeObject<Dictionary<string, Language>>(info.text);
+            TextAsset info = AssetsLoadMgr.Instance.LoadSync("table", "Tables/Tbl_Language.json") as TextAsset;
+            LanguageData.dic_Language = JsonConvert.DeserializeObject<Dictionary<string, Tbl_Language>>(info.text);
 #endif
         }
     }
@@ -106,7 +106,7 @@ public static class LanguageData
         LanguageData.FillLanguageData();
 
         string text = "=NaN=";
-        if (LanguageData.dic_Language.TryGetValue(id, out Language data))
+        if (LanguageData.dic_Language.TryGetValue(id, out Tbl_Language data))
         {
             if (LanguageData.type == LanguageType.Chinese)
             {

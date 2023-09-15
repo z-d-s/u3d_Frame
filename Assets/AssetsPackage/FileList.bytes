@@ -34,9 +34,9 @@ Sounds/SwipeDown.wav
 Sounds/SwipeMove.wav
 Sounds/SwipeUp.wav
 Sounds/WavesoundDisco.wav
-Tables/Car.json
-Tables/Language.json
-Tables/NPC.json
+Tables/Tbl_Character.json
+Tables/Tbl_Language.json
+Tables/Tbl_NPC.json
 Effects/Materials/Shadow.mat
 Effects/Prefabs/Shadow.prefab
 GizmosModels/Materials/gizmos_ball.mat
@@ -233,8 +233,6 @@ Characters/Jinglingnan/Animators/Role_Animator.controller
 Characters/Jinglingnan/Models/jing_ling_nan.FBX
 Characters/Jinglingnan/Prefabs/JingLingNan.prefab
 Characters/Jinglingnan/Textures/jing_ling_nan.tga
-Maps/Map_001/game_scene/LightingData.asset
-Maps/Map_001/game_scene/ReflectionProbe-0.exr
 Maps/Map_001/Pvp_002/New Terrain 1.asset
 SimpleApocalypse/_Materials/Bodies/SA_BurntBody_01.mat
 SimpleApocalypse/_Materials/Bodies/SA_BurntBody_02.mat

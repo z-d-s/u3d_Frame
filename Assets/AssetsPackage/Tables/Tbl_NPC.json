@@ -3,24 +3,30 @@
     "ID": 2001,
     "Name": "name_2001",
     "Path": "path_2001",
+    "MoveSpeed": 0.2,
     "Hp": 10,
     "Attack": 1,
-    "Defence": 0.5
+    "Defence": 0.5,
+    "Describe": "角色name_2001，恒撒大陆的虫族001号"
   },
   "2002": {
     "ID": 2002,
     "Name": "name_2002",
     "Path": "path_2002",
+    "MoveSpeed": 0.3,
     "Hp": 20,
     "Attack": 2,
-    "Defence": 1.5
+    "Defence": 1.5,
+    "Describe": "角色name_2002，恒撒大陆的虫族002号"
   },
   "2003": {
     "ID": 2003,
     "Name": "name_2003",
     "Path": "path_2003",
+    "MoveSpeed": 0.5,
     "Hp": 30,
     "Attack": 3,
-    "Defence": 2.5
+    "Defence": 2.5,
+    "Describe": "角色name_2003，恒撒大陆的虫族003号"
   }
 }

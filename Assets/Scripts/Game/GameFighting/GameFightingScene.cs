@@ -44,13 +44,23 @@ public class GameFightingScene : MonoBehaviour
     /// </summary>
     public void InitRole()
     {
-        AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Jinglingnan/Prefabs/JingLingNan.prefab", (string _name, UnityEngine.Object _obj) =>
+        //AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Jinglingnan/Prefabs/JingLingNan.prefab", (string _name, UnityEngine.Object _obj) =>
+        //{
+        //    GameObject player = GameObject.Instantiate(_obj as GameObject);
+        //    player.name = "player";
+        //    player.transform.position = this.obj_CurrentMap.transform.Find("Map_SpawnPoints/point_main").position;
+        //    player.transform.localScale = Vector3.one;
+        //    GameMgr.Instance.characterMain = player.AddComponent<CharacterMain>();
+        //    GameMgr.Instance.characterMain.Init();
+
+        //    this.InitReferenceBall_Calibration();
+        //});
+
+        CharacterMgr.Instance.CreateCharacter("1001", (CharacterBase character) =>
         {
-            GameObject player = GameObject.Instantiate(_obj as GameObject);
-            player.name = "player";
-            player.transform.position = this.obj_CurrentMap.transform.Find("Map_SpawnPoints/point_main").position;
-            player.transform.localScale = Vector3.one;
-            GameMgr.Instance.characterMain = player.AddComponent<CharacterMain>();
+            CharacterMain characterMain = character as CharacterMain;
+            characterMain.SetCharacterPos(this.obj_CurrentMap.transform.Find("Map_SpawnPoints/point_main").position);
+            GameMgr.Instance.characterMain = characterMain;
             GameMgr.Instance.characterMain.Init();
 
             this.InitReferenceBall_Calibration();

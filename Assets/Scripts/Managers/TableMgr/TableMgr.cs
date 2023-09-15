@@ -3,9 +3,9 @@
 	TableMgr - 表格管理
 
         使用事例：
-                -- 获取表格             Car car = TableMgr.Instance.GetTable<Car>("1001");
-                -- 获取表格中所有ID     List<string> list_IDs = TableMgr.Instance.GetTableIDs<Car>();
-                -- 表格ID是否存在       bool b = TableMgr.Instance.ExistTableID<Car>("1001");
+                -- 获取表格             Character character = TableMgr.Instance.GetTable<Character>("1001");
+                -- 获取表格中所有ID     List<string> list_IDs = TableMgr.Instance.GetTableIDs<Character>();
+                -- 表格ID是否存在       bool b = TableMgr.Instance.ExistTableID<Character>("1001");
 
         ps：如果有新的表格添加，需要向TableDefine中添加表格同名的枚举
 
@@ -18,8 +18,8 @@ using UnityEngine;
 public enum TableDefine
 {
     None = 0,
-    Car,
-    NPC,
+    Tbl_Character,
+    Tbl_NPC,
 
     Max,    //此枚举始终在最后
 }

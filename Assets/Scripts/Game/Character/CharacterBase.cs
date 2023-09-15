@@ -7,24 +7,22 @@ using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
 {
+    public AnimatorCtrl animCtrl = null;
+    public ShadowCtrl shadowCtrl = null;
+
     /// <summary>
     /// 是否死亡
     /// </summary>
     [HideInInspector]
     public bool isDeath;
 
-    protected float hp;
-    protected float define;
-
-    public AnimatorCtrl animCtrl = null;
-    public ShadowCtrl shadowCtrl = null;
+    [HideInInspector]
+    public BaseData characterData = new BaseData();
 
     //正式项目使用Excel表格读取数据
     public void Init()
     {
         this.isDeath = false;
-        this.hp = 1;
-        this.define = 1;
 
         this.AddAnimator();
         this.AddShadow();
@@ -52,6 +50,11 @@ public class CharacterBase : MonoBehaviour
         return this.transform.position;
     }
 
+    public void SetCharacterPos(Vector3 pos)
+    {
+        this.transform.position = pos;
+    }
+
     private void OnEndBySkill()
     {
         if(this.isDeath == true)
@@ -69,14 +72,14 @@ public class CharacterBase : MonoBehaviour
             return;
         }
 
-        float lost = attack - define;
+        float lost = attack - this.characterData.defence;
         if (lost <= 0)
         {
             return;
         }
 
-        this.hp -= lost;
-        if (this.hp <= 0)
+        this.characterData.hp -= lost;
+        if (this.characterData.hp <= 0)
         {
             this.isDeath = true;
             this.animCtrl.SetState(AnimatorCtrl.AnimState.Death);
