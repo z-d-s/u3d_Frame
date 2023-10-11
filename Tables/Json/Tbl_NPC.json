@@ -1,8 +1,9 @@
 {
   "2001": {
     "ID": 2001,
+    "AssetBundleName": "role_jinglingnan",
+    "AssetPath": "Characters/Jinglingnan/Prefabs/JingLingNan.prefab",
     "Name": "name_2001",
-    "Path": "path_2001",
     "MoveSpeed": 0.2,
     "Hp": 10,
     "Attack": 1,
@@ -11,8 +12,9 @@
   },
   "2002": {
     "ID": 2002,
+    "AssetBundleName": "role_jinglingnan",
+    "AssetPath": "Characters/Jinglingnan/Prefabs/JingLingNan.prefab",
     "Name": "name_2002",
-    "Path": "path_2002",
     "MoveSpeed": 0.3,
     "Hp": 20,
     "Attack": 2,
@@ -21,8 +23,9 @@
   },
   "2003": {
     "ID": 2003,
+    "AssetBundleName": "role_jinglingnan",
+    "AssetPath": "Characters/Jinglingnan/Prefabs/JingLingNan.prefab",
     "Name": "name_2003",
-    "Path": "path_2003",
     "MoveSpeed": 0.5,
     "Hp": 30,
     "Attack": 3,

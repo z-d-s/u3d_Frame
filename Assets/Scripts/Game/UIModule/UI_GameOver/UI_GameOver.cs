@@ -17,8 +17,8 @@ public class UI_GameOver : BaseUI
 		this.btn_RestartGame.onClick.AddListener(this.OnClickRestartGame);
 	}
 
-	private void OnEnable()
-	{
+    public override void OnEnable()
+    {
 		this.dataProxy.RequestDataInfo();
 	}
 
@@ -29,7 +29,7 @@ public class UI_GameOver : BaseUI
 		this.RefreshDataInfo(this.dataProxy.gameUIData);
 	}
 
-	public void RefreshDataInfo(UI_GameMainData data)
+	public void RefreshDataInfo(UI_GameOverData data)
 	{
 		
 	}

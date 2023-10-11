@@ -24,8 +24,8 @@ public class UI_GameMain_Mediator : Mediator
         {
             EventDefine.MVC_UI_GameMain_FillInfo,
             EventDefine.MVC_UI_GameMain_Hide,
-            EventDefine.MVC_UI_GameMain_Change_Hp,
-            EventDefine.MVC_UI_GameMain_Change_Score,
+            EventDefine.MVC_UI_GameMain_Change_Coin,
+            EventDefine.MVC_UI_GameMain_Change_Diamond,
         };
         return notifies;
     }
@@ -42,10 +42,10 @@ public class UI_GameMain_Mediator : Mediator
             case EventDefine.MVC_UI_GameMain_Hide:
                 this.Hide();
                 break;
-            case EventDefine.MVC_UI_GameMain_Change_Hp:
+            case EventDefine.MVC_UI_GameMain_Change_Coin:
                 this.view.RefreshDataInfo(notification.Body as UI_GameMainData);
                 break;
-            case EventDefine.MVC_UI_GameMain_Change_Score:
+            case EventDefine.MVC_UI_GameMain_Change_Diamond:
                 this.view.RefreshDataInfo(notification.Body as UI_GameMainData);
                 break;
             default:

@@ -1,0 +1,122 @@
+{
+  "1001001": {
+    "ID": 1001001,
+    "MoveSpeed": 0.06,
+    "RotateSpeed": 10,
+    "Hp": 100
+  },
+  "1001002": {
+    "ID": 1001002,
+    "MoveSpeed": 0.07,
+    "RotateSpeed": 10,
+    "Hp": 120
+  },
+  "1001003": {
+    "ID": 1001003,
+    "MoveSpeed": 0.08,
+    "RotateSpeed": 10,
+    "Hp": 140
+  },
+  "1001004": {
+    "ID": 1001004,
+    "MoveSpeed": 0.09,
+    "RotateSpeed": 10,
+    "Hp": 160
+  },
+  "1001005": {
+    "ID": 1001005,
+    "MoveSpeed": 0.1,
+    "RotateSpeed": 10,
+    "Hp": 180
+  },
+  "1001006": {
+    "ID": 1001006,
+    "MoveSpeed": 0.11,
+    "RotateSpeed": 10,
+    "Hp": 200
+  },
+  "1001007": {
+    "ID": 1001007,
+    "MoveSpeed": 0.12,
+    "RotateSpeed": 10,
+    "Hp": 220
+  },
+  "1001008": {
+    "ID": 1001008,
+    "MoveSpeed": 0.13,
+    "RotateSpeed": 10,
+    "Hp": 240
+  },
+  "1001009": {
+    "ID": 1001009,
+    "MoveSpeed": 0.14,
+    "RotateSpeed": 10,
+    "Hp": 260
+  },
+  "1001010": {
+    "ID": 1001010,
+    "MoveSpeed": 0.15,
+    "RotateSpeed": 10,
+    "Hp": 280
+  },
+  "1002001": {
+    "ID": 1002001,
+    "MoveSpeed": 0.06,
+    "RotateSpeed": 10,
+    "Hp": 100
+  },
+  "1002002": {
+    "ID": 1002002,
+    "MoveSpeed": 0.07,
+    "RotateSpeed": 10,
+    "Hp": 120
+  },
+  "1002003": {
+    "ID": 1002003,
+    "MoveSpeed": 0.08,
+    "RotateSpeed": 10,
+    "Hp": 140
+  },
+  "1002004": {
+    "ID": 1002004,
+    "MoveSpeed": 0.09,
+    "RotateSpeed": 10,
+    "Hp": 160
+  },
+  "1002005": {
+    "ID": 1002005,
+    "MoveSpeed": 0.1,
+    "RotateSpeed": 10,
+    "Hp": 180
+  },
+  "1002006": {
+    "ID": 1002006,
+    "MoveSpeed": 0.11,
+    "RotateSpeed": 10,
+    "Hp": 200
+  },
+  "1002007": {
+    "ID": 1002007,
+    "MoveSpeed": 0.12,
+    "RotateSpeed": 10,
+    "Hp": 220
+  },
+  "1002008": {
+    "ID": 1002008,
+    "MoveSpeed": 0.13,
+    "RotateSpeed": 10,
+    "Hp": 240
+  },
+  "1002009": {
+    "ID": 1002009,
+    "MoveSpeed": 0.14,
+    "RotateSpeed": 10,
+    "Hp": 260
+  },
+  "1002010": {
+    "ID": 1002010,
+    "MoveSpeed": 0.15,
+    "RotateSpeed": 10,
+    "Hp": 280
+  }
+}

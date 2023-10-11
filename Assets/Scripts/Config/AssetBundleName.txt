@@ -1,8 +1,15 @@
 table:Assets/AssetsPackage/Tables
 gizmos_ball:Assets/AssetsPackage/GizmosModels/Prefabs/Gizmos_Ball.prefab
-role_jinglingnan:Assets/AssetsPackage/Characters/Jinglingnan/Prefabs/JingLingNan.prefab
+circle_mark:Assets/AssetsPackage/Effects/Prefabs/
+role_erika:Assets/AssetsPackage/Characters/Erika/Erika.prefab
+role_arissa:Assets/AssetsPackage/Characters/Arissa/Arissa.prefab
 shadow:Assets/AssetsPackage/Effects/Prefabs/Shadow.prefab
+map_000:Assets/AssetsPackage/Maps/Map_000/Map_000.prefab
 map_001:Assets/AssetsPackage/Maps/Map_001/Map_001.prefab
+weapon_guns:Assets/AssetsPackage/Equipments/_Prefabs/Weapons
+bullet:Assets/AssetsPackage/Equipments/_Prefabs/Bullet
+ui_fps:Assets/AssetsPackage/UI/Prefabs/UI_FPS.prefab
+ui_announcement:Assets/AssetsPackage/UI/Prefabs/UI_Announcement.prefab
 ui_loading:Assets/AssetsPackage/UI/Prefabs/UI_Loading.prefab
 ui_gamemain:Assets/AssetsPackage/UI/Prefabs/UI_GameMain.prefab
 ui_gamecontrol:Assets/AssetsPackage/UI/Prefabs/UI_GameControl.prefab

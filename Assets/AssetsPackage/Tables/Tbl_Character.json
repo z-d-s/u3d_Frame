@@ -1,32 +1,16 @@
 {
   "1001": {
     "ID": 1001,
-    "Name": "name_1001",
-    "Path": "path_1001",
-    "MoveSpeed": 0.06,
-    "Hp": 10,
-    "Attack": 1,
-    "Defence": 0.5,
-    "Describe": "角色name_1001，恒撒大陆的精灵战士"
+    "AssetBundleName": "role_erika",
+    "AssetNamePath": "Characters/Erika/Erika.prefab",
+    "Name": "Erika",
+    "Describe": "角色Erika，恒撒大陆的精灵战士"
   },
   "1002": {
     "ID": 1002,
-    "Name": "name_1002",
-    "Path": "path_1002",
-    "MoveSpeed": 0.03,
-    "Hp": 20,
-    "Attack": 2,
-    "Defence": 1.5,
-    "Describe": "角色name_1002，恒撒大陆的眼镜蛇部战士"
-  },
-  "1003": {
-    "ID": 1003,
-    "Name": "name_1003",
-    "Path": "path_1003",
-    "MoveSpeed": 0.05,
-    "Hp": 30,
-    "Attack": 3,
-    "Defence": 2.5,
-    "Describe": "角色name_1003，恒撒大陆的暗部战士"
+    "AssetBundleName": "role_arissa",
+    "AssetNamePath": "Characters/Arissa/Arissa.prefab",
+    "Name": "Arissa",
+    "Describe": "角色Arissa，恒撒大陆的眼镜蛇部战士"
   }
 }

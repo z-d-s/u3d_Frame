@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,7 @@ public class GameApp : MonoBaseSingleton<GameApp>
 
         //初始设置
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Application.targetFrameRate = (int)config.enumFPS;
 #if UNITY_STANDALONE
         Screen.SetResolution(720, 1280, false);
 #elif UNITY_ANDROID || UNITY_IOS

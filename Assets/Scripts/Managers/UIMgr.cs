@@ -24,6 +24,7 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
     public Transform ui_Mid;
     public Transform ui_Up;
     public Transform ui_Top;
+    public Transform ui_FPS;
 
     /// <summary>
     /// UI 事件系统
@@ -45,6 +46,7 @@ public class UIMgr : MonoBaseSingleton<UIMgr>
         this.ui_Mid         = this.ui_Canvas.Find("UI_Mid").transform;
         this.ui_Up          = this.ui_Canvas.Find("UI_Up").transform;
         this.ui_Top         = this.ui_Canvas.Find("UI_Top").transform;
+        this.ui_FPS         = this.ui_Canvas.Find("UI_FPS").transform;
         this.ui_EventSystem = this.ui_Root.Find("EventSystem").GetComponent<EventSystem>();
 
         DontDestroyOnLoad(this.ui_Root);

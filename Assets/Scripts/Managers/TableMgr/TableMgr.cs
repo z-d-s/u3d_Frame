@@ -19,7 +19,15 @@ public enum TableDefine
 {
     None = 0,
     Tbl_Character,
-    Tbl_NPC,
+    Tbl_Character_Level,
+    Tbl_Enemy,
+    Tbl_Enemy_Level,
+    //Tbl_Language,
+    Tbl_Map,
+    Tbl_Res,
+    Tbl_ShootingBullet,
+    Tbl_Weapon,
+    Tbl_Weapon_Level,
 
     Max,    //此枚举始终在最后
 }

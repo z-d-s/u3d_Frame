@@ -1,0 +1,16 @@
+{
+  "5001": {
+    "ID": 5001,
+    "AssetBundleName": "bullet",
+    "AssetNamePath": "Equipments/_Prefabs/Bullet/FX_GunFlash.prefab",
+    "Speed": 0.4,
+    "Describe": "子弹5001"
+  },
+  "5002": {
+    "ID": 5002,
+    "AssetBundleName": "bullet",
+    "AssetNamePath": "Equipments/_Prefabs/Bullet/FX_GunFlash.prefab",
+    "Speed": 0.5,
+    "Describe": "子弹5002"
+  }
+}

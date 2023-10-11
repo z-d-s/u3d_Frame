@@ -13,14 +13,19 @@ public class Tbl_NPC
 	public string ID;
 
 	/// <summary>
+	/// AB包名
+	/// </summary>
+	public string AssetBundleName;
+
+	/// <summary>
+	/// asset资源名
+	/// </summary>
+	public string AssetPath;
+
+	/// <summary>
 	/// 名称
 	/// </summary>
 	public string Name;
-
-	/// <summary>
-	/// 路径
-	/// </summary>
-	public string Path;
 
 	/// <summary>
 	/// 移动速度

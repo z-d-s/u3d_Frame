@@ -24,6 +24,28 @@ public static class UtilTool
         return angle;
     }
 
+    public static string GetIDByIDAndLevel(string _id, int _level)
+    {
+        return _id + _level.ToString("d3");
+    }
+
+    /// <summary>
+    /// 从路径中获取文件名
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <param name="extension">扩展名</param>
+    /// <returns></returns>
+    public static string GetNameFromPath(string path, bool extension = false)
+    {
+        if(extension == false)
+        {
+            path = path.Substring(0, path.LastIndexOf("."));
+        }
+        string temp = path.Substring(0, path.LastIndexOf("/") + 1);
+        path = path.Replace(temp, "");
+        return path;
+    }
+
     //                 0
     //       -45      ↑       45
     //                 |

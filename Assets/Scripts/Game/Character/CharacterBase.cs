@@ -1,14 +1,30 @@
 /**
- * 控制层组件
+ * 角色基类
  */
 
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CharacterBase : MonoBehaviour
 {
+    /// <summary>
+    /// 移动指示箭头
+    /// </summary>
+    [HideInInspector]
+    public CircleMarkCtrl circleMarkCtrl = null;
+
+    /// <summary>
+    /// 角色实体
+    /// </summary>
+    [HideInInspector]
+    public GameObject real_Character;
+
+    /// <summary>
+    /// 角色动画控制脚本
+    /// </summary>
+    [HideInInspector]
     public AnimatorCtrl animCtrl = null;
-    public ShadowCtrl shadowCtrl = null;
 
     /// <summary>
     /// 是否死亡
@@ -16,33 +32,70 @@ public class CharacterBase : MonoBehaviour
     [HideInInspector]
     public bool isDeath;
 
+    /// <summary>
+    /// 队伍属性
+    /// </summary>
     [HideInInspector]
-    public BaseData characterData = new BaseData();
+    public Enum_TeamType teamType;
 
-    //正式项目使用Excel表格读取数据
-    public void Init()
+    /// <summary>
+    /// 角色基础数据
+    /// </summary>
+    [HideInInspector]
+    public CharacterBaseData characterBaseData = new CharacterBaseData();
+
+    public void SetRealCharacter(GameObject real_Character)
     {
-        this.isDeath = false;
-
-        this.AddAnimator();
-        this.AddShadow();
+        this.real_Character = real_Character;
     }
 
-    private void AddAnimator()
+    public void SetBaseControl()
     {
-        this.animCtrl = this.gameObject.AddComponent<AnimatorCtrl>();
-        this.animCtrl.Init();
-        this.animCtrl.SetState(AnimatorCtrl.AnimState.Idle);
+        this.AddCirlceMark();
+        this.AddAnimatorCtrl();
     }
-
-    private void AddShadow()
+    
+    private void AddCirlceMark()
     {
-        AssetsLoadMgr.Instance.LoadAsync("shadow", "Effects/Prefabs/Shadow.prefab", (string name, UnityEngine.Object obj) =>
+        if(this.circleMarkCtrl == null)
         {
-            GameObject _obj = PoolMgr.Instance.GetObject(obj.name, obj as GameObject);
-            this.shadowCtrl = _obj.AddComponent<ShadowCtrl>();
-            this.shadowCtrl.Init(this.transform);
-        });
+            string markPath = "";
+            if(this.teamType == Enum_TeamType.Self || this.teamType == Enum_TeamType.Team)
+            {
+                markPath = "Effects/Prefabs/Circle_Self.prefab";
+            }
+            else if(this.teamType == Enum_TeamType.Enemy)
+            {
+                markPath = "Effects/Prefabs/Circle_Enemy.prefab";
+            }
+            GameObject obj = PoolMgr.Instance.GetObject(UtilTool.GetNameFromPath(markPath));
+            if(obj == null)
+            {
+                AssetsLoadMgr.Instance.LoadAsync("circle_mark", markPath, (string _assetName, UnityEngine.Object _obj) =>
+                {
+                    GameObject obj = PoolMgr.Instance.GetObject(_obj.name, _obj as GameObject);
+                    this.circleMarkCtrl = obj.AddComponent<CircleMarkCtrl>();
+                    this.circleMarkCtrl.SetTarget(this);
+                });
+            }
+        }
+        else
+        {
+            this.circleMarkCtrl.SetTarget(this);
+        }
+    }
+
+    private void AddAnimatorCtrl()
+    {
+        if (this.animCtrl == null)
+        {
+            this.animCtrl = this.real_Character.AddComponent<AnimatorCtrl>();
+            this.animCtrl.Init();
+        }
+        else
+        {
+            this.animCtrl.Init();
+        }
     }
 
     public Vector3 GetCharacterPos()
@@ -55,14 +108,24 @@ public class CharacterBase : MonoBehaviour
         this.transform.position = pos;
     }
 
-    private void OnEndBySkill()
+    public Vector3 GetCharacterEuler()
     {
-        if(this.isDeath == true)
-        {
-            return;
-        }
+        return this.real_Character.transform.localEulerAngles;
+    }
 
-        this.animCtrl.SetState(AnimatorCtrl.AnimState.Idle);
+    public Quaternion GetCharacterLocalRot()
+    {
+        return this.real_Character.transform.localRotation;
+    }
+
+    public Quaternion GetCharacterWorldRot()
+    {
+        return this.real_Character.transform.rotation;
+    }
+
+    public Vector3 GetCharacterForward()
+    {
+        return this.real_Character.transform.forward;
     }
 
     private void OnHurt(float attack)
@@ -72,17 +135,16 @@ public class CharacterBase : MonoBehaviour
             return;
         }
 
-        float lost = attack - this.characterData.defence;
+        float lost = attack;
         if (lost <= 0)
         {
             return;
         }
 
-        this.characterData.hp -= lost;
-        if (this.characterData.hp <= 0)
+        this.characterBaseData.hp -= lost;
+        if (this.characterBaseData.hp <= 0)
         {
             this.isDeath = true;
-            this.animCtrl.SetState(AnimatorCtrl.AnimState.Death);
         }
     }
 }

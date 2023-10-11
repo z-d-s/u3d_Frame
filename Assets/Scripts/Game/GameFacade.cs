@@ -44,6 +44,8 @@ public class GameFacade : Facade
     {
         base.InitializeController();
 
+        this.RegisterCommand(EventDefine.MVC_UI_FPS_StartUp, () => new UI_FPS_Command());
+        this.RegisterCommand(EventDefine.MVC_UI_Announcement_StartUp, () => new UI_Announcement_Command());
         this.RegisterCommand(EventDefine.MVC_UI_Loading_StartUp, () => new UI_Loading_Command());
         this.RegisterCommand(EventDefine.MVC_UI_GameMain_StartUp, () => new UI_Game_Command());
         this.RegisterCommand(EventDefine.MVC_UI_Setting_StartUp, () => new UI_Setting_Command());

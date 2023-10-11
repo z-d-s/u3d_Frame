@@ -1,0 +1,30 @@
+{
+  "3000": {
+    "ID": 3000,
+    "AssetBundleName": "map_000",
+    "AssetNamePath": "Maps/Map_000/Map_000.prefab",
+    "Name": "测试",
+    "Describe": "测试基地"
+  },
+  "3001": {
+    "ID": 3001,
+    "AssetBundleName": "map_001",
+    "AssetNamePath": "Maps/Map_001/Map_001.prefab",
+    "Name": "魔灵岛",
+    "Describe": "魔界虫族领地"
+  },
+  "3002": {
+    "ID": 3002,
+    "AssetBundleName": "map_002",
+    "AssetNamePath": "Maps/Map_002/Map_002.prefab",
+    "Name": "炎沙",
+    "Describe": "常年高温炽热，昼长夜短，甲壳类虫族领地"
+  },
+  "3003": {
+    "ID": 3003,
+    "AssetBundleName": "map_003",
+    "AssetNamePath": "Maps/Map_003/Map_003.prefab",
+    "Name": "冰雪大陆",
+    "Describe": "极寒之地，毛兽类动物领地"
+  }
+}

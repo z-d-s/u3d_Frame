@@ -1,0 +1,82 @@
+{
+  "1": {
+    "ID": 1,
+    "MoveSpeed": 0.06,
+    "RotateSpeed": 10,
+    "Hp": 100,
+    "Attack": 10,
+    "Defence": 0
+  },
+  "2": {
+    "ID": 2,
+    "MoveSpeed": 0.07,
+    "RotateSpeed": 10,
+    "Hp": 120,
+    "Attack": 20,
+    "Defence": 2.5
+  },
+  "3": {
+    "ID": 3,
+    "MoveSpeed": 0.08,
+    "RotateSpeed": 10,
+    "Hp": 140,
+    "Attack": 30,
+    "Defence": 5
+  },
+  "4": {
+    "ID": 4,
+    "MoveSpeed": 0.09,
+    "RotateSpeed": 10,
+    "Hp": 160,
+    "Attack": 40,
+    "Defence": 7.5
+  },
+  "5": {
+    "ID": 5,
+    "MoveSpeed": 0.1,
+    "RotateSpeed": 10,
+    "Hp": 180,
+    "Attack": 50,
+    "Defence": 10
+  },
+  "6": {
+    "ID": 6,
+    "MoveSpeed": 0.11,
+    "RotateSpeed": 10,
+    "Hp": 200,
+    "Attack": 60,
+    "Defence": 12.5
+  },
+  "7": {
+    "ID": 7,
+    "MoveSpeed": 0.12,
+    "RotateSpeed": 10,
+    "Hp": 220,
+    "Attack": 70,
+    "Defence": 15
+  },
+  "8": {
+    "ID": 8,
+    "MoveSpeed": 0.13,
+    "RotateSpeed": 10,
+    "Hp": 240,
+    "Attack": 80,
+    "Defence": 17.5
+  },
+  "9": {
+    "ID": 9,
+    "MoveSpeed": 0.14,
+    "RotateSpeed": 10,
+    "Hp": 260,
+    "Attack": 90,
+    "Defence": 20
+  },
+  "10": {
+    "ID": 10,
+    "MoveSpeed": 0.15,
+    "RotateSpeed": 10,
+    "Hp": 280,
+    "Attack": 100,
+    "Defence": 22.5
+  }
+}

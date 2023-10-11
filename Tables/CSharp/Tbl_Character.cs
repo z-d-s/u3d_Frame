@@ -13,34 +13,19 @@ public class Tbl_Character
 	public string ID;
 
 	/// <summary>
+	/// AB包名
+	/// </summary>
+	public string AssetBundleName;
+
+	/// <summary>
+	/// asset资源名路径
+	/// </summary>
+	public string AssetNamePath;
+
+	/// <summary>
 	/// 名称
 	/// </summary>
 	public string Name;
-
-	/// <summary>
-	/// 路径
-	/// </summary>
-	public string Path;
-
-	/// <summary>
-	/// 移动速度
-	/// </summary>
-	public float MoveSpeed;
-
-	/// <summary>
-	/// 血量
-	/// </summary>
-	public int Hp;
-
-	/// <summary>
-	/// 攻击
-	/// </summary>
-	public int Attack;
-
-	/// <summary>
-	/// 防御
-	/// </summary>
-	public float Defence;
 
 	/// <summary>
 	/// 角色描述

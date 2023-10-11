@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class JoyStickHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class JoyStickHandle : MonoBehaviour
 {
     private Transform _parent;
 
@@ -22,14 +22,16 @@ public class JoyStickHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     private Vector2 handleInitPos = Vector2.zero;
 
     /// <summary>
+    /// 屏幕是否按下
+    /// </summary>
+    private bool pointHolding = false;
+
+    private int pointID = -1;
+
+    /// <summary>
     /// 摇杆半径范围
     /// </summary>
     private float radius = 0f;
-
-    /// <summary>
-    /// 按下时的位置
-    /// </summary>
-    private Vector2 pointDownPos;
 
     [HideInInspector]
     public Vector2 handleInput = Vector2.zero;
@@ -63,6 +65,13 @@ public class JoyStickHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnPointerDown_TouchBg(PointerEventData eventData)
     {
+        if(this.pointHolding == true)
+        {
+            return;
+        }
+        this.pointID = eventData.pointerId;
+        this.pointHolding = true;
+
         if(this._parent != null)
         {
             RectTransform parentRect = this._parent.GetComponent<RectTransform>();
@@ -75,29 +84,70 @@ public class JoyStickHandle : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnPointerUp_TouchBg(PointerEventData eventData)
     {
+        if(this.pointID != eventData.pointerId)
+        {
+            return;
+        }
+        this.pointID = -1;
+        this.pointHolding = false;
+
+        this.stick.localPosition = Vector2.zero;
+        this.SetHandleInput(Vector2.zero);
+
         this.transform.localPosition = this.handleInitPos;
         this.gameObject.SetActive(false);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        this.pointDownPos = eventData.position;
+        if (this.pointID != eventData.pointerId)
+        {
+            return;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Vector2 dis = eventData.position - this.pointDownPos;
-        float clamp = Mathf.Clamp(dis.magnitude, 0f, this.radius);
-        Vector2 normalizedDis = dis.normalized* clamp;
+        if (this.pointID != eventData.pointerId)
+        {
+            return;
+        }
+
+        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(this.GetComponent<RectTransform>(), eventData.position, null, out localPos);
+
+        Vector2 dir = localPos - Vector2.zero;
+        float clamp = Mathf.Clamp(dir.magnitude, 0f, this.radius);
+        Vector2 normalizedDis = dir.normalized * clamp;
         this.stick.localPosition = normalizedDis;
 
-        this.SetHandleInput(dis.normalized);
+        this.SetHandleInput(dir.normalized);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.stick.localPosition = Vector2.zero;
-        this.SetHandleInput(Vector2.zero);
+        if (this.pointID != eventData.pointerId)
+        {
+            return;
+        }
+    }
+
+    public void SetByAngle(Vector2 dir = new Vector2())
+    {
+        if(this.pointHolding)
+        {
+            return;
+        }
+
+        if (dir == Vector2.zero)
+        {
+            this.gameObject.SetActive(false);
+            this.SetHandleInput(Vector2.zero);
+            return;
+        }
+        this.gameObject.SetActive(true);
+        this.stick.localPosition = dir.normalized * this.radius;
+        this.SetHandleInput(dir);
     }
 
     private void SetHandleInput(Vector2 input)

@@ -8,11 +8,11 @@ public class UI_GameMain_Proxy : Proxy
     /// </summary>
     public new const string NAME = "UI_GameMain_Proxy";
 
-    public UI_GameMainData gameUIData = null;
+    public UI_GameMainData gameMainData = null;
 
     public UI_GameMain_Proxy(string proxyName, object data = null) : base(proxyName, data)
     {
-        this.gameUIData = new UI_GameMainData(100, 100);
+        this.gameMainData = new UI_GameMainData(100, 100);
     }
 
     public void RequestDataInfo()
@@ -25,17 +25,15 @@ public class UI_GameMain_Proxy : Proxy
         GameFacade.Instance.SendNotification(EventDefine.MVC_UI_GameMain_FillInfo);
     }
 
-    public void AddHp(float _hp)
+    public void AddCoin(float _coin)
     {
-        this.gameUIData.hp += _hp;
-        this.gameUIData.hp = Math.Clamp(this.gameUIData.hp, 0f, this.gameUIData.max_Hp);
-        GameFacade.Instance.SendNotification(EventDefine.MVC_UI_GameMain_Change_Hp, this.gameUIData);
+        this.gameMainData.coin += _coin;
+        GameFacade.Instance.SendNotification(EventDefine.MVC_UI_GameMain_Change_Coin, this.gameMainData);
     }
 
-    public void AddExp(float _exp)
+    public void AddDiamond(float _diamond)
     {
-        this.gameUIData.exp += _exp;
-        this.gameUIData.exp = Math.Clamp(this.gameUIData.exp, 0f, this.gameUIData.max_Exp);
-        GameFacade.Instance.SendNotification(EventDefine.MVC_UI_GameMain_Change_Score, this.gameUIData);
+        this.gameMainData.diamond += _diamond;
+        GameFacade.Instance.SendNotification(EventDefine.MVC_UI_GameMain_Change_Diamond, this.gameMainData);
     }
 }

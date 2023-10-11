@@ -16,7 +16,7 @@ public class UI_Loading : BaseUI
         this.img_LoadingBar = this.transform.Find("Loading/LoadingBar").GetComponent<Image>();
     }
 
-    private void OnEnable()
+    public override void OnEnable()
     {
 	    this.currentProgress = 0f;
         this.loading = true;

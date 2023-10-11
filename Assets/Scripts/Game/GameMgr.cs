@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum GameState
@@ -14,7 +12,6 @@ public enum GameState
 public class GameMgr : BaseSingleton<GameMgr>
 {
     public GameState gameState = GameState.None;
-    public CharacterMain characterMain = null;
     public CameraCtrl cameraCtrl = null;
     public ReferenceBall_Target ball_Target;
 
@@ -28,6 +25,11 @@ public class GameMgr : BaseSingleton<GameMgr>
     /// </summary>
     public void EnterGame()
     {
+        if(GameApp.Instance.config.showFPS)
+        {
+            GameFacade.Instance.SendNotification(EventDefine.MVC_UI_FPS_StartUp, UIMgr.Instance.ui_FPS);
+        }
+
         // 显示UI_Loading界面
         GameFacade.Instance.SendNotification(EventDefine.MVC_UI_Loading_StartUp);
     }

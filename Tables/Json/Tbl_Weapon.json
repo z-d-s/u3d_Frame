@@ -1,0 +1,30 @@
+{
+  "4101": {
+    "ID": 4101,
+    "AssetBundleName": "weapon_guns",
+    "AssetNamePath": "Equipments/_Prefabs/Weapons/SA_Wep_AssaultRifle01.prefab",
+    "Name": "SA_Wep_AssaultRifle01",
+    "Describe": "武器SA_Wep_AssaultRifle01的描述"
+  },
+  "4102": {
+    "ID": 4102,
+    "AssetBundleName": "weapon_guns",
+    "AssetNamePath": "Equipments/_Prefabs/Weapons/SA_Wep_AssaultRifle02.prefab",
+    "Name": "SA_Wep_AssaultRifle02",
+    "Describe": "武器SA_Wep_AssaultRifle02的描述"
+  },
+  "4201": {
+    "ID": 4201,
+    "AssetBundleName": "weapon_guns",
+    "AssetNamePath": "Equipments/_Prefabs/Weapons/SA_Wep_AssaultRifle01.prefab",
+    "Name": "SA_Wep_AssaultRifle01",
+    "Describe": "武器SA_Wep_AssaultRifle01的描述"
+  },
+  "4202": {
+    "ID": 4202,
+    "AssetBundleName": "weapon_guns",
+    "AssetNamePath": "Equipments/_Prefabs/Weapons/SA_Wep_AssaultRifle02.prefab",
+    "Name": "SA_Wep_AssaultRifle02",
+    "Describe": "武器SA_Wep_AssaultRifle02的描述"
+  }
+}

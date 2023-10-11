@@ -28,7 +28,13 @@ public class GameFightingScene : MonoBehaviour
     /// </summary>
     private void InitFightingScene()
     {
-        AssetsLoadMgr.Instance.LoadAsync("map_001", "Maps/Map_001/Map_001.prefab", (string _name, UnityEngine.Object _obj) =>
+        if(!TableMgr.Instance.ExistTableID<Tbl_Map>("3000"))
+        {
+            return;
+        }
+
+        Tbl_Map tbl_Map = TableMgr.Instance.GetTable<Tbl_Map>("3000");
+        AssetsLoadMgr.Instance.LoadAsync(tbl_Map.AssetBundleName, tbl_Map.AssetNamePath, (string _assetName, UnityEngine.Object _obj) =>
         {
             GameObject map = GameObject.Instantiate(_obj as GameObject);
             map.transform.position = Vector3.zero;
@@ -44,24 +50,17 @@ public class GameFightingScene : MonoBehaviour
     /// </summary>
     public void InitRole()
     {
-        //AssetsLoadMgr.Instance.LoadAsync("role_jinglingnan", "Characters/Jinglingnan/Prefabs/JingLingNan.prefab", (string _name, UnityEngine.Object _obj) =>
-        //{
-        //    GameObject player = GameObject.Instantiate(_obj as GameObject);
-        //    player.name = "player";
-        //    player.transform.position = this.obj_CurrentMap.transform.Find("Map_SpawnPoints/point_main").position;
-        //    player.transform.localScale = Vector3.one;
-        //    GameMgr.Instance.characterMain = player.AddComponent<CharacterMain>();
-        //    GameMgr.Instance.characterMain.Init();
-
-        //    this.InitReferenceBall_Calibration();
-        //});
-
-        CharacterMgr.Instance.CreateCharacter("1001", (CharacterBase character) =>
+        string characterID = "1001";
+        int characterLevel = 1;
+        CharacterMgr.Instance.CreateCharacter(characterID, characterLevel, (CharacterMain character) =>
         {
-            CharacterMain characterMain = character as CharacterMain;
-            characterMain.SetCharacterPos(this.obj_CurrentMap.transform.Find("Map_SpawnPoints/point_main").position);
-            GameMgr.Instance.characterMain = characterMain;
-            GameMgr.Instance.characterMain.Init();
+            if(character == null)
+            {
+                return;
+            }
+
+            CharacterMgr.Instance.mainCharacter = character;
+            character.Init(characterLevel, Enum_TeamType.Self, this.obj_CurrentMap.transform.Find("Map_SpawnPoints/point_main").position);
 
             this.InitReferenceBall_Calibration();
         });
@@ -72,12 +71,14 @@ public class GameFightingScene : MonoBehaviour
     /// </summary>
     public void InitReferenceBall_Calibration()
     {
-        AssetsLoadMgr.Instance.LoadAsync("gizmos_ball", "GizmosModels/Prefabs/Gizmos_Ball.prefab", (string _name, UnityEngine.Object _obj) =>
-        {
-            GameObject ball = GameObject.Instantiate(_obj as GameObject);
+        this.InitMainCamera();
 
-            this.InitMainCamera();
-        });
+        //AssetsLoadMgr.Instance.LoadAsync("gizmos_ball", "GizmosModels/Prefabs/Gizmos_Ball.prefab", (string _name, UnityEngine.Object _obj) =>
+        //{
+        //    GameObject ball = GameObject.Instantiate(_obj as GameObject);
+
+        //    this.InitMainCamera();
+        //});
     }
 
     /// <summary>
@@ -102,7 +103,7 @@ public class GameFightingScene : MonoBehaviour
         {
             GameObject ball = GameObject.Instantiate(obj as GameObject);
             GameMgr.Instance.ball_Target = ball.AddComponent<ReferenceBall_Target>();
-            GameMgr.Instance.ball_Target.SetPos(GameMgr.Instance.characterMain.GetCharacterPos());
+            GameMgr.Instance.ball_Target.SetPos(CharacterMgr.Instance.mainCharacter.GetCharacterPos());
         });
     }
 }

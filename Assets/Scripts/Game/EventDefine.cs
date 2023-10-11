@@ -6,6 +6,14 @@ public class EventDefine
 {
     public const string None                                    = "";
 
+    public const string MVC_UI_FPS_StartUp                      = "UI_FPS_StartUp";
+    public const string MVC_UI_FPS_FillInfo                     = "UI_FPS_FillInfo";
+    public const string MVC_UI_FPS_Hide                         = "UI_FPS_Hide";
+
+    public const string MVC_UI_Announcement_StartUp             = "UI_Announcement_StartUp";
+    public const string MVC_UI_Announcement_FillInfo            = "UI_Announcement_FillInfo";
+    public const string MVC_UI_Announcement_Hide                = "UI_Announcement_Hide";
+    
     public const string MVC_UI_Loading_StartUp                  = "UI_Loading_StartUp";
     public const string MVC_UI_Loading_FillInfo                 = "UI_Loading_FillInfo";
     public const string MVC_UI_Loading_Hide                     = "UI_Loading_Hide";
@@ -13,12 +21,14 @@ public class EventDefine
     public const string MVC_UI_GameMain_StartUp                 = "UI_GameMain_StartUp";
     public const string MVC_UI_GameMain_FillInfo                = "UI_GameMain_FillInfo";
     public const string MVC_UI_GameMain_Hide                    = "UI_GameMain_Hide";
-    public const string MVC_UI_GameMain_Change_Hp               = "UI_GameMain_Change_Hp";
-    public const string MVC_UI_GameMain_Change_Score            = "UI_GameMain_Change_Score";
+    public const string MVC_UI_GameMain_Change_Coin             = "UI_GameMain_Change_Hp";
+    public const string MVC_UI_GameMain_Change_Diamond          = "UI_GameMain_Change_Score";
 
     public const string MVC_UI_GameControl_StartUp              = "UI_GameControl_StartUp";
     public const string MVC_UI_GameControl_FillInfo             = "UI_GameControl_FillInfo";
     public const string MVC_UI_GameControl_Hide                 = "UI_GameControl_Hide";
+    public const string MVC_UI_GameControl_Change_Hp            = "UI_GameControl_Change_Hp";
+    public const string MVC_UI_GameControl_Change_Score         = "UI_GameControl_Change_Score";
     public const string EVE_GameControl_Move                    = "GameControl_Move";
 
     public const string MVC_UI_Setting_StartUp                  = "UI_Setting_StartUp";
@@ -29,4 +39,7 @@ public class EventDefine
     public const string MVC_UI_GameOver_FillInfo                = "UI_GameOver_FillInfo";
     public const string MVC_UI_GameOver_Hide                    = "UI_GameOver_Hide";
     public const string EVE_GameRestart                         = "UI_GameRestart";
+
+    public const string EVE_StartShooting                       = "StartShooting";
+    public const string EVE_StopShooting                        = "StopShooting";
 }

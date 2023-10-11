@@ -379,8 +379,6 @@ public class AssetsLoadMgr : MonoBaseSingleton<AssetsLoadMgr>
     /// <summary>
     /// 异步加载 即使资源已经加载完成 也会异步回调
     /// </summary>
-    /// <param name="assetName"></param>
-    /// <param name="callFun"></param>
     public void LoadAsync(string assetBundleName, string assetName, AssetsLoadCallback callFun)
     {
         if(!IsAssetExist(assetBundleName, assetName))

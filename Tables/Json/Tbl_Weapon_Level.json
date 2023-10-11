@@ -1,0 +1,162 @@
+{
+  "4101001": {
+    "ID": 4101001,
+    "AttackSpeed": 0.2,
+    "AttackPower": 10,
+    "AttackDistance": 3,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4101002": {
+    "ID": 4101002,
+    "AttackSpeed": 0.16,
+    "AttackPower": 20,
+    "AttackDistance": 4,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4101003": {
+    "ID": 4101003,
+    "AttackSpeed": 0.12,
+    "AttackPower": 30,
+    "AttackDistance": 5,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4101004": {
+    "ID": 4101004,
+    "AttackSpeed": 0.08,
+    "AttackPower": 40,
+    "AttackDistance": 6,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4101005": {
+    "ID": 4101005,
+    "AttackSpeed": 0.04,
+    "AttackPower": 50,
+    "AttackDistance": 7,
+    "ShootPointCnt": 3,
+    "ShootingBulletID": 5001
+  },
+  "4102001": {
+    "ID": 4102001,
+    "AttackSpeed": 0.2,
+    "AttackPower": 10,
+    "AttackDistance": 3,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4102002": {
+    "ID": 4102002,
+    "AttackSpeed": 0.16,
+    "AttackPower": 20,
+    "AttackDistance": 4,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4102003": {
+    "ID": 4102003,
+    "AttackSpeed": 0.12,
+    "AttackPower": 30,
+    "AttackDistance": 5,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4102004": {
+    "ID": 4102004,
+    "AttackSpeed": 0.08,
+    "AttackPower": 40,
+    "AttackDistance": 6,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4102005": {
+    "ID": 4102005,
+    "AttackSpeed": 0.04,
+    "AttackPower": 50,
+    "AttackDistance": 7,
+    "ShootPointCnt": 3,
+    "ShootingBulletID": 5001
+  },
+  "4201001": {
+    "ID": 4201001,
+    "AttackSpeed": 0.2,
+    "AttackPower": 10,
+    "AttackDistance": 3,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4201002": {
+    "ID": 4201002,
+    "AttackSpeed": 0.16,
+    "AttackPower": 20,
+    "AttackDistance": 4,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4201003": {
+    "ID": 4201003,
+    "AttackSpeed": 0.12,
+    "AttackPower": 30,
+    "AttackDistance": 5,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4201004": {
+    "ID": 4201004,
+    "AttackSpeed": 0.08,
+    "AttackPower": 40,
+    "AttackDistance": 6,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4201005": {
+    "ID": 4201005,
+    "AttackSpeed": 0.04,
+    "AttackPower": 50,
+    "AttackDistance": 7,
+    "ShootPointCnt": 3,
+    "ShootingBulletID": 5001
+  },
+  "4202001": {
+    "ID": 4202001,
+    "AttackSpeed": 0.2,
+    "AttackPower": 10,
+    "AttackDistance": 3,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4202002": {
+    "ID": 4202002,
+    "AttackSpeed": 0.16,
+    "AttackPower": 20,
+    "AttackDistance": 4,
+    "ShootPointCnt": 1,
+    "ShootingBulletID": 5001
+  },
+  "4202003": {
+    "ID": 4202003,
+    "AttackSpeed": 0.12,
+    "AttackPower": 30,
+    "AttackDistance": 5,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4202004": {
+    "ID": 4202004,
+    "AttackSpeed": 0.08,
+    "AttackPower": 40,
+    "AttackDistance": 6,
+    "ShootPointCnt": 2,
+    "ShootingBulletID": 5001
+  },
+  "4202005": {
+    "ID": 4202005,
+    "AttackSpeed": 0.04,
+    "AttackPower": 50,
+    "AttackDistance": 7,
+    "ShootPointCnt": 3,
+    "ShootingBulletID": 5001
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "2001": {
+    "ID": 2001,
+    "AssetBundleName": "role_jinglingnan",
+    "AssetNamePath": "Characters/Jinglingnan/Prefabs/JingLingNan.prefab",
+    "Name": "name_2001",
+    "Describe": "角色name_2001，恒撒大陆的虫族001号"
+  },
+  "2002": {
+    "ID": 2002,
+    "AssetBundleName": "role_jinglingnan",
+    "AssetNamePath": "Characters/Jinglingnan/Prefabs/JingLingNan.prefab",
+    "Name": "name_2002",
+    "Describe": "角色name_2002，恒撒大陆的虫族002号"
+  },
+  "2003": {
+    "ID": 2003,
+    "AssetBundleName": "role_jinglingnan",
+    "AssetNamePath": "Characters/Jinglingnan/Prefabs/JingLingNan.prefab",
+    "Name": "name_2003",
+    "Describe": "角色name_2003，恒撒大陆的虫族003号"
+  }
+}
